@@ -29,6 +29,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { SERVICE_DEFINITIONS, CANADIAN_CITIES } from '@/lib/constants';
+import ServiceIcon from '@/components/ui/ServiceIcon';
 import { formatCAD } from '@/lib/utils';
 import { ServiceType } from '@/types/database';
 import dynamic from 'next/dynamic';
@@ -285,15 +286,7 @@ function RequestMechanicFlowContent() {
                       : 'bg-white border-slate-100 hover:bg-slate-50'
                   }`}
                 >
-                  <div
-                    className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
-                      isSelected
-                        ? 'bg-[#5e17eb] text-white shadow-sm'
-                        : 'bg-[#f3ebff] text-[#5e17eb]'
-                    }`}
-                  >
-                    <Icon className="w-5 h-5 stroke-[2.2]" />
-                  </div>
+                  <ServiceIcon type={srv.type} size="md" />
                   <div className="flex-1">
                     <p className="font-black text-xs text-[#181528] leading-tight">{srv.label}</p>
                     <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">{srv.shortDesc}</p>

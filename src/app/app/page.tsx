@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { formatCAD, getStatusBadge } from '@/lib/utils';
 import { SERVICE_DEFINITIONS, CANADIAN_CITIES } from '@/lib/constants';
+import ServiceIcon from '@/components/ui/ServiceIcon';
 
 const SPECIAL_OFFERS = [
   {
@@ -426,49 +427,21 @@ export default function CustomerHomePage() {
                 type: 'mechanic_repair',
                 label: 'Entretien',
                 fullLabel: 'Entretien Auto',
-                icon: (
-                  <div className="relative flex items-center justify-center">
-                    <Car className="w-5 h-5 text-[#5e17eb]" />
-                    <Wrench className="w-3.5 h-3.5 text-[#ff7a00] absolute -bottom-1 -right-1" />
-                  </div>
-                ),
               },
               {
                 type: 'bodywork_dent',
                 label: 'Débosselage',
                 fullLabel: 'Carrosserie',
-                icon: (
-                  <div className="relative flex items-center justify-center text-[#5e17eb]">
-                    <Disc className="w-6 h-6 text-[#5e17eb]" />
-                    <Sparkles className="w-3 h-3 text-[#ff7a00] absolute top-0 right-0" />
-                  </div>
-                ),
               },
               {
                 type: 'oil_change',
                 label: 'Vidange',
                 fullLabel: 'Vidange & Huile',
-                icon: (
-                  <div className="relative flex items-center justify-center">
-                    <Droplets className="w-6 h-6 text-[#5e17eb]" />
-                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#ff7a00]" />
-                  </div>
-                ),
               },
               {
                 type: 'car_wash',
                 label: 'Lavage',
                 fullLabel: 'Lavage Mobile',
-                icon: (
-                  <div className="relative flex items-center justify-center">
-                    <Car className="w-5 h-5 text-[#5e17eb]" />
-                    <div className="absolute -top-1 flex gap-0.5">
-                      <span className="w-1 h-1 rounded-full bg-[#ff7a00]" />
-                      <span className="w-1 h-1 rounded-full bg-[#ff7a00]" />
-                      <span className="w-1 h-1 rounded-full bg-[#ff7a00]" />
-                    </div>
-                  </div>
-                ),
               },
             ].map((cat) => (
               <Link
@@ -476,9 +449,7 @@ export default function CustomerHomePage() {
                 href={`/app/request?service=${cat.type}`}
                 className="flex flex-col items-center text-center gap-1.5 group"
               >
-                <div className="w-14 h-14 rounded-full bg-[#f8f9fd] group-hover:bg-[#f3ebff] border border-slate-100 group-hover:border-purple-200 flex items-center justify-center transition-all duration-200 shadow-sm group-hover:scale-105">
-                  {cat.icon}
-                </div>
+                <ServiceIcon type={cat.type} size="lg" />
                 <span className="text-[11px] font-bold text-[#181528] leading-tight">
                   {cat.label}
                 </span>
@@ -602,30 +573,25 @@ export default function CustomerHomePage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-              {SERVICE_DEFINITIONS.map((srv) => {
-                const Icon = iconsMap[srv.iconName] || Wrench;
-                return (
-                  <Link
-                    key={srv.type}
-                    href={`/app/request?service=${srv.type}`}
-                    onClick={() => setShowAllServicesModal(false)}
-                    className="p-3.5 rounded-2xl bg-[#f8f9fd] hover:bg-[#f3ebff] border border-slate-100 hover:border-purple-200 transition-all flex items-start gap-3 group"
-                  >
-                    <div className="w-10 h-10 rounded-2xl bg-[#f3ebff] group-hover:bg-[#5e17eb] text-[#5e17eb] group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-xs font-black text-[#181528] group-hover:text-[#5e17eb] transition-colors">
-                        {srv.label}
-                      </h3>
-                      <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">{srv.shortDesc}</p>
-                      <p className="text-[11px] font-black text-[#5e17eb] mt-1">
-                        Dès {formatCAD(srv.basePriceCAD)}
-                      </p>
-                    </div>
-                  </Link>
-                );
-              })}
+              {SERVICE_DEFINITIONS.map((srv) => (
+                <Link
+                  key={srv.type}
+                  href={`/app/request?service=${srv.type}`}
+                  onClick={() => setShowAllServicesModal(false)}
+                  className="p-3.5 rounded-2xl bg-[#f8f9fd] hover:bg-[#f3ebff] border border-slate-100 hover:border-purple-200 transition-all flex items-start gap-3 group"
+                >
+                  <ServiceIcon type={srv.type} size="md" />
+                  <div className="flex-1">
+                    <h3 className="text-xs font-black text-[#181528] group-hover:text-[#5e17eb] transition-colors">
+                      {srv.label}
+                    </h3>
+                    <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">{srv.shortDesc}</p>
+                    <p className="text-[11px] font-black text-[#5e17eb] mt-1">
+                      Dès {formatCAD(srv.basePriceCAD)}
+                    </p>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
