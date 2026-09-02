@@ -6,10 +6,46 @@ import TopBar from '@/components/navigation/TopBar';
 import PwaRegister from '@/components/pwa/PwaRegister';
 
 export const metadata: Metadata = {
-  title: 'MécanoMobile Canada | Mécaniciens Mobiles à Domicile',
+  metadataBase: new URL('https://wrenchmobile-canada.vercel.app'),
+  title: 'WrenchMobile Canada | Mécaniciens Mobiles Certifiés à Domicile',
   description:
-    'Panne de voiture ? Des mécaniciens mobiles certifiés Sceau Rouge interviennent directement à votre domicile ou bureau à Montréal, Québec, Gatineau, Ottawa, Toronto. Aucun remorquage requis.',
+    'Panne de voiture ? Réservez un mécanicien automobile certifié Sceau Rouge directement dans votre allée ou au bureau. Diagnostic & dépannage rapide sans remorquage au Canada.',
   manifest: '/manifest.json',
+  keywords: [
+    'mécanicien mobile',
+    'mécanique à domicile',
+    'dépannage auto montréal',
+    'mobile mechanic canada',
+    'changement batterie domicile',
+    'vidange huile mobile',
+    'réparation freins',
+    'sceau rouge',
+  ],
+  authors: [{ name: 'WrenchMobile Canada Inc.' }],
+  openGraph: {
+    type: 'website',
+    locale: 'fr_CA',
+    url: 'https://wrenchmobile-canada.vercel.app',
+    siteName: 'WrenchMobile Canada',
+    title: 'WrenchMobile Canada | Mécanique Mobile & Dépannage à Domicile',
+    description:
+      'Service automobile numéro 1 sur demande au Canada. Intervention le jour même, diagnostic sur place et techniciens certifiés Sceau Rouge.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'WrenchMobile Canada - Service de mécanique automobile mobile',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'WrenchMobile Canada | Mécaniciens Mobiles à Domicile',
+    description:
+      'Panne de voiture ? Le mécanicien vient à vous. Diagnostic et réparation sur place sans remorquage.',
+    images: ['/og-image.jpg'],
+  },
   icons: {
     icon: '/icons/icon-192.svg',
     apple: '/icons/icon-192.svg',
@@ -17,7 +53,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'MécanoMobile',
+    title: 'WrenchMobile',
   },
 };
 
