@@ -282,12 +282,12 @@ export default function CustomerHomePage() {
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
-              <button
-                onClick={() => setShowAllOffersModal(true)}
+              <Link
+                href="/app/offers"
                 className="text-xs font-bold text-[#5e17eb] hover:underline ml-1"
               >
                 Voir tout
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -413,12 +413,12 @@ export default function CustomerHomePage() {
               <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Services</h2>
               <p className="text-[11px] text-slate-400">Interventions rapides à domicile</p>
             </div>
-            <button
-              onClick={() => setShowAllServicesModal(true)}
+            <Link
+              href="/app/services-list"
               className="text-xs font-bold text-[#5e17eb] hover:underline"
             >
               Voir tout
-            </button>
+            </Link>
           </div>
 
           <div className="grid grid-cols-4 gap-2">
@@ -465,7 +465,7 @@ export default function CustomerHomePage() {
               <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Prestataires de Service</h2>
               <p className="text-[11px] text-slate-400">Techniciens certifiés Sceau Rouge</p>
             </div>
-            <Link href="/app/explore" className="text-xs font-bold text-[#5e17eb] hover:underline">
+            <Link href="/app/mechanics" className="text-xs font-bold text-[#5e17eb] hover:underline">
               Voir tout
             </Link>
           </div>
