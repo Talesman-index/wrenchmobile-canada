@@ -31,6 +31,7 @@ import {
   ChevronDown,
   AlertTriangle,
   Settings,
+  X,
 } from 'lucide-react';
 import { formatCAD, getStatusBadge } from '@/lib/utils';
 import { SERVICE_DEFINITIONS, CANADIAN_CITIES } from '@/lib/constants';
@@ -38,14 +39,14 @@ import { SERVICE_DEFINITIONS, CANADIAN_CITIES } from '@/lib/constants';
 const SPECIAL_OFFERS = [
   {
     id: 'offer-1',
-    tag: "Today's Offers",
-    title: 'Get Special Offer',
-    discountPrefix: 'Up to',
+    tag: 'Offre du Jour',
+    title: 'Diagnostic Mobile',
+    discountPrefix: 'Jusqu’à',
     discountValue: '20',
     discountSuffix: '%',
-    desc: 'Sur votre premier diagnostic mobile à domicile.',
+    desc: 'Sur votre premier diagnostic complet à domicile ou au bureau.',
     image: '/images/special_offer_mechanic.jpg',
-    ctaText: 'Claim',
+    ctaText: 'En profiter',
     ctaHref: '/app/request',
   },
   {
@@ -57,13 +58,13 @@ const SPECIAL_OFFERS = [
     discountSuffix: '%',
     desc: 'Boost & remplacement de batterie livré et installé sur place.',
     image: '/images/offer_battery_mechanic.jpg',
-    ctaText: 'Profiter',
+    ctaText: 'En profiter',
     ctaHref: '/app/request?service=battery_jump',
   },
   {
     id: 'offer-3',
     tag: 'Freins & Sécurité',
-    title: 'Forfait Plaquettes & Disques',
+    title: 'Plaquettes & Disques',
     discountPrefix: 'Économisez',
     discountValue: '30',
     discountSuffix: '$',
@@ -94,6 +95,10 @@ export default function CustomerHomePage() {
   const [selectedCity, setSelectedCity] = useState('Montréal, QC');
   const [showCityPicker, setShowCityPicker] = useState(false);
 
+  // Modales "Voir tout"
+  const [showAllServicesModal, setShowAllServicesModal] = useState(false);
+  const [showAllOffersModal, setShowAllOffersModal] = useState(false);
+
   // État du carrousel d'offres spéciales
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -121,13 +126,11 @@ export default function CustomerHomePage() {
   const handleTouchEnd = () => {
     if (touchStartXRef.current !== null && touchEndXRef.current !== null) {
       const diff = touchStartXRef.current - touchEndXRef.current;
-      const minSwipeDistance = 40; // Seuil de déclenchement
+      const minSwipeDistance = 40;
 
       if (diff > minSwipeDistance) {
-        // Swipe vers la gauche -> Slide suivant
         setActiveSlide((prev) => (prev + 1) % SPECIAL_OFFERS.length);
       } else if (diff < -minSwipeDistance) {
-        // Swipe vers la droite -> Slide précédent
         setActiveSlide((prev) => (prev === 0 ? SPECIAL_OFFERS.length - 1 : prev - 1));
       }
     }
@@ -183,7 +186,7 @@ export default function CustomerHomePage() {
         {/* Barre supérieure : Localisation & Cloche de notification */}
         <div className="relative z-10 flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-[11px] text-purple-200 font-medium">Location</span>
+            <span className="text-[11px] text-purple-200 font-medium">Localisation</span>
             <button
               onClick={() => setShowCityPicker(!showCityPicker)}
               className="flex items-center gap-1.5 text-sm font-black text-white hover:text-purple-200 transition-colors mt-0.5"
@@ -234,13 +237,13 @@ export default function CustomerHomePage() {
           </div>
         )}
 
-        {/* Barre de recherche + Bouton Filtre (Fidèle à la maquette) */}
+        {/* Barre de recherche + Bouton Filtre */}
         <div className="relative z-10 flex items-center gap-2.5">
           <div className="relative flex-1">
             <Search className="w-4 h-4 text-[#5e17eb] absolute left-4 top-3.5" />
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Rechercher un service, garage ou panne..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white text-[#181528] border-none rounded-2xl pl-11 pr-4 py-3 text-xs placeholder:text-slate-400 focus:ring-2 focus:ring-purple-300 outline-none shadow-sm font-medium"
@@ -259,12 +262,11 @@ export default function CustomerHomePage() {
 
       {/* Contenu principal */}
       <div className="px-4 flex flex-col gap-5 -mt-1">
-        {/* SECTION 1: Special Offers (Carrousel interactif animé avec glissement / swipe) */}
+        {/* SECTION 1: Offres Spéciales (Carrousel interactif animé avec glissement / swipe) */}
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Special Offers</h2>
+            <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Offres Spéciales</h2>
             <div className="flex items-center gap-2">
-              {/* Boutons flèches discrets */}
               <button
                 onClick={prevSlide}
                 className="w-6 h-6 rounded-full bg-slate-100 hover:bg-[#f3ebff] hover:text-[#5e17eb] flex items-center justify-center text-slate-500 transition-colors"
@@ -279,9 +281,12 @@ export default function CustomerHomePage() {
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
-              <Link href="/app/request" className="text-xs font-bold text-[#5e17eb] hover:underline ml-1">
-                See All
-              </Link>
+              <button
+                onClick={() => setShowAllOffersModal(true)}
+                className="text-xs font-bold text-[#5e17eb] hover:underline ml-1"
+              >
+                Voir tout
+              </button>
             </div>
           </div>
 
@@ -352,7 +357,7 @@ export default function CustomerHomePage() {
             </div>
           </div>
 
-          {/* Indicateurs de carrousel interactifs (Cliquables avec animation fluide) */}
+          {/* Indicateurs de carrousel interactifs */}
           <div className="flex items-center justify-center gap-1.5 pt-0.5">
             {SPECIAL_OFFERS.map((_, idx) => {
               const isActive = idx === activeSlide;
@@ -403,17 +408,23 @@ export default function CustomerHomePage() {
         {/* SECTION 2: Services (4 Boutons circulaires stylisés) */}
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Services</h2>
-            <Link href="/app/request" className="text-xs font-bold text-[#5e17eb] hover:underline">
-              See all
-            </Link>
+            <div>
+              <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Services</h2>
+              <p className="text-[11px] text-slate-400">Interventions rapides à domicile</p>
+            </div>
+            <button
+              onClick={() => setShowAllServicesModal(true)}
+              className="text-xs font-bold text-[#5e17eb] hover:underline"
+            >
+              Voir tout
+            </button>
           </div>
 
           <div className="grid grid-cols-4 gap-2">
             {[
               {
                 type: 'mechanic_repair',
-                label: 'Car Ser..',
+                label: 'Entretien',
                 fullLabel: 'Entretien Auto',
                 icon: (
                   <div className="relative flex items-center justify-center">
@@ -424,8 +435,8 @@ export default function CustomerHomePage() {
               },
               {
                 type: 'bodywork_dent',
-                label: 'Dent Rem..',
-                fullLabel: 'Débosselage',
+                label: 'Débosselage',
+                fullLabel: 'Carrosserie',
                 icon: (
                   <div className="relative flex items-center justify-center text-[#5e17eb]">
                     <Disc className="w-6 h-6 text-[#5e17eb]" />
@@ -435,7 +446,7 @@ export default function CustomerHomePage() {
               },
               {
                 type: 'oil_change',
-                label: 'Oil Cha..',
+                label: 'Vidange',
                 fullLabel: 'Vidange & Huile',
                 icon: (
                   <div className="relative flex items-center justify-center">
@@ -446,7 +457,7 @@ export default function CustomerHomePage() {
               },
               {
                 type: 'car_wash',
-                label: 'Car Was..',
+                label: 'Lavage',
                 fullLabel: 'Lavage Mobile',
                 icon: (
                   <div className="relative flex items-center justify-center">
@@ -476,12 +487,15 @@ export default function CustomerHomePage() {
           </div>
         </div>
 
-        {/* SECTION 3: Service Providers (Prestataires avec photo d'équipe et coeur favori) */}
+        {/* SECTION 3: Prestataires de Service / Mécaniciens */}
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Service Providers</h2>
+            <div>
+              <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Prestataires de Service</h2>
+              <p className="text-[11px] text-slate-400">Techniciens certifiés Sceau Rouge</p>
+            </div>
             <Link href="/app/explore" className="text-xs font-bold text-[#5e17eb] hover:underline">
-              See all
+              Voir tout
             </Link>
           </div>
 
@@ -512,7 +526,7 @@ export default function CustomerHomePage() {
                       Sceau Rouge
                     </span>
 
-                    {/* Bouton Coeur / Favori (Fidèle à la maquette) */}
+                    {/* Bouton Coeur / Favori */}
                     <button
                       onClick={(e) => toggleFavorite(mech.id, e)}
                       className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-slate-700 shadow-md active:scale-90 transition-transform"
@@ -528,7 +542,7 @@ export default function CustomerHomePage() {
                     <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white text-[10px] font-bold">
                       <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                       <span>{mech.rating.toFixed(1)}</span>
-                      <span className="text-slate-300">({mech.jobs_completed} reviews)</span>
+                      <span className="text-slate-300">({mech.jobs_completed} avis)</span>
                     </div>
                   </div>
 
@@ -569,6 +583,104 @@ export default function CustomerHomePage() {
           </div>
         </div>
       </div>
+
+      {/* MODALE "VOIR TOUT" : TOUS LES SERVICES DISPONIBLES */}
+      {showAllServicesModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white border border-slate-100 rounded-3xl p-5 w-full max-w-lg shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <h2 className="text-base font-black text-[#181528]">Tous les Services Mobiles</h2>
+                <p className="text-xs text-slate-500">Sélectionnez la prestation souhaitée à domicile</p>
+              </div>
+              <button
+                onClick={() => setShowAllServicesModal(false)}
+                className="p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+              {SERVICE_DEFINITIONS.map((srv) => {
+                const Icon = iconsMap[srv.iconName] || Wrench;
+                return (
+                  <Link
+                    key={srv.type}
+                    href={`/app/request?service=${srv.type}`}
+                    onClick={() => setShowAllServicesModal(false)}
+                    className="p-3.5 rounded-2xl bg-[#f8f9fd] hover:bg-[#f3ebff] border border-slate-100 hover:border-purple-200 transition-all flex items-start gap-3 group"
+                  >
+                    <div className="w-10 h-10 rounded-2xl bg-[#f3ebff] group-hover:bg-[#5e17eb] text-[#5e17eb] group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xs font-black text-[#181528] group-hover:text-[#5e17eb] transition-colors">
+                        {srv.label}
+                      </h3>
+                      <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">{srv.shortDesc}</p>
+                      <p className="text-[11px] font-black text-[#5e17eb] mt-1">
+                        Dès {formatCAD(srv.basePriceCAD)}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODALE "VOIR TOUT" : TOUTES LES OFFRES SPÉCIALES */}
+      {showAllOffersModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white border border-slate-100 rounded-3xl p-5 w-full max-w-lg shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <h2 className="text-base font-black text-[#181528]">Toutes les Offres Spéciales</h2>
+                <p className="text-xs text-slate-500">Profitez de tarifs réduits sur nos prestations mobiles</p>
+              </div>
+              <button
+                onClick={() => setShowAllOffersModal(false)}
+                className="p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-3 pt-1">
+              {SPECIAL_OFFERS.map((offer) => (
+                <div
+                  key={offer.id}
+                  className="p-4 rounded-3xl bg-[#f8f9fd] border border-slate-100 flex items-center justify-between gap-3 shadow-sm"
+                >
+                  <div className="max-w-[220px]">
+                    <span className="text-[9px] font-black bg-white px-2 py-0.5 rounded-full text-slate-700 shadow-xs uppercase">
+                      {offer.tag}
+                    </span>
+                    <h3 className="text-sm font-black text-[#181528] mt-1.5">{offer.title}</h3>
+                    <p className="text-xs font-black text-[#5e17eb] mt-0.5">
+                      {offer.discountPrefix} {offer.discountValue}{offer.discountSuffix}
+                    </p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">{offer.desc}</p>
+                    <Link
+                      href={offer.ctaHref}
+                      onClick={() => setShowAllOffersModal(false)}
+                      className="inline-block mt-2.5 bg-[#5e17eb] hover:bg-[#4c0ec4] text-white text-xs font-black px-4 py-1.5 rounded-full shadow-purple-cta transition-all"
+                    >
+                      {offer.ctaText}
+                    </Link>
+                  </div>
+
+                  <div className="w-20 h-20 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-sm bg-white">
+                    <img src={offer.image} alt={offer.title} className="w-full h-full object-cover" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -11,11 +11,11 @@ export default function CustomerBottomNav() {
   const { activeCustomerRequest } = useApp();
 
   const navItems: { href: string; label: string; icon: any; badge?: boolean }[] = [
-    { href: '/app', label: 'Home', icon: Home },
-    { href: '/app/explore', label: 'Discover', icon: Compass, badge: Boolean(activeCustomerRequest) },
-    { href: '/app/vehicles', label: 'Wishlist', icon: Heart },
-    { href: '/app/chat', label: 'Chat', icon: MessageSquare },
-    { href: '/app/profile', label: 'Profile', icon: User },
+    { href: '/app', label: 'Accueil', icon: Home },
+    { href: '/app/explore', label: 'Explorer', icon: Compass, badge: Boolean(activeCustomerRequest) },
+    { href: '/app/vehicles', label: 'Garage', icon: Heart },
+    { href: '/app/chat', label: 'Messages', icon: MessageSquare },
+    { href: '/app/profile', label: 'Profil', icon: User },
   ];
 
   return (
