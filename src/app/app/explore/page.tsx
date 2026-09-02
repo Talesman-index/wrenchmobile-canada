@@ -58,7 +58,7 @@ export default function ExploreMapPage() {
               placeholder="Rechercher par quartier, mécanicien ou service..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#f4f6fa] border border-slate-200/80 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-[#e5a910] focus:bg-white outline-none"
+              className="w-full bg-[#f8f9fd] border border-slate-200/80 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-[#181528] placeholder:text-slate-400 focus:border-[#5e17eb] focus:bg-white outline-none"
             />
           </div>
 
@@ -70,7 +70,7 @@ export default function ExploreMapPage() {
                 type: 'info',
               })
             }
-            className="w-10 h-10 rounded-2xl bg-[#0c1f38] text-white flex items-center justify-center shrink-0 shadow-md shadow-slate-900/20 active:scale-95 transition-transform"
+            className="w-10 h-10 rounded-2xl bg-[#5e17eb] text-white flex items-center justify-center shrink-0 shadow-md shadow-purple-500/20 active:scale-95 transition-transform"
           >
             <SlidersHorizontal className="w-4 h-4" />
           </button>
@@ -84,8 +84,8 @@ export default function ExploreMapPage() {
               onClick={() => setActiveCategory(cat.key)}
               className={`px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-all ${
                 activeCategory === cat.key
-                  ? 'bg-[#e5a910] text-[#0c1f38] font-black shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[#5e17eb] text-white font-black shadow-sm'
+                  : 'bg-[#f8f9fd] text-slate-600 hover:bg-[#f3ebff] hover:text-[#5e17eb]'
               }`}
             >
               {cat.label}
@@ -106,7 +106,7 @@ export default function ExploreMapPage() {
           height="380px"
         />
 
-        <div className="absolute top-3 left-3 z-[400] bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 text-[11px] font-bold text-slate-800 shadow-md flex items-center gap-1.5">
+        <div className="absolute top-3 left-3 z-[400] bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 text-[11px] font-bold text-[#181528] shadow-md flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span>{mechanics.length} Mécaniciens mobiles en service</span>
         </div>
@@ -123,21 +123,21 @@ export default function ExploreMapPage() {
                   alt={selectedMechanic.first_name}
                   className="w-full h-full object-cover"
                 />
-                <span className="absolute bottom-1 right-1 bg-[#e5a910] text-[#0c1f38] font-black text-[8px] px-1 py-0.2 rounded">
+                <span className="absolute bottom-1 right-1 bg-[#5e17eb] text-white font-black text-[8px] px-1 py-0.2 rounded">
                   -10 %
                 </span>
               </div>
 
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="font-black text-sm text-slate-900">
+                  <h3 className="font-black text-sm text-[#181528]">
                     {selectedMechanic.business_name || `${selectedMechanic.first_name} ${selectedMechanic.last_name}`}
                   </h3>
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5">{selectedMechanic.city}, QC • Certifié Sceau Rouge</p>
 
                 <div className="flex items-center gap-2 mt-1 text-xs">
-                  <span className="text-[#c88e05] font-black flex items-center gap-0.5">
+                  <span className="text-amber-500 font-black flex items-center gap-0.5">
                     ★ {selectedMechanic.rating.toFixed(1)}
                   </span>
                   <span className="text-slate-300">•</span>
@@ -147,7 +147,7 @@ export default function ExploreMapPage() {
             </div>
 
             <div className="text-right">
-              <span className="text-xs font-black text-[#0c1f38]">
+              <span className="text-xs font-black text-[#5e17eb]">
                 Dès {formatCAD(89)}
               </span>
               <span className="block text-[10px] text-slate-400">Diagnostic</span>
@@ -156,13 +156,13 @@ export default function ExploreMapPage() {
 
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 text-slate-500 font-bold text-[11px]">
-              <Clock className="w-3.5 h-3.5 text-[#c88e05]" />
+              <Clock className="w-3.5 h-3.5 text-[#5e17eb]" />
               <span>⏱ ~15 min • 3,5 km</span>
             </div>
 
             <Link
               href={`/app/mechanics/${selectedMechanic.id}`}
-              className="bg-[#e5a910] hover:bg-[#c88e05] text-[#0c1f38] font-black text-xs px-4 py-2 rounded-2xl shadow-amber-cta active:scale-95 transition-all flex items-center gap-1"
+              className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-xs px-4 py-2 rounded-2xl shadow-purple-cta active:scale-95 transition-all flex items-center gap-1"
             >
               <span>Voir profil & Réserver</span>
               <ChevronRight className="w-3.5 h-3.5" />

@@ -2,31 +2,33 @@
 
 @layer base {
   :root {
-    --background: #f4f6fa;
-    --foreground: #0b1b32; /* Oxford Blue */
+    --background: #f8f9fd;
+    --foreground: #181528; /* Deep Midnight Purple / Black */
     --card: #ffffff;
-    --card-foreground: #0b1b32;
+    --card-foreground: #181528;
     --popover: #ffffff;
-    --popover-foreground: #0b1b32;
-    --primary: #0b1b32; /* Deep Oxford Blue (#0B1B32) */
+    --popover-foreground: #181528;
+    --primary: #5e17eb; /* Electric Royal Purple */
+    --primary-hover: #4e0ecc;
     --primary-foreground: #ffffff;
-    --accent: #facc15; /* Maximum Electric Yellow (#FAF92A / #FACC15) */
-    --accent-hover: #eab308;
-    --accent-foreground: #0b1b32;
-    --accent-light: #fefce8;
-    --secondary: #eef2f8;
-    --secondary-foreground: #0b1b32;
+    --primary-soft: #f3ebff; /* Soft Lavender */
+    --accent: #5e17eb;
+    --accent-hover: #4e0ecc;
+    --accent-foreground: #ffffff;
+    --accent-light: #f3ebff;
+    --secondary: #ede6fd;
+    --secondary-foreground: #5e17eb;
     --muted: #f4f6fa;
-    --muted-foreground: #64748b;
-    --border: #e2e8f0;
-    --input: #e2e8f0;
+    --muted-foreground: #6b7280;
+    --border: #eef0f6;
+    --input: #eef0f6;
     --radius: 1.5rem;
   }
 }
 
 body {
-  background-color: #f4f6fa;
-  color: #0b1b32;
+  background-color: #f8f9fd;
+  color: #181528;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
@@ -35,16 +37,16 @@ body {
 
 /* Custom soft shadow tokens */
 .shadow-card {
-  box-shadow: 0 4px 20px -2px rgba(11, 27, 50, 0.06), 0 2px 6px -1px rgba(11, 27, 50, 0.03);
+  box-shadow: 0 4px 20px -2px rgba(94, 23, 235, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
 }
 .shadow-card-hover {
-  box-shadow: 0 12px 32px -4px rgba(11, 27, 50, 0.12), 0 4px 12px -2px rgba(11, 27, 50, 0.04);
+  box-shadow: 0 12px 32px -4px rgba(94, 23, 235, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
 }
-.shadow-yellow-cta {
-  box-shadow: 0 8px 24px -4px rgba(250, 204, 21, 0.48);
+.shadow-purple-cta {
+  box-shadow: 0 8px 24px -4px rgba(94, 23, 235, 0.38);
 }
-.shadow-oxford-cta {
-  box-shadow: 0 8px 24px -4px rgba(11, 27, 50, 0.35);
+.shadow-lavender {
+  box-shadow: 0 4px 16px -2px rgba(94, 23, 235, 0.15);
 }
 
 /* Custom scrollbars */

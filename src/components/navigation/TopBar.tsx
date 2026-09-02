@@ -32,14 +32,14 @@ export default function TopBar() {
         {/* Logo & Localisation */}
         <div className="flex items-center gap-2.5">
           <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <div className="w-8 h-8 rounded-xl bg-[#0b1b32] flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
-              <Wrench className="w-4 h-4 text-[#facc15]" />
+            <div className="w-8 h-8 rounded-xl bg-[#5e17eb] flex items-center justify-center text-white shadow-md shadow-purple-500/20 group-hover:scale-105 transition-transform">
+              <Wrench className="w-4 h-4 text-white" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1">
-                <span className="text-sm font-black tracking-tight text-[#0b1b32]">MÉCANO</span>
-                <span className="text-[9px] bg-[#facc15] text-[#0b1b32] font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider">
-                  QC/CA
+                <span className="text-sm font-black tracking-tight text-[#181528]">MÉCANO</span>
+                <span className="text-[9px] bg-[#f3ebff] text-[#5e17eb] font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider">
+                  MOBILE
                 </span>
               </div>
             </div>
@@ -50,9 +50,9 @@ export default function TopBar() {
             <div className="relative hidden xs:block">
               <button
                 onClick={() => setShowCityPicker(!showCityPicker)}
-                className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200/80 px-2.5 py-1.5 rounded-full transition-colors"
+                className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-[#f3ebff] hover:text-[#5e17eb] px-2.5 py-1.5 rounded-full transition-colors"
               >
-                <MapPin className="w-3 h-3 text-[#facc15]" />
+                <MapPin className="w-3 h-3 text-[#5e17eb]" />
                 <span className="truncate max-w-[110px]">{selectedCity}</span>
                 <ChevronDown className="w-3 h-3 text-slate-400" />
               </button>
@@ -69,11 +69,11 @@ export default function TopBar() {
                         setSelectedCity(`${c.name}, ${c.province}`);
                         setShowCityPicker(false);
                       }}
-                      className="w-full text-left px-3 py-1.5 text-xs text-slate-700 hover:bg-yellow-50 hover:text-[#0b1b32] font-bold flex items-center justify-between"
+                      className="w-full text-left px-3 py-1.5 text-xs text-slate-700 hover:bg-[#f3ebff] hover:text-[#5e17eb] font-bold flex items-center justify-between"
                     >
                       <span>{c.name}, {c.province}</span>
                       {selectedCity.startsWith(c.name) && (
-                        <span className="text-[#0b1b32] font-black">✓</span>
+                        <span className="text-[#5e17eb] font-black">✓</span>
                       )}
                     </button>
                   ))}
@@ -90,7 +90,7 @@ export default function TopBar() {
               onClick={() => handleRoleChange('customer')}
               className={`px-2.5 py-1 rounded-full font-black transition-all flex items-center gap-1 text-[11px] ${
                 currentRole === 'customer'
-                  ? 'bg-[#0b1b32] text-white shadow-sm'
+                  ? 'bg-[#5e17eb] text-white shadow-sm shadow-purple-500/30'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -101,7 +101,7 @@ export default function TopBar() {
               onClick={() => handleRoleChange('mechanic')}
               className={`px-2.5 py-1 rounded-full font-black transition-all flex items-center gap-1 text-[11px] ${
                 currentRole === 'mechanic'
-                  ? 'bg-[#facc15] text-[#0b1b32] shadow-sm'
+                  ? 'bg-[#5e17eb] text-white shadow-sm shadow-purple-500/30'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -112,7 +112,7 @@ export default function TopBar() {
               onClick={() => handleRoleChange('admin')}
               className={`px-2.5 py-1 rounded-full font-black transition-all flex items-center gap-1 text-[11px] ${
                 currentRole === 'admin'
-                  ? 'bg-purple-700 text-white shadow-sm'
+                  ? 'bg-[#181528] text-white shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >

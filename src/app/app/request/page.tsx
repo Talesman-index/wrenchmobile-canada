@@ -177,8 +177,8 @@ function RequestMechanicFlowContent() {
             <ChevronLeft className="w-5 h-5" />
           </button>
 
-          <span className="text-xs font-black text-slate-800">
-            Étape <strong className="text-[#c88e05]">{step}</strong> sur 5
+          <span className="text-xs font-black text-[#181528]">
+            Étape <strong className="text-[#5e17eb]">{step}</strong> sur 5
           </span>
 
           <div className="w-9" />
@@ -187,7 +187,7 @@ function RequestMechanicFlowContent() {
         {/* Barre de progression */}
         <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mb-5">
           <div
-            className="bg-gradient-to-r from-[#0c1f38] to-[#e5a910] h-full transition-all duration-300 rounded-full"
+            className="bg-gradient-to-r from-[#5e17eb] to-[#7c3aed] h-full transition-all duration-300 rounded-full"
             style={{ width: `${(step / 5) * 100}%` }}
           />
         </div>
@@ -197,7 +197,7 @@ function RequestMechanicFlowContent() {
       {step === 1 && (
         <div className="flex-1 flex flex-col">
           <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Quel véhicule a besoin d&apos;aide ?</h1>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Quel véhicule a besoin d&apos;aide ?</h1>
             <p className="text-xs text-slate-500 mt-1">Sélectionnez la voiture dans votre garage</p>
           </div>
 
@@ -210,7 +210,7 @@ function RequestMechanicFlowContent() {
                   onClick={() => setSelectedVehicleId(v.id)}
                   className={`text-left p-4 rounded-3xl border transition-all flex items-center justify-between shadow-card ${
                     isSelected
-                      ? 'bg-amber-50/60 border-[#e5a910] ring-2 ring-amber-100 shadow-card-hover'
+                      ? 'bg-[#f3ebff] border-[#5e17eb] ring-2 ring-purple-100 shadow-card-hover'
                       : 'bg-white border-slate-100 hover:bg-slate-50'
                   }`}
                 >
@@ -218,19 +218,19 @@ function RequestMechanicFlowContent() {
                     <div
                       className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
                         isSelected
-                          ? 'bg-[#0c1f38] text-white shadow-md'
-                          : 'bg-slate-100 text-slate-600'
+                          ? 'bg-[#5e17eb] text-white shadow-md'
+                          : 'bg-[#f3ebff] text-[#5e17eb]'
                       }`}
                     >
-                      <Car className="w-6 h-6 text-[#e5a910]" />
+                      <Car className="w-6 h-6" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <p className="font-black text-sm text-slate-900">
+                        <p className="font-black text-sm text-[#181528]">
                           {v.year} {v.make} {v.model}
                         </p>
                         {v.is_primary && (
-                          <span className="text-[9px] font-black bg-amber-100 text-[#c88e05] px-2 py-0.5 rounded-full">
+                          <span className="text-[9px] font-black bg-[#f3ebff] text-[#5e17eb] px-2 py-0.5 rounded-full">
                             PRINCIPAL
                           </span>
                         )}
@@ -243,10 +243,10 @@ function RequestMechanicFlowContent() {
 
                   <div
                     className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                      isSelected ? 'border-[#e5a910] bg-[#e5a910]' : 'border-slate-300'
+                      isSelected ? 'border-[#5e17eb] bg-[#5e17eb]' : 'border-slate-300'
                     }`}
                   >
-                    {isSelected && <div className="w-2 h-2 bg-[#0c1f38] rounded-full" />}
+                    {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
                   </div>
                 </button>
               );
@@ -254,7 +254,7 @@ function RequestMechanicFlowContent() {
 
             <button
               onClick={() => router.push('/app/vehicles')}
-              className="p-3.5 border-2 border-dashed border-slate-200 hover:border-slate-300 rounded-3xl text-xs font-black text-[#c88e05] flex items-center justify-center gap-2 bg-white/80"
+              className="p-3.5 border-2 border-dashed border-purple-200 hover:border-purple-300 rounded-3xl text-xs font-black text-[#5e17eb] flex items-center justify-center gap-2 bg-white/80"
             >
               + Ajouter un autre véhicule au garage
             </button>
@@ -266,7 +266,7 @@ function RequestMechanicFlowContent() {
       {step === 2 && (
         <div className="flex-1 flex flex-col">
           <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Quel est le problème ?</h1>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Quel est le problème ?</h1>
             <p className="text-xs text-slate-500 mt-1">Sélectionnez la prestation ou le symptôme</p>
           </div>
 
@@ -281,23 +281,23 @@ function RequestMechanicFlowContent() {
                   onClick={() => setSelectedService(srv.type)}
                   className={`text-left p-4 rounded-3xl border transition-all flex items-start gap-3.5 shadow-card ${
                     isSelected
-                      ? 'bg-amber-50/60 border-[#e5a910] ring-2 ring-amber-100 shadow-card-hover'
+                      ? 'bg-[#f3ebff] border-[#5e17eb] ring-2 ring-purple-100 shadow-card-hover'
                       : 'bg-white border-slate-100 hover:bg-slate-50'
                   }`}
                 >
                   <div
                     className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
                       isSelected
-                        ? 'bg-[#0c1f38] text-[#e5a910] shadow-sm'
-                        : 'bg-slate-100 text-[#0c1f38]'
+                        ? 'bg-[#5e17eb] text-white shadow-sm'
+                        : 'bg-[#f3ebff] text-[#5e17eb]'
                     }`}
                   >
                     <Icon className="w-5 h-5 stroke-[2.2]" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-black text-xs text-slate-900 leading-tight">{srv.label}</p>
+                    <p className="font-black text-xs text-[#181528] leading-tight">{srv.label}</p>
                     <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">{srv.shortDesc}</p>
-                    <p className="text-[11px] font-black text-[#0c1f38] mt-1.5">
+                    <p className="text-[11px] font-black text-[#5e17eb] mt-1.5">
                       Dès {formatCAD(srv.basePriceCAD)}
                     </p>
                   </div>
@@ -312,7 +312,7 @@ function RequestMechanicFlowContent() {
       {step === 3 && (
         <div className="flex-1 flex flex-col">
           <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Décrivez la situation</h1>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Décrivez la situation</h1>
             <p className="text-xs text-slate-500 mt-1">
               Bruits anormaux, voyants allumés ou contexte de la panne
             </p>
@@ -324,14 +324,14 @@ function RequestMechanicFlowContent() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Ex : La voiture clique au démarrage mais le moteur ne tourne pas. Voyant batterie allumé. Garée dans l'allée de mon domicile."
               rows={4}
-              className="w-full bg-white border border-slate-200 rounded-3xl p-4 text-xs text-slate-900 placeholder:text-slate-400 focus:border-[#e5a910] focus:ring-2 focus:ring-amber-100 outline-none resize-none leading-relaxed shadow-card"
+              className="w-full bg-white border border-slate-200 rounded-3xl p-4 text-xs text-[#181528] placeholder:text-slate-400 focus:border-[#5e17eb] focus:ring-2 focus:ring-purple-100 outline-none resize-none leading-relaxed shadow-card"
             />
 
             {/* Photos */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <Camera className="w-4 h-4 text-[#c88e05]" />
+                  <Camera className="w-4 h-4 text-[#5e17eb]" />
                   <span>Photos du problème (optionnel, max 3)</span>
                 </label>
                 <span className="text-[10px] text-slate-400">{photos.length}/3 ajoutée(s)</span>
@@ -353,7 +353,7 @@ function RequestMechanicFlowContent() {
                 {photos.length < 3 && (
                   <button
                     onClick={handlePhotoUploadMock}
-                    className="aspect-video rounded-2xl border-2 border-dashed border-slate-200 hover:border-slate-300 bg-white flex flex-col items-center justify-center text-slate-400 hover:text-[#c88e05] transition-colors shadow-card"
+                    className="aspect-video rounded-2xl border-2 border-dashed border-slate-200 hover:border-[#5e17eb] bg-white flex flex-col items-center justify-center text-slate-400 hover:text-[#5e17eb] transition-colors shadow-card"
                   >
                     <Upload className="w-4 h-4 mb-1" />
                     <span className="text-[10px] font-bold">Ajouter</span>
@@ -369,7 +369,7 @@ function RequestMechanicFlowContent() {
       {step === 4 && (
         <div className="flex-1 flex flex-col gap-4">
           <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Quand & Où ?</h1>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Quand & Où ?</h1>
             <p className="text-xs text-slate-500 mt-1">Intervention d&apos;urgence ou rendez-vous planifié</p>
           </div>
 
@@ -378,7 +378,7 @@ function RequestMechanicFlowContent() {
             <button
               onClick={() => setBookingType('asap')}
               className={`flex-1 py-2 rounded-xl font-black transition-all ${
-                bookingType === 'asap' ? 'bg-[#e5a910] text-[#0c1f38] shadow-sm' : 'text-slate-600'
+                bookingType === 'asap' ? 'bg-[#5e17eb] text-white shadow-sm' : 'text-slate-600'
               }`}
             >
               ⚡ Urgence Immédiate (~25 min)
@@ -386,7 +386,7 @@ function RequestMechanicFlowContent() {
             <button
               onClick={() => setBookingType('scheduled')}
               className={`flex-1 py-2 rounded-xl font-black transition-all ${
-                bookingType === 'scheduled' ? 'bg-[#0c1f38] text-white shadow-sm' : 'text-slate-600'
+                bookingType === 'scheduled' ? 'bg-[#5e17eb] text-white shadow-sm' : 'text-slate-600'
               }`}
             >
               📅 Planifier un rendez-vous
@@ -397,7 +397,7 @@ function RequestMechanicFlowContent() {
           {bookingType === 'scheduled' && (
             <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black text-slate-900">Août 2026</span>
+                <span className="text-xs font-black text-[#181528]">Août 2026</span>
                 <span className="text-[10px] text-slate-400 font-bold uppercase">Choisir la date</span>
               </div>
 
@@ -414,8 +414,8 @@ function RequestMechanicFlowContent() {
                       onClick={() => setSelectedDay(dayNum)}
                       className={`h-7 rounded-xl font-bold text-xs flex items-center justify-center transition-all ${
                         isPicked
-                          ? 'bg-[#0c1f38] text-[#e5a910] font-black shadow-sm'
-                          : 'text-slate-700 hover:bg-slate-100'
+                          ? 'bg-[#5e17eb] text-white font-black shadow-sm'
+                          : 'text-slate-700 hover:bg-[#f3ebff]'
                       }`}
                     >
                       {dayNum}
@@ -434,7 +434,7 @@ function RequestMechanicFlowContent() {
                       onClick={() => setSelectedTimeSlot(slot)}
                       className={`py-1.5 rounded-xl text-[10px] font-black border transition-all ${
                         selectedTimeSlot === slot
-                          ? 'bg-[#e5a910] text-[#0c1f38] border-[#e5a910]'
+                          ? 'bg-[#5e17eb] text-white border-[#5e17eb]'
                           : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
                       }`}
                     >
@@ -451,20 +451,20 @@ function RequestMechanicFlowContent() {
             <button
               onClick={handleUseCurrentLocation}
               disabled={isLocating}
-              className="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-[#0c1f38] font-black p-3 rounded-2xl flex items-center justify-center gap-2 text-xs transition-colors shadow-card"
+              className="bg-[#f3ebff] hover:bg-purple-100 border border-purple-200 text-[#5e17eb] font-black p-3 rounded-2xl flex items-center justify-center gap-2 text-xs transition-colors shadow-card"
             >
-              <Crosshair className={`w-4 h-4 text-[#c88e05] ${isLocating ? 'animate-spin' : ''}`} />
+              <Crosshair className={`w-4 h-4 text-[#5e17eb] ${isLocating ? 'animate-spin' : ''}`} />
               <span>{isLocating ? 'Détection GPS en cours...' : 'Utiliser ma position GPS actuelle'}</span>
             </button>
 
             <div className="relative">
-              <MapPin className="w-4 h-4 text-[#c88e05] absolute left-3.5 top-3.5" />
+              <MapPin className="w-4 h-4 text-[#5e17eb] absolute left-3.5 top-3.5" />
               <input
                 type="text"
                 value={locationAddress}
                 onChange={(e) => setLocationAddress(e.target.value)}
                 placeholder="Entrez l'adresse, code postal..."
-                className="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-slate-900 focus:border-[#0c1f38] outline-none shadow-card"
+                className="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-[#181528] focus:border-[#5e17eb] outline-none shadow-card"
               />
             </div>
 
@@ -486,7 +486,7 @@ function RequestMechanicFlowContent() {
       {step === 5 && (
         <div className="flex-1 flex flex-col">
           <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Récapitulatif de la commande</h1>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Récapitulatif de la commande</h1>
             <p className="text-xs text-slate-500 mt-1">Vérifiez les détails avant la recherche du mécanicien</p>
           </div>
 
@@ -494,19 +494,19 @@ function RequestMechanicFlowContent() {
             {/* Véhicule */}
             <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex items-center justify-between shadow-card">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-[#0c1f38] flex items-center justify-center text-white">
-                  <Car className="w-5 h-5 text-[#e5a910]" />
+                <div className="w-10 h-10 rounded-2xl bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center">
+                  <Car className="w-5 h-5" />
                 </div>
                 <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase">Véhicule</p>
-                  <p className="text-xs font-black text-slate-900">
+                  <p className="text-xs font-black text-[#181528]">
                     {selectedVeh?.year} {selectedVeh?.make} {selectedVeh?.model}
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setStep(1)}
-                className="text-xs text-[#c88e05] font-black"
+                className="text-xs text-[#5e17eb] font-black"
               >
                 Modifier
               </button>
@@ -515,17 +515,17 @@ function RequestMechanicFlowContent() {
             {/* Service */}
             <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex items-center justify-between shadow-card">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-[#0c1f38]">
+                <div className="w-10 h-10 rounded-2xl bg-[#f3ebff] flex items-center justify-center text-[#5e17eb]">
                   <Wrench className="w-5 h-5" />
                 </div>
                 <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase">Service demandé</p>
-                  <p className="text-xs font-black text-slate-900">{serviceDef.label}</p>
+                  <p className="text-xs font-black text-[#181528]">{serviceDef.label}</p>
                 </div>
               </div>
               <button
                 onClick={() => setStep(2)}
-                className="text-xs text-[#c88e05] font-black"
+                className="text-xs text-[#5e17eb] font-black"
               >
                 Modifier
               </button>
@@ -541,27 +541,27 @@ function RequestMechanicFlowContent() {
                   <p className="text-[10px] font-bold text-slate-400 uppercase">
                     {bookingType === 'asap' ? '⚡ Urgence Immédiate' : `📅 Août ${selectedDay} • ${selectedTimeSlot}`}
                   </p>
-                  <p className="text-xs font-black text-slate-900 line-clamp-1">{locationAddress}</p>
+                  <p className="text-xs font-black text-[#181528] line-clamp-1">{locationAddress}</p>
                 </div>
               </div>
               <button
                 onClick={() => setStep(4)}
-                className="text-xs text-[#c88e05] font-black shrink-0"
+                className="text-xs text-[#5e17eb] font-black shrink-0"
               >
                 Modifier
               </button>
             </div>
 
             {/* Estimation de prix */}
-            <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-3xl p-4 shadow-card">
+            <div className="bg-gradient-to-r from-[#f8f4ff] to-[#f1e6ff] border border-purple-200 rounded-3xl p-4 shadow-card">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-800 font-bold">Diagnostic & Déplacement estimé</span>
-                <span className="text-base font-black text-[#0c1f38]">
+                <span className="text-base font-black text-[#5e17eb]">
                   {formatCAD(serviceDef.basePriceCAD)}
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 mt-1">
-                * Comprend le déplacement du fourgon atelier et le triage de diagnostic sur place. Pièces ou main-d&apos;œuvre majeure soumises à votre approbation avant tout travail.
+                * Comprend le déplacement du fourgon atelier et le diagnostic sur place. Pièces ou main-d&apos;œuvre majeure soumises à votre approbation.
               </p>
             </div>
           </div>
@@ -573,17 +573,17 @@ function RequestMechanicFlowContent() {
         {step < 5 ? (
           <button
             onClick={() => setStep(step + 1)}
-            className="w-full bg-[#0c1f38] hover:bg-[#162e52] text-white font-black py-4 px-6 rounded-2xl shadow-navy-cta flex items-center justify-center gap-2 text-sm active:scale-[0.98] transition-all"
+            className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-4 px-6 rounded-2xl shadow-purple-cta flex items-center justify-center gap-2 text-sm active:scale-[0.98] transition-all"
           >
             <span>Continuer</span>
-            <ChevronRight className="w-4 h-4 text-[#e5a910]" />
+            <ChevronRight className="w-4 h-4" />
           </button>
         ) : (
           <button
             onClick={handleFinalSubmit}
-            className="w-full bg-[#e5a910] hover:bg-[#c88e05] text-[#0c1f38] font-black py-4 px-6 rounded-2xl shadow-amber-cta flex items-center justify-center gap-2 text-base active:scale-[0.98] transition-all"
+            className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-4 px-6 rounded-2xl shadow-purple-cta flex items-center justify-center gap-2 text-base active:scale-[0.98] transition-all"
           >
-            <Sparkles className="w-5 h-5 text-[#0c1f38]" />
+            <Sparkles className="w-5 h-5 text-white" />
             <span>Trouver un mécanicien mobile</span>
           </button>
         )}

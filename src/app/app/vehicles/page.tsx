@@ -62,13 +62,13 @@ export default function CustomerVehiclesPage() {
       {/* En-tête */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-black text-slate-900 tracking-tight">Mon Garage</h1>
+          <h1 className="text-xl font-black text-[#181528] tracking-tight">Mon Garage</h1>
           <p className="text-xs text-slate-500">Gérez vos véhicules pour un dépannage express</p>
         </div>
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-[#e5a910] hover:bg-[#c88e05] text-[#0c1f38] font-black text-xs px-3.5 py-2 rounded-2xl flex items-center gap-1.5 shadow-amber-cta transition-all active:scale-95"
+          className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-xs px-4 py-2 rounded-2xl flex items-center gap-1.5 shadow-purple-cta transition-all active:scale-95"
         >
           <Plus className="w-4 h-4 stroke-[3]" />
           <span>Ajouter</span>
@@ -79,16 +79,16 @@ export default function CustomerVehiclesPage() {
       <div className="flex flex-col gap-3">
         {vehicles.length === 0 ? (
           <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center flex flex-col items-center shadow-card">
-            <div className="w-12 h-12 rounded-full bg-amber-50 text-[#c88e05] flex items-center justify-center mb-3">
+            <div className="w-12 h-12 rounded-full bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center mb-3">
               <Car className="w-6 h-6" />
             </div>
-            <h2 className="text-sm font-black text-slate-900">Votre garage est vide</h2>
+            <h2 className="text-sm font-black text-[#181528]">Votre garage est vide</h2>
             <p className="text-xs text-slate-500 mt-1 max-w-xs">
               Ajoutez votre véhicule pour commander un mécanicien en 1 clic sans devoir tout ressaisir.
             </p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="mt-4 bg-[#e5a910] text-[#0c1f38] font-black text-xs px-4 py-2.5 rounded-2xl shadow-amber-cta"
+              className="mt-4 bg-[#5e17eb] text-white font-black text-xs px-4 py-2.5 rounded-2xl shadow-purple-cta"
             >
               Ajouter un premier véhicule
             </button>
@@ -98,7 +98,7 @@ export default function CustomerVehiclesPage() {
             <div
               key={veh.id}
               className={`bg-white border rounded-3xl p-4.5 transition-all shadow-card flex flex-col gap-3 relative ${
-                veh.is_primary ? 'border-[#e5a910] ring-2 ring-amber-100 shadow-card-hover' : 'border-slate-100'
+                veh.is_primary ? 'border-[#5e17eb] ring-2 ring-purple-100 shadow-card-hover' : 'border-slate-100'
               }`}
             >
               <div className="flex items-start justify-between">
@@ -106,19 +106,19 @@ export default function CustomerVehiclesPage() {
                   <div
                     className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${
                       veh.is_primary
-                        ? 'bg-[#0c1f38] text-[#e5a910] shadow-md'
-                        : 'bg-slate-100 text-slate-700'
+                        ? 'bg-[#5e17eb] text-white shadow-md'
+                        : 'bg-[#f3ebff] text-[#5e17eb]'
                     }`}
                   >
-                    <Car className="w-6 h-6 text-[#e5a910]" />
+                    <Car className="w-6 h-6" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="font-black text-sm text-slate-900">
+                      <h2 className="font-black text-sm text-[#181528]">
                         {veh.year} {veh.make} {veh.model}
                       </h2>
                       {veh.is_primary && (
-                        <span className="text-[9px] font-black bg-amber-100 text-[#0c1f38] px-2 py-0.5 rounded-full">
+                        <span className="text-[9px] font-black bg-[#f3ebff] text-[#5e17eb] px-2 py-0.5 rounded-full">
                           PRINCIPAL
                         </span>
                       )}
@@ -153,11 +153,11 @@ export default function CustomerVehiclesPage() {
 
               {/* Spécifications & Raccourcis */}
               <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100">
-                <div className="flex items-center gap-1.5 text-slate-600 bg-slate-50 p-2 rounded-xl">
-                  <Fuel className="w-3.5 h-3.5 text-[#c88e05]" />
+                <div className="flex items-center gap-1.5 text-slate-600 bg-[#f8f9fd] p-2 rounded-xl">
+                  <Fuel className="w-3.5 h-3.5 text-[#5e17eb]" />
                   <span>{veh.fuel_type || 'Essence'}</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-slate-600 bg-slate-50 p-2 rounded-xl">
+                <div className="flex items-center gap-1.5 text-slate-600 bg-[#f8f9fd] p-2 rounded-xl">
                   <Shield className="w-3.5 h-3.5 text-emerald-600" />
                   <span className="truncate">{veh.vin ? `NIV: ${veh.vin.slice(0, 8)}...` : 'NIV non saisi'}</span>
                 </div>
@@ -170,7 +170,7 @@ export default function CustomerVehiclesPage() {
                       setPrimaryVehicle(veh.id);
                       showSuccess(`${veh.make} ${veh.model} est maintenant votre véhicule principal.`);
                     }}
-                    className="text-xs font-bold text-slate-600 hover:text-[#c88e05] flex items-center gap-1"
+                    className="text-xs font-bold text-slate-600 hover:text-[#5e17eb] flex items-center gap-1"
                   >
                     Définir comme véhicule par défaut
                   </button>
@@ -183,7 +183,7 @@ export default function CustomerVehiclesPage() {
 
                 <Link
                   href={`/app/request?vehicle=${veh.id}`}
-                  className="bg-[#e5a910] hover:bg-[#c88e05] text-[#0c1f38] font-black text-xs px-3.5 py-1.5 rounded-full shadow-amber-cta flex items-center gap-1 active:scale-95 transition-all"
+                  className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-xs px-3.5 py-1.5 rounded-full shadow-purple-cta flex items-center gap-1 active:scale-95 transition-all"
                 >
                   <Wrench className="w-3 h-3" />
                   <span>Dépanner</span>
@@ -199,7 +199,7 @@ export default function CustomerVehiclesPage() {
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-white border border-slate-100 rounded-3xl p-5 w-full max-w-md shadow-2xl flex flex-col gap-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="text-sm font-black text-slate-900">Ajouter un véhicule au garage</h2>
+              <h2 className="text-sm font-black text-[#181528]">Ajouter un véhicule au garage</h2>
               <button
                 onClick={() => setShowAddModal(false)}
                 className="text-slate-400 hover:text-slate-700 p-1"
@@ -215,7 +215,7 @@ export default function CustomerVehiclesPage() {
                   <select
                     value={make}
                     onChange={(e) => setMake(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-slate-900 focus:border-[#e5a910] outline-none"
+                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] outline-none"
                   >
                     {POPULAR_VEHICLE_MAKES.map((m) => (
                       <option key={m} value={m}>
@@ -230,7 +230,7 @@ export default function CustomerVehiclesPage() {
                   <select
                     value={year}
                     onChange={(e) => setYear(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-slate-900 focus:border-[#e5a910] outline-none"
+                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] outline-none"
                   >
                     {Array.from({ length: 30 }, (_, i) => 2026 - i).map((y) => (
                       <option key={y} value={y}>
@@ -248,7 +248,7 @@ export default function CustomerVehiclesPage() {
                   placeholder="Ex : Civic, RAV4, F-150, Elantra..."
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-slate-900 focus:border-[#e5a910] outline-none"
+                  className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] outline-none"
                   required
                 />
               </div>
@@ -261,7 +261,7 @@ export default function CustomerVehiclesPage() {
                     placeholder="Ex : G12 ABC"
                     value={licensePlate}
                     onChange={(e) => setLicensePlate(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-slate-900 uppercase font-mono focus:border-[#e5a910] outline-none"
+                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] uppercase font-mono focus:border-[#5e17eb] outline-none"
                   />
                 </div>
 
@@ -270,7 +270,7 @@ export default function CustomerVehiclesPage() {
                   <select
                     value={fuelType}
                     onChange={(e) => setFuelType(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-slate-900 focus:border-[#e5a910] outline-none"
+                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] outline-none"
                   >
                     <option value="Essence">Essence</option>
                     <option value="Hybride">Hybride</option>
@@ -286,7 +286,7 @@ export default function CustomerVehiclesPage() {
                   id="primaryCheck"
                   checked={isPrimary}
                   onChange={(e) => setIsPrimary(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#e5a910]"
+                  className="w-4 h-4 rounded text-[#5e17eb] accent-[#5e17eb]"
                 />
                 <label htmlFor="primaryCheck" className="text-slate-700 font-bold cursor-pointer">
                   Définir comme véhicule principal
@@ -295,7 +295,7 @@ export default function CustomerVehiclesPage() {
 
               <button
                 type="submit"
-                className="mt-2 w-full bg-[#e5a910] hover:bg-[#c88e05] text-[#0c1f38] font-black py-3.5 rounded-2xl shadow-amber-cta text-xs transition-all active:scale-98"
+                className="mt-2 w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3.5 rounded-2xl shadow-purple-cta text-xs transition-all active:scale-98"
               >
                 Enregistrer dans mon garage
               </button>

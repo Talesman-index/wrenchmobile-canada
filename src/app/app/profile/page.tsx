@@ -28,15 +28,15 @@ export default function CustomerProfilePage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-black text-slate-900 tracking-tight">Mon Profil</h1>
-        <span className="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-[#0c1f38] border border-amber-200 px-2.5 py-1 rounded-full">
+        <h1 className="text-xl font-black text-[#181528] tracking-tight">Mon Profil</h1>
+        <span className="text-[10px] font-black uppercase tracking-wider bg-[#f3ebff] text-[#5e17eb] border border-purple-200 px-2.5 py-1 rounded-full">
           Compte Client
         </span>
       </div>
 
       {/* Carte d'avatar */}
       <div className="bg-white border border-slate-100 rounded-3xl p-5 flex items-center gap-4 shadow-card">
-        <div className="w-16 h-16 rounded-full overflow-hidden bg-slate-100 border-2 border-[#0c1f38] shrink-0 shadow-md">
+        <div className="w-16 h-16 rounded-full overflow-hidden bg-slate-100 border-2 border-[#5e17eb] shrink-0 shadow-md">
           <img
             src={currentUser.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
             alt="Avatar"
@@ -44,11 +44,11 @@ export default function CustomerProfilePage() {
           />
         </div>
         <div>
-          <h2 className="text-base font-black text-slate-900">
+          <h2 className="text-base font-black text-[#181528]">
             {currentUser.first_name} {currentUser.last_name}
           </h2>
           <p className="text-xs text-slate-500">{currentUser.email}</p>
-          <p className="text-[11px] text-[#c88e05] font-bold mt-0.5">
+          <p className="text-[11px] text-[#5e17eb] font-bold mt-0.5">
             {vehicles.length} véhicule(s) dans le garage
           </p>
         </div>
@@ -58,7 +58,7 @@ export default function CustomerProfilePage() {
       <div className="bg-white border border-slate-100 rounded-3xl p-2 shadow-card flex flex-col divide-y divide-slate-100 text-xs font-bold text-slate-700">
         <Link href="/app/vehicles" className="p-3.5 flex items-center justify-between hover:bg-slate-50 rounded-2xl transition-colors">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-amber-50 text-[#c88e05] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center">
               <Car className="w-4 h-4" />
             </div>
             <span>Véhicules du Garage</span>
@@ -68,7 +68,7 @@ export default function CustomerProfilePage() {
 
         <Link href="/app/services" className="p-3.5 flex items-center justify-between hover:bg-slate-50 rounded-2xl transition-colors">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-slate-100 text-[#0c1f38] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center">
               <Wrench className="w-4 h-4" />
             </div>
             <span>Historique des Services & Factures</span>
@@ -79,7 +79,7 @@ export default function CustomerProfilePage() {
 
       {/* Formulaire de modification */}
       <form onSubmit={handleSave} className="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col gap-3 text-xs shadow-card">
-        <h3 className="font-black text-sm text-slate-900 mb-1">Informations personnelles</h3>
+        <h3 className="font-black text-sm text-[#181528] mb-1">Informations personnelles</h3>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
@@ -88,7 +88,7 @@ export default function CustomerProfilePage() {
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-slate-900 focus:border-[#e5a910] outline-none"
+              className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-[#181528] focus:border-[#5e17eb] outline-none"
               required
             />
           </div>
@@ -98,7 +98,7 @@ export default function CustomerProfilePage() {
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-slate-900 focus:border-[#e5a910] outline-none"
+              className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-[#181528] focus:border-[#5e17eb] outline-none"
               required
             />
           </div>
@@ -110,7 +110,7 @@ export default function CustomerProfilePage() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-slate-900 focus:border-[#e5a910] outline-none"
+            className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-[#181528] focus:border-[#5e17eb] outline-none"
             required
           />
         </div>
@@ -122,13 +122,13 @@ export default function CustomerProfilePage() {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="+1 (514) 555-0192"
-            className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-slate-900 focus:border-[#e5a910] outline-none"
+            className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-[#181528] focus:border-[#5e17eb] outline-none"
           />
         </div>
 
         <button
           type="submit"
-          className="mt-2 w-full bg-[#0c1f38] hover:bg-[#162e52] text-white font-black py-3.5 rounded-2xl shadow-navy-cta text-xs flex items-center justify-center gap-1.5 active:scale-98 transition-all"
+          className="mt-2 w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3.5 rounded-2xl shadow-purple-cta text-xs flex items-center justify-center gap-1.5 active:scale-98 transition-all"
         >
           {saved ? (
             <>
@@ -144,17 +144,17 @@ export default function CustomerProfilePage() {
       {/* CTA Inscription mécanicien */}
       <div className="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col gap-3 shadow-card">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-amber-50 text-[#c88e05] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-2xl bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center">
             <Wrench className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="text-xs font-black text-slate-900">Vous êtes mécanicien certifié ?</h4>
+            <h4 className="text-xs font-black text-[#181528]">Vous êtes mécanicien certifié ?</h4>
             <p className="text-[11px] text-slate-500">Générez des revenus selon vos disponibilités avec notre plateforme mobile.</p>
           </div>
         </div>
         <button
           onClick={() => setCurrentRole('mechanic')}
-          className="w-full bg-[#e5a910] hover:bg-[#c88e05] text-[#0c1f38] font-black py-3 rounded-2xl text-xs shadow-amber-cta active:scale-98 transition-all"
+          className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3 rounded-2xl text-xs shadow-purple-cta active:scale-98 transition-all"
         >
           Basculer vers l&apos;App Mécanicien
         </button>

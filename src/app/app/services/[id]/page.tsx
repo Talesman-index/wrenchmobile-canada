@@ -130,7 +130,7 @@ export default function ServiceTrackingPage() {
                 <div
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black transition-all ${
                     isCurrent
-                      ? 'bg-[#0c1f38] text-[#e5a910] ring-4 ring-amber-100 scale-110 shadow-md'
+                      ? 'bg-[#5e17eb] text-white ring-4 ring-purple-100 scale-110 shadow-md'
                       : isCompleted
                       ? 'bg-emerald-500 text-white'
                       : 'bg-slate-100 text-slate-400'
@@ -140,7 +140,7 @@ export default function ServiceTrackingPage() {
                 </div>
                 <span
                   className={`text-[9px] mt-1 font-bold leading-tight ${
-                    isCurrent ? 'text-[#c88e05] font-black' : isCompleted ? 'text-slate-800' : 'text-slate-400'
+                    isCurrent ? 'text-[#5e17eb] font-black' : isCompleted ? 'text-slate-800' : 'text-slate-400'
                   }`}
                 >
                   {step.label}
@@ -155,9 +155,9 @@ export default function ServiceTrackingPage() {
       {request.status !== 'completed' && (
         <div className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-card p-1.5 flex flex-col gap-2">
           {request.status === 'mechanic_on_the_way' && (
-            <div className="bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-2xl flex items-center justify-between text-xs">
+            <div className="bg-[#f3ebff] border border-purple-200 px-3 py-1.5 rounded-2xl flex items-center justify-between text-xs">
               <span className="text-slate-700 font-bold">Temps d&apos;arrivée estimé</span>
-              <span className="font-black text-[#c88e05] font-mono">
+              <span className="font-black text-[#5e17eb] font-mono">
                 ~{request.eta_minutes || 20} minutes
               </span>
             </div>
@@ -188,16 +188,16 @@ export default function ServiceTrackingPage() {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h2 className="text-sm font-black text-slate-900">
+                  <h2 className="text-sm font-black text-[#181528]">
                     {mechanic.first_name} {mechanic.last_name}
                   </h2>
-                  <span className="text-[9px] bg-amber-100 text-[#0c1f38] font-black px-1.5 py-0.2 rounded-full">
+                  <span className="text-[9px] bg-[#f3ebff] text-[#5e17eb] font-black px-2 py-0.5 rounded-full">
                     Sceau Rouge
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5">{mechanic.business_name || 'Mécanicien Mobile'}</p>
                 <div className="flex items-center gap-2 mt-1 text-xs">
-                  <span className="text-[#c88e05] font-black flex items-center gap-0.5">
+                  <span className="text-amber-500 font-black flex items-center gap-0.5">
                     ★ {mechanic.rating.toFixed(1)}
                   </span>
                   <span className="text-slate-300">•</span>
@@ -210,17 +210,17 @@ export default function ServiceTrackingPage() {
             <div className="flex items-center gap-2">
               <a
                 href={`tel:${mechanic.phone}`}
-                className="w-9 h-9 rounded-2xl bg-amber-50 hover:bg-amber-100 text-[#c88e05] flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-2xl bg-[#f3ebff] hover:bg-[#5e17eb] text-[#5e17eb] hover:text-white flex items-center justify-center transition-colors"
                 title="Appeler le mécanicien"
               >
                 <Phone className="w-4 h-4" />
               </a>
               <Link
                 href="/app/chat"
-                className="w-9 h-9 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-2xl bg-[#f3ebff] hover:bg-[#5e17eb] text-[#5e17eb] hover:text-white flex items-center justify-center transition-colors"
                 title="Envoyer un message"
               >
-                <MessageSquare className="w-4 h-4 text-[#0c1f38]" />
+                <MessageSquare className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -231,11 +231,11 @@ export default function ServiceTrackingPage() {
       <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700">
-              <Car className="w-4 h-4 text-[#c88e05]" />
+            <div className="w-8 h-8 rounded-xl bg-[#f3ebff] flex items-center justify-center text-[#5e17eb]">
+              <Car className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-black text-slate-900">
+              <p className="text-xs font-black text-[#181528]">
                 {request.vehicle?.year} {request.vehicle?.make} {request.vehicle?.model}
               </p>
               <p className="text-[10px] text-slate-500 font-mono">
@@ -243,7 +243,7 @@ export default function ServiceTrackingPage() {
               </p>
             </div>
           </div>
-          <span className="text-xs font-bold text-[#0c1f38] capitalize bg-slate-100 px-2.5 py-1 rounded-xl">
+          <span className="text-xs font-bold text-[#5e17eb] capitalize bg-[#f3ebff] px-2.5 py-1 rounded-xl">
             {request.service_type.replace(/_/g, ' ')}
           </span>
         </div>
@@ -257,12 +257,12 @@ export default function ServiceTrackingPage() {
       {/* Rapport de diagnostic de terrain */}
       {(request.diagnostic_notes || request.work_performed || request.status === 'awaiting_payment' || request.status === 'completed') && (
         <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card flex flex-col gap-2.5">
-          <div className="flex items-center gap-2 text-xs font-black text-[#0c1f38]">
-            <FileText className="w-4 h-4 text-[#c88e05]" />
+          <div className="flex items-center gap-2 text-xs font-black text-[#181528]">
+            <FileText className="w-4 h-4 text-[#5e17eb]" />
             <span>Rapport de diagnostic du technicien</span>
           </div>
 
-          <div className="space-y-2 text-xs text-slate-700 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+          <div className="space-y-2 text-xs text-slate-700 bg-[#f8f9fd] p-3.5 rounded-2xl border border-slate-100">
             {request.diagnostic_notes && (
               <div>
                 <strong className="text-slate-400 block text-[10px] uppercase">Diagnostic :</strong>
@@ -287,13 +287,13 @@ export default function ServiceTrackingPage() {
 
       {/* DEVIS FINAL & BOUTON DE PAIEMENT */}
       {request.status === 'awaiting_payment' && (
-        <div className="bg-white border-2 border-[#e5a910] rounded-3xl p-5 shadow-card-hover animate-in zoom-in-95 duration-200">
+        <div className="bg-white border-2 border-[#5e17eb] rounded-3xl p-5 shadow-card-hover animate-in zoom-in-95 duration-200">
           <div className="flex items-center gap-2 mb-3">
-            <Sparkles className="w-5 h-5 text-[#c88e05]" />
-            <h2 className="text-sm font-black text-slate-900">Votre mécanicien a finalisé le devis</h2>
+            <Sparkles className="w-5 h-5 text-[#5e17eb]" />
+            <h2 className="text-sm font-black text-[#181528]">Votre mécanicien a finalisé le devis</h2>
           </div>
 
-          <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-100 space-y-2 text-xs">
+          <div className="bg-[#f8f9fd] rounded-2xl p-3.5 border border-slate-100 space-y-2 text-xs">
             <div className="flex justify-between text-slate-700">
               <span>Main-d&apos;œuvre</span>
               <span className="font-semibold">{formatCAD(request.labor_amount || 0)}</span>
@@ -316,15 +316,15 @@ export default function ServiceTrackingPage() {
               <span>Taxes canadiennes (TPS + TVQ / TVH)</span>
               <span>{formatCAD(request.tax_amount || 0)}</span>
             </div>
-            <div className="flex justify-between text-base font-black text-slate-900 pt-2 border-t border-slate-300">
+            <div className="flex justify-between text-base font-black text-[#181528] pt-2 border-t border-slate-300">
               <span>Total CAD</span>
-              <span className="text-[#0c1f38] font-black">{formatCAD(request.final_amount || 0)}</span>
+              <span className="text-[#5e17eb] font-black">{formatCAD(request.final_amount || 0)}</span>
             </div>
           </div>
 
           <button
             onClick={() => setShowPaymentModal(true)}
-            className="mt-4 w-full bg-[#e5a910] hover:bg-[#c88e05] active:scale-[0.98] text-[#0c1f38] font-black py-4 px-6 rounded-2xl shadow-amber-cta flex items-center justify-center gap-2 text-base transition-all"
+            className="mt-4 w-full bg-[#5e17eb] hover:bg-[#4c0ec4] active:scale-[0.98] text-white font-black py-4 px-6 rounded-2xl shadow-purple-cta flex items-center justify-center gap-2 text-base transition-all"
           >
             <CreditCard className="w-5 h-5" />
             <span>Confirmer & Payer ({formatCAD(request.final_amount || 0)})</span>
@@ -337,8 +337,8 @@ export default function ServiceTrackingPage() {
         <div className="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col gap-4 shadow-card">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center gap-2">
-              <Receipt className="w-5 h-5 text-[#0c1f38]" />
-              <h2 className="text-sm font-black text-slate-900">Reçu électronique / Facture</h2>
+              <Receipt className="w-5 h-5 text-[#5e17eb]" />
+              <h2 className="text-sm font-black text-[#181528]">Reçu électronique / Facture</h2>
             </div>
             <span className="text-[10px] bg-emerald-50 text-emerald-600 font-black px-2.5 py-0.5 rounded-full border border-emerald-200">
               PAYÉ EN TOTALITÉ
@@ -355,7 +355,7 @@ export default function ServiceTrackingPage() {
                   y="0"
                   width={i % 3 === 0 ? 3 : i % 2 === 0 ? 2 : 1}
                   height="40"
-                  fill="#0c1f38"
+                  fill="#5e17eb"
                 />
               ))}
             </svg>
@@ -384,14 +384,14 @@ export default function ServiceTrackingPage() {
             </div>
             <div className="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-100">
               <span>Total payé (CAD)</span>
-              <span className="text-[#0c1f38] font-black">{formatCAD(request.final_amount || 0)}</span>
+              <span className="text-[#5e17eb] font-black">{formatCAD(request.final_amount || 0)}</span>
             </div>
           </div>
 
           {/* Évaluation 5 étoiles */}
           {!reviewSubmitted ? (
             <form onSubmit={handleReviewSubmit} className="pt-3 border-t border-slate-100 flex flex-col gap-3">
-              <label className="text-xs font-black text-slate-800 text-center">
+              <label className="text-xs font-black text-[#181528] text-center">
                 Comment s&apos;est passée l&apos;intervention avec {mechanic.first_name} ?
               </label>
 
@@ -403,7 +403,7 @@ export default function ServiceTrackingPage() {
                     onClick={() => setRatingValue(star)}
                     className="p-1 text-3xl transition-transform hover:scale-125"
                   >
-                    <span className={star <= ratingValue ? 'text-[#e5a910]' : 'text-slate-200'}>
+                    <span className={star <= ratingValue ? 'text-amber-400' : 'text-slate-200'}>
                       ★
                     </span>
                   </button>
@@ -415,12 +415,12 @@ export default function ServiceTrackingPage() {
                 placeholder="Laissez un commentaire sur le service (optionnel)..."
                 value={ratingComment}
                 onChange={(e) => setRatingComment(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-xs text-slate-900 focus:border-[#0c1f38] outline-none"
+                className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-xs text-[#181528] focus:border-[#5e17eb] outline-none"
               />
 
               <button
                 type="submit"
-                className="w-full bg-[#0c1f38] hover:bg-[#162e52] text-white font-black py-3 rounded-2xl text-xs shadow-md active:scale-98 transition-all"
+                className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3 rounded-2xl text-xs shadow-purple-cta active:scale-98 transition-all"
               >
                 Envoyer mon avis
               </button>
@@ -446,8 +446,8 @@ export default function ServiceTrackingPage() {
           <div className="bg-white border border-slate-100 rounded-3xl p-5 w-full max-w-md shadow-2xl flex flex-col gap-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-[#c88e05]" />
-                <span className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                <Lock className="w-4 h-4 text-[#5e17eb]" />
+                <span className="text-xs font-black text-[#181528] uppercase tracking-wider">
                   Paiement Sécurisé Stripe (CAD)
                 </span>
               </div>
@@ -459,9 +459,9 @@ export default function ServiceTrackingPage() {
               </button>
             </div>
 
-            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+            <div className="bg-[#f8f9fd] rounded-2xl p-4 border border-slate-100">
               <p className="text-xs text-slate-500">Montant total à débiter :</p>
-              <p className="text-3xl font-black text-slate-900 mt-1">
+              <p className="text-3xl font-black text-[#181528] mt-1">
                 {formatCAD(request.final_amount || 0)}
               </p>
               <p className="text-[11px] text-slate-400 mt-1">
@@ -483,7 +483,7 @@ export default function ServiceTrackingPage() {
             <button
               onClick={handlePayNow}
               disabled={isPaying}
-              className="w-full bg-[#e5a910] hover:bg-[#c88e05] text-[#0c1f38] font-black py-4 rounded-2xl flex items-center justify-center gap-2 shadow-amber-cta text-sm transition-all active:scale-[0.98]"
+              className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 shadow-purple-cta text-sm transition-all active:scale-[0.98]"
             >
               {isPaying ? 'Traitement du paiement CAD...' : `Autoriser & Payer ${formatCAD(request.final_amount || 0)}`}
             </button>

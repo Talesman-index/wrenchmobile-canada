@@ -149,18 +149,18 @@ export default function ChatAndVideoPage() {
               <div
                 className={`max-w-[78%] rounded-3xl p-3.5 text-xs shadow-card ${
                   isMe
-                    ? 'bg-[#0c1f38] text-white rounded-br-xs'
-                    : 'bg-white border border-slate-100 text-slate-900 rounded-bl-xs'
+                    ? 'bg-[#5e17eb] text-white rounded-br-xs shadow-purple-cta'
+                    : 'bg-white border border-slate-100 text-[#181528] rounded-bl-xs'
                 }`}
               >
                 <p className="leading-relaxed">{msg.text}</p>
                 <div
                   className={`flex items-center justify-end gap-1 mt-1 text-[9px] ${
-                    isMe ? 'text-slate-300' : 'text-slate-400'
+                    isMe ? 'text-purple-200' : 'text-slate-400'
                   }`}
                 >
                   <span>{msg.time}</span>
-                  {isMe && <CheckCheck className="w-3 h-3 text-[#ff6b00]" />}
+                  {isMe && <CheckCheck className="w-3 h-3 text-white" />}
                 </div>
               </div>
             </div>
@@ -176,7 +176,7 @@ export default function ChatAndVideoPage() {
         <button
           type="button"
           onClick={() => showSuccess('Photo ajoutée à la conversation avec le mécanicien.')}
-          className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-50 transition-colors"
+          className="p-2 text-slate-400 hover:text-[#5e17eb] rounded-full hover:bg-[#f3ebff] transition-colors"
         >
           <Camera className="w-4 h-4" />
         </button>
@@ -186,12 +186,12 @@ export default function ChatAndVideoPage() {
           placeholder="Écrivez votre message au mécanicien..."
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          className="flex-1 bg-slate-50 border border-slate-200/80 rounded-2xl px-4 py-2.5 text-xs text-slate-900 focus:border-[#0c1f38] outline-none"
+          className="flex-1 bg-[#f8f9fd] border border-slate-200/80 rounded-2xl px-4 py-2.5 text-xs text-[#181528] focus:border-[#5e17eb] outline-none"
         />
 
         <button
           type="submit"
-          className="w-10 h-10 rounded-2xl bg-[#ff6b00] hover:bg-[#e65c00] text-white flex items-center justify-center shrink-0 shadow-orange-cta active:scale-95 transition-all"
+          className="w-10 h-10 rounded-2xl bg-[#5e17eb] hover:bg-[#4c0ec4] text-white flex items-center justify-center shrink-0 shadow-purple-cta active:scale-95 transition-all"
         >
           <Send className="w-4 h-4" />
         </button>

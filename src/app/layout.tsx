@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0c1f38',
+  themeColor: '#5e17eb',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -36,11 +36,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="h-full bg-[#f4f6fa] text-slate-900 antialiased selection:bg-[#ff6b00] selection:text-white">
+    <html lang="fr" className="h-full bg-[#f8f9fd] text-[#181528] antialiased selection:bg-[#5e17eb] selection:text-white">
       <head>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       </head>
-      <body className="min-h-full flex flex-col bg-[#f4f6fa]">
+      <body className="min-h-full flex flex-col bg-[#f8f9fd]">
         <AppProvider>
           <ToastProvider>
             <TopBar />

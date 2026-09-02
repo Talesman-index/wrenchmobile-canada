@@ -59,25 +59,25 @@ function SearchingScreenContent() {
 
   return (
     <div className="flex-1 flex flex-col justify-between pt-4">
-      {/* Animation du radar avec ondes or / ambre */}
+      {/* Animation du radar avec ondes violettes */}
       <div className="flex flex-col items-center text-center my-auto relative py-10">
         <div className="relative w-56 h-56 flex items-center justify-center mb-6">
-          <div className="absolute inset-0 rounded-full border-2 border-amber-300 animate-radar" />
+          <div className="absolute inset-0 rounded-full border-2 border-purple-300 animate-radar" />
           <div
-            className="absolute inset-4 rounded-full border-2 border-amber-400 animate-radar"
+            className="absolute inset-4 rounded-full border-2 border-purple-400 animate-radar"
             style={{ animationDelay: '0.8s' }}
           />
           <div
-            className="absolute inset-8 rounded-full border-2 border-amber-500 animate-radar"
+            className="absolute inset-8 rounded-full border-2 border-purple-500 animate-radar"
             style={{ animationDelay: '1.6s' }}
           />
 
-          <div className="w-20 h-20 rounded-full bg-[#e5a910] border-4 border-white shadow-2xl shadow-amber-500/50 flex items-center justify-center text-[#0c1f38] relative z-10 font-black">
-            <Wrench className="w-9 h-9 animate-bounce text-[#0c1f38]" />
+          <div className="w-20 h-20 rounded-full bg-[#5e17eb] border-4 border-white shadow-2xl shadow-purple-500/50 flex items-center justify-center text-white relative z-10 font-black">
+            <Wrench className="w-9 h-9 animate-bounce text-white" />
           </div>
         </div>
 
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+        <h1 className="text-2xl font-black text-[#181528] tracking-tight">
           Recherche d’un mécanicien à proximité{dots}
         </h1>
         <p className="text-xs text-slate-500 mt-2 max-w-xs leading-relaxed">
@@ -88,11 +88,11 @@ function SearchingScreenContent() {
       {/* Carte récapitulative */}
       <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card-hover flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-[#0c1f38] flex items-center justify-center text-white shrink-0">
-            <Car className="w-5 h-5 text-[#e5a910]" />
+          <div className="w-10 h-10 rounded-2xl bg-[#f3ebff] flex items-center justify-center text-[#5e17eb] shrink-0">
+            <Car className="w-5 h-5" />
           </div>
           <div className="flex-1">
-            <p className="text-xs font-black text-slate-900">
+            <p className="text-xs font-black text-[#181528]">
               {targetRequest.vehicle?.year} {targetRequest.vehicle?.make} {targetRequest.vehicle?.model}
             </p>
             <p className="text-[11px] text-slate-500 capitalize">
@@ -114,7 +114,7 @@ function SearchingScreenContent() {
         <div className="pt-2">
           <button
             onClick={handleCancel}
-            className="w-full bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 text-xs font-bold py-3 rounded-2xl flex items-center justify-center gap-1.5 transition-colors"
+            className="w-full bg-[#f8f9fd] hover:bg-rose-50 text-slate-600 hover:text-rose-600 text-xs font-bold py-3 rounded-2xl flex items-center justify-center gap-1.5 transition-colors"
           >
             <X className="w-4 h-4" />
             <span>Annuler la demande</span>

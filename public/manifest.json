@@ -4,8 +4,8 @@
   "description": "Book certified mobile mechanics directly to your driveway across Canada.",
   "start_url": "/app",
   "display": "standalone",
-  "background_color": "#090d16",
-  "theme_color": "#0284c7",
+  "background_color": "#f8f9fd",
+  "theme_color": "#5e17eb",
   "orientation": "portrait-primary",
   "icons": [
     {

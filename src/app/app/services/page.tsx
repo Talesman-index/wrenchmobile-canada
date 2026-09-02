@@ -22,13 +22,13 @@ export default function ServicesHistoryPage() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-black text-slate-900 tracking-tight">Mes Services</h1>
+          <h1 className="text-xl font-black text-[#181528] tracking-tight">Mes Services</h1>
           <p className="text-xs text-slate-500 mt-0.5">Historique des réparations et missions en cours</p>
         </div>
 
         <Link
           href="/app/request"
-          className="bg-[#ff6b00] hover:bg-[#e65c00] text-white text-xs font-black px-3.5 py-2 rounded-2xl shadow-orange-cta active:scale-95 transition-all"
+          className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white text-xs font-black px-4 py-2 rounded-2xl shadow-purple-cta active:scale-95 transition-all"
         >
           + Nouvelle demande
         </Link>
@@ -39,7 +39,7 @@ export default function ServicesHistoryPage() {
         <button
           onClick={() => setFilter('all')}
           className={`flex-1 py-1.5 rounded-xl font-bold transition-all ${
-            filter === 'all' ? 'bg-white text-[#0c1f38] shadow-sm' : 'text-slate-500 hover:text-slate-800'
+            filter === 'all' ? 'bg-white text-[#181528] shadow-sm' : 'text-slate-500 hover:text-slate-800'
           }`}
         >
           Tous ({userRequests.length})
@@ -47,7 +47,7 @@ export default function ServicesHistoryPage() {
         <button
           onClick={() => setFilter('active')}
           className={`flex-1 py-1.5 rounded-xl font-bold transition-all ${
-            filter === 'active' ? 'bg-[#ff6b00] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800'
+            filter === 'active' ? 'bg-[#5e17eb] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800'
           }`}
         >
           En cours ({userRequests.filter((r) => r.status !== 'completed' && r.status !== 'cancelled').length})
@@ -80,7 +80,7 @@ export default function ServicesHistoryPage() {
                 key={req.id}
                 href={`/app/services/${req.id}`}
                 className={`bg-white border rounded-3xl p-4 transition-all hover:shadow-card-hover flex flex-col gap-3 shadow-card ${
-                  isLive ? 'border-[#ff6b00] ring-2 ring-orange-100' : 'border-slate-100'
+                  isLive ? 'border-[#5e17eb] ring-2 ring-purple-100' : 'border-slate-100'
                 }`}
               >
                 <div className="flex items-start justify-between">
@@ -88,7 +88,7 @@ export default function ServicesHistoryPage() {
                     <span className={`text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${badge.bg}`}>
                       {badge.label}
                     </span>
-                    <h2 className="text-sm font-black text-slate-900 mt-2">
+                    <h2 className="text-sm font-black text-[#181528] mt-2">
                       {req.vehicle?.year} {req.vehicle?.make} {req.vehicle?.model}
                     </h2>
                     <p className="text-xs text-slate-500 capitalize mt-0.5">
@@ -97,7 +97,7 @@ export default function ServicesHistoryPage() {
                   </div>
 
                   <div className="text-right">
-                    <p className="text-sm font-black text-[#0c1f38]">
+                    <p className="text-sm font-black text-[#5e17eb]">
                       {formatCAD(req.final_amount || req.estimated_amount)}
                     </p>
                     <p className="text-[10px] text-slate-400 font-mono">
@@ -118,7 +118,7 @@ export default function ServicesHistoryPage() {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1 text-[#ff6b00] font-black">
+                  <div className="flex items-center gap-1 text-[#5e17eb] font-black">
                     <span>{isLive ? 'Suivi en direct' : 'Voir le reçu / Facture'}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </div>
