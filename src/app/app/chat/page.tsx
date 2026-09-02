@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp } from '@/lib/store';
+import { useToast } from '@/components/ui/ToastProvider';
 import {
   Send,
   Video,
@@ -30,7 +31,8 @@ interface ChatMessage {
 }
 
 export default function ChatAndVideoPage() {
-  const { currentMechanicProfile } = useApp();
+  const { activeCustomerRequest, currentMechanicProfile } = useApp();
+  const { showSuccess, showInfo } = useToast();
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -173,7 +175,7 @@ export default function ChatAndVideoPage() {
       >
         <button
           type="button"
-          onClick={() => alert('Photo ajoutée à la conversation')}
+          onClick={() => showSuccess('Photo ajoutée à la conversation avec le mécanicien.')}
           className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-50 transition-colors"
         >
           <Camera className="w-4 h-4" />

@@ -2,11 +2,13 @@
 
 import React from 'react';
 import { useApp } from '@/lib/store';
+import { useToast } from '@/components/ui/ToastProvider';
 import { CreditCard, DollarSign, TrendingUp, Download, ShieldCheck } from 'lucide-react';
 import { formatCAD } from '@/lib/utils';
 
 export default function AdminPaymentsPage() {
   const { payments } = useApp();
+  const { showSuccess } = useToast();
 
   const totalVolumeCAD = payments.reduce((acc, p) => acc + p.total, 0);
   const totalCommissionCAD = payments.reduce((acc, p) => acc + p.platform_fee, 0);
@@ -23,7 +25,7 @@ export default function AdminPaymentsPage() {
         </div>
 
         <button
-          onClick={() => alert('Export CSV généré')}
+          onClick={() => showSuccess('Rapport financier exporté au format CSV avec succès.', 'Export Comptable')}
           className="bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors self-start sm:self-auto"
         >
           <Download className="w-4 h-4" />

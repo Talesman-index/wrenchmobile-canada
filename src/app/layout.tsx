@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { AppProvider } from '@/lib/store';
+import { ToastProvider } from '@/components/ui/ToastProvider';
 import TopBar from '@/components/navigation/TopBar';
 import PwaRegister from '@/components/pwa/PwaRegister';
 
@@ -41,9 +42,11 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-[#f4f6fa]">
         <AppProvider>
-          <TopBar />
-          <PwaRegister />
-          <main className="flex-1 flex flex-col">{children}</main>
+          <ToastProvider>
+            <TopBar />
+            <PwaRegister />
+            <main className="flex-1 flex flex-col">{children}</main>
+          </ToastProvider>
         </AppProvider>
       </body>
     </html>

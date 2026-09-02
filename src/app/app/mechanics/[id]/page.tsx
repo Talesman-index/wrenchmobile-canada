@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useApp } from '@/lib/store';
+import { useToast } from '@/components/ui/ToastProvider';
 import {
   ChevronLeft,
   Share2,
@@ -33,6 +34,7 @@ export default function MechanicDetailPage() {
   const id = params.id as string;
 
   const { mechanics, reviews, setCurrentRole } = useApp();
+  const { showSuccess } = useToast();
   const [activeTab, setActiveTab] = useState<'about' | 'services' | 'experts' | 'packages' | 'gallery' | 'reviews'>('about');
   const [isSaved, setIsSaved] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<string>('pkg-1');
@@ -112,7 +114,7 @@ export default function MechanicDetailPage() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => alert('Lien du profil copié dans le presse-papiers')}
+              onClick={() => showSuccess('Lien du profil copié dans le presse-papiers !', 'Partage')}
               className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-slate-900 shadow-md active:scale-95 transition-all"
             >
               <Share2 className="w-4 h-4" />

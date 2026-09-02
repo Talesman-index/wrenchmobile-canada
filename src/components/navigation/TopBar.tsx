@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/lib/store';
+import { useToast } from '@/components/ui/ToastProvider';
 import { Wrench, Shield, User, RotateCcw, MapPin, Bell, ChevronDown } from 'lucide-react';
 import { UserRole } from '@/types/database';
 import { CANADIAN_CITIES } from '@/lib/constants';
 
 export default function TopBar() {
   const { currentRole, setCurrentRole, resetDemoData, currentMechanicProfile, toggleMechanicAvailability } = useApp();
+  const { showSuccess, confirmModal } = useToast();
   const pathname = usePathname();
   const router = useRouter();
   const [selectedCity, setSelectedCity] = useState('Montréal, QC');
@@ -141,9 +143,17 @@ export default function TopBar() {
           {/* Réinitialiser démo */}
           <button
             onClick={() => {
-              if (confirm('Réinitialiser les données de démonstration avec les paramètres canadiens ?')) {
-                resetDemoData();
-              }
+              confirmModal({
+                title: 'Réinitialiser la démo ?',
+                message: 'Voulez-vous réinitialiser toutes les données de démonstration avec les paramètres canadiens d’origine ?',
+                type: 'warning',
+                confirmText: 'Réinitialiser',
+                cancelText: 'Conserver',
+                onConfirm: () => {
+                  resetDemoData();
+                  showSuccess('Données de démonstration réinitialisées.');
+                },
+              });
             }}
             className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors"
             title="Réinitialiser les données"

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp } from '@/lib/store';
+import { useToast } from '@/components/ui/ToastProvider';
 import {
   Car,
   Plus,
@@ -20,6 +21,7 @@ import Link from 'next/link';
 
 export default function CustomerVehiclesPage() {
   const { vehicles, addVehicle, deleteVehicle, setPrimaryVehicle } = useApp();
+  const { toast, showSuccess, showWarning, confirmModal } = useToast();
   const [showAddModal, setShowAddModal] = useState(false);
 
   // Formulaire d'ajout
@@ -34,7 +36,7 @@ export default function CustomerVehiclesPage() {
   const handleAddSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!model.trim()) {
-      alert('Veuillez spécifier le modèle du véhicule');
+      showWarning('Veuillez spécifier le modèle du véhicule');
       return;
     }
 
@@ -48,6 +50,7 @@ export default function CustomerVehiclesPage() {
       is_primary: isPrimary || vehicles.length === 0,
     });
 
+    showSuccess(`${make} ${model.trim()} ajouté avec succès à votre garage !`);
     setModel('');
     setLicensePlate('');
     setVin('');
@@ -129,11 +132,19 @@ export default function CustomerVehiclesPage() {
                 {/* Bouton supprimer */}
                 <button
                   onClick={() => {
-                    if (confirm(`Supprimer ${veh.make} ${veh.model} du garage ?`)) {
-                      deleteVehicle(veh.id);
-                    }
+                    confirmModal({
+                      title: 'Supprimer ce véhicule ?',
+                      message: `Êtes-vous sûr de vouloir retirer ${veh.year} ${veh.make} ${veh.model} (${veh.license_plate || 'Sans plaque'}) de votre garage ?`,
+                      type: 'danger',
+                      confirmText: 'Supprimer',
+                      cancelText: 'Conserver',
+                      onConfirm: () => {
+                        deleteVehicle(veh.id);
+                        showSuccess(`${veh.make} ${veh.model} a été retiré de votre garage.`);
+                      },
+                    });
                   }}
-                  className="p-1.5 text-slate-400 hover:text-red-600 transition-colors"
+                  className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-rose-50 rounded-xl transition-colors"
                   title="Supprimer"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -155,7 +166,10 @@ export default function CustomerVehiclesPage() {
               <div className="flex items-center justify-between pt-1">
                 {!veh.is_primary ? (
                   <button
-                    onClick={() => setPrimaryVehicle(veh.id)}
+                    onClick={() => {
+                      setPrimaryVehicle(veh.id);
+                      showSuccess(`${veh.make} ${veh.model} est maintenant votre véhicule principal.`);
+                    }}
                     className="text-xs font-bold text-slate-600 hover:text-[#c88e05] flex items-center gap-1"
                   >
                     Définir comme véhicule par défaut

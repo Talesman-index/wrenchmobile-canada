@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useApp } from '@/lib/store';
+import { useToast } from '@/components/ui/ToastProvider';
 import {
   Wrench,
   Car,
@@ -35,6 +36,7 @@ import { SERVICE_DEFINITIONS, CANADIAN_CITIES } from '@/lib/constants';
 
 export default function CustomerHomePage() {
   const { currentUser, primaryVehicle, vehicles, activeCustomerRequest, mechanics } = useApp();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [savedFavorites, setSavedFavorites] = useState<string[]>(['mech-001']);
   const [selectedCity, setSelectedCity] = useState('Montréal, QC');
@@ -87,7 +89,13 @@ export default function CustomerHomePage() {
           </div>
 
           <button
-            onClick={() => alert('Alertes Mécano : 1 mécanicien mobile disponible à 3,5 km de votre adresse.')}
+            onClick={() =>
+              toast({
+                title: 'Alerte Mécano en direct',
+                message: '1 mécanicien mobile certifié Sceau Rouge est disponible à 3,5 km de votre adresse.',
+                type: 'wrench',
+              })
+            }
             className="relative w-10 h-10 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md flex items-center justify-center text-white transition-colors"
           >
             <Bell className="w-5 h-5" />

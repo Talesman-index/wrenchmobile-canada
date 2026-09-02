@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useApp } from '@/lib/store';
+import { useToast } from '@/components/ui/ToastProvider';
 import {
   MapPin,
   Search,
@@ -29,6 +30,7 @@ const MapComponent = dynamic(() => import('@/components/ui/MapComponent'), {
 
 export default function ExploreMapPage() {
   const { mechanics, activeCustomerRequest } = useApp();
+  const { toast } = useToast();
   const [selectedMechanicId, setSelectedMechanicId] = useState<string>(mechanics[0]?.id || 'mech-001');
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -61,8 +63,14 @@ export default function ExploreMapPage() {
           </div>
 
           <button
-            onClick={() => alert('Filtre : Affichage des mécaniciens mobiles certifiés Sceau Rouge dans un rayon de 40 km.')}
-            className="w-10 h-10 rounded-2xl bg-[#0c1f38] text-white flex items-center justify-center shrink-0 shadow-md shadow-slate-900/20"
+            onClick={() =>
+              toast({
+                title: 'Filtres actifs',
+                message: 'Affichage des mécaniciens mobiles certifiés Sceau Rouge dans un rayon de 40 km.',
+                type: 'info',
+              })
+            }
+            className="w-10 h-10 rounded-2xl bg-[#0c1f38] text-white flex items-center justify-center shrink-0 shadow-md shadow-slate-900/20 active:scale-95 transition-transform"
           >
             <SlidersHorizontal className="w-4 h-4" />
           </button>

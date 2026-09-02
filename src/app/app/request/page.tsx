@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useApp } from '@/lib/store';
+import { useToast } from '@/components/ui/ToastProvider';
 import {
   Car,
   ChevronLeft,
@@ -44,19 +45,19 @@ const MapComponent = dynamic(() => import('@/components/ui/MapComponent'), {
 function RequestMechanicFlowContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const initialService = searchParams.get('service') as ServiceType | null;
-
   const { vehicles, primaryVehicle, createServiceRequest } = useApp();
+  const { toast, showSuccess, showError, showWarning } = useToast();
 
-  // Étape (1 à 5)
+  const preselectedVeh = searchParams.get('vehicle');
+  const preselectedService = searchParams.get('service') as ServiceType | null;
+
+  // Étape du formulaire (1: Véhicule & Panne, 2: Détails & Photos, 3: Localisation & Confirmation)
   const [step, setStep] = useState<number>(1);
-
-  // État du formulaire
   const [selectedVehicleId, setSelectedVehicleId] = useState<string>(
-    primaryVehicle?.id || (vehicles[0]?.id ?? '')
+    preselectedVeh || (primaryVehicle?.id || (vehicles[0]?.id ?? ''))
   );
   const [selectedService, setSelectedService] = useState<ServiceType>(
-    initialService || 'no_start'
+    preselectedService || 'no_start'
   );
   const [description, setDescription] = useState<string>('');
   const [photos, setPhotos] = useState<string[]>([]);
@@ -86,7 +87,7 @@ function RequestMechanicFlowContent() {
 
   const handleUseCurrentLocation = () => {
     if (!navigator.geolocation) {
-      alert('La géolocalisation n’est pas supportée par votre navigateur');
+      showError('La géolocalisation n’est pas supportée par votre navigateur.');
       return;
     }
     setIsLocating(true);
@@ -98,25 +99,30 @@ function RequestMechanicFlowContent() {
         });
         setLocationAddress(`Position GPS actuelle (${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)})`);
         setIsLocating(false);
+        showSuccess('Position GPS actuelle détectée avec succès !', 'Localisation');
       },
       (error) => {
         console.warn('Erreur géolocalisation:', error);
         setIsLocating(false);
-        alert('Impossible de récupérer le GPS exact. Utilisation de l’adresse sélectionnée.');
+        showWarning('Impossible de récupérer le GPS exact. Utilisation de l’adresse sélectionnée.', 'Localisation');
       },
       { timeout: 8000, enableHighAccuracy: true }
     );
   };
 
   const handlePhotoUploadMock = () => {
-    if (photos.length >= 3) return;
+    if (photos.length >= 3) {
+      showWarning('Vous avez atteint le maximum de 3 photos.');
+      return;
+    }
     const samplePhotos = [
       'https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=500&auto=format&fit=crop&q=60',
       'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=500&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=500&auto=format&fit=crop&q=60',
+      'https://images.unsplash.com/photo-1508974239320-0a029497e820?w=500&auto=format&fit=crop&q=60',
     ];
-    const newPhoto = samplePhotos[photos.length % samplePhotos.length];
-    setPhotos([...photos, newPhoto]);
+    const nextPhoto = samplePhotos[photos.length % samplePhotos.length];
+    setPhotos([...photos, nextPhoto]);
+    showSuccess('Photo du diagnostic ajoutée avec succès.');
   };
 
   const removePhoto = (index: number) => {
