@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useApp } from '@/lib/store';
 import { useToast } from '@/components/ui/ToastProvider';
@@ -8,6 +8,7 @@ import {
   Wrench,
   Car,
   ChevronRight,
+  ChevronLeft,
   ShieldCheck,
   Plus,
   ArrowRight,
@@ -34,6 +35,57 @@ import {
 import { formatCAD, getStatusBadge } from '@/lib/utils';
 import { SERVICE_DEFINITIONS, CANADIAN_CITIES } from '@/lib/constants';
 
+const SPECIAL_OFFERS = [
+  {
+    id: 'offer-1',
+    tag: "Today's Offers",
+    title: 'Get Special Offer',
+    discountPrefix: 'Up to',
+    discountValue: '20',
+    discountSuffix: '%',
+    desc: 'Sur votre premier diagnostic mobile à domicile.',
+    image: '/images/special_offer_mechanic.jpg',
+    ctaText: 'Claim',
+    ctaHref: '/app/request',
+  },
+  {
+    id: 'offer-2',
+    tag: 'Batterie & Démarrage',
+    title: 'Pack Batterie Express',
+    discountPrefix: 'Rabais',
+    discountValue: '25',
+    discountSuffix: '%',
+    desc: 'Boost & remplacement de batterie livré et installé sur place.',
+    image: '/images/offer_battery_mechanic.jpg',
+    ctaText: 'Profiter',
+    ctaHref: '/app/request?service=battery_jump',
+  },
+  {
+    id: 'offer-3',
+    tag: 'Freins & Sécurité',
+    title: 'Forfait Plaquettes & Disques',
+    discountPrefix: 'Économisez',
+    discountValue: '30',
+    discountSuffix: '$',
+    desc: 'Changement de freins certifié Sceau Rouge directement chez vous.',
+    image: '/images/offer_brakes_mechanic.jpg',
+    ctaText: 'Réserver',
+    ctaHref: '/app/request?service=brake_service',
+  },
+  {
+    id: 'offer-4',
+    tag: 'Entretien Mobile',
+    title: 'Check-Up 40 Points',
+    discountPrefix: 'Dès',
+    discountValue: '69',
+    discountSuffix: '$',
+    desc: 'Triage complet et vidange sans vous déplacer au garage.',
+    image: '/images/service_provider_mechanics.jpg',
+    ctaText: 'Commander',
+    ctaHref: '/app/request?service=oil_change',
+  },
+];
+
 export default function CustomerHomePage() {
   const { currentUser, primaryVehicle, vehicles, activeCustomerRequest, mechanics } = useApp();
   const { toast } = useToast();
@@ -41,6 +93,55 @@ export default function CustomerHomePage() {
   const [savedFavorites, setSavedFavorites] = useState<string[]>(['mech-001']);
   const [selectedCity, setSelectedCity] = useState('Montréal, QC');
   const [showCityPicker, setShowCityPicker] = useState(false);
+
+  // État du carrousel d'offres spéciales
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchEndXRef = useRef<number | null>(null);
+
+  // Auto-play du slider toutes les 4,5 secondes
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % SPECIAL_OFFERS.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
+  // Gestion du swipe tactile mobile (Touch gesture)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndXRef.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartXRef.current !== null && touchEndXRef.current !== null) {
+      const diff = touchStartXRef.current - touchEndXRef.current;
+      const minSwipeDistance = 40; // Seuil de déclenchement
+
+      if (diff > minSwipeDistance) {
+        // Swipe vers la gauche -> Slide suivant
+        setActiveSlide((prev) => (prev + 1) % SPECIAL_OFFERS.length);
+      } else if (diff < -minSwipeDistance) {
+        // Swipe vers la droite -> Slide précédent
+        setActiveSlide((prev) => (prev === 0 ? SPECIAL_OFFERS.length - 1 : prev - 1));
+      }
+    }
+    touchStartXRef.current = null;
+    touchEndXRef.current = null;
+  };
+
+  const nextSlide = () => {
+    setActiveSlide((prev) => (prev + 1) % SPECIAL_OFFERS.length);
+  };
+
+  const prevSlide = () => {
+    setActiveSlide((prev) => (prev === 0 ? SPECIAL_OFFERS.length - 1 : prev - 1));
+  };
 
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -158,66 +259,116 @@ export default function CustomerHomePage() {
 
       {/* Contenu principal */}
       <div className="px-4 flex flex-col gap-5 -mt-1">
-        {/* SECTION 1: Special Offers (Offres Spéciales avec photo détourée) */}
+        {/* SECTION 1: Special Offers (Carrousel interactif animé avec glissement / swipe) */}
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Special Offers</h2>
-            <Link href="/app/request" className="text-xs font-bold text-[#5e17eb] hover:underline">
-              See All
-            </Link>
+            <div className="flex items-center gap-2">
+              {/* Boutons flèches discrets */}
+              <button
+                onClick={prevSlide}
+                className="w-6 h-6 rounded-full bg-slate-100 hover:bg-[#f3ebff] hover:text-[#5e17eb] flex items-center justify-center text-slate-500 transition-colors"
+                title="Offre précédente"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="w-6 h-6 rounded-full bg-slate-100 hover:bg-[#f3ebff] hover:text-[#5e17eb] flex items-center justify-center text-slate-500 transition-colors"
+                title="Offre suivante"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+              <Link href="/app/request" className="text-xs font-bold text-[#5e17eb] hover:underline ml-1">
+                See All
+              </Link>
+            </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-3xl bg-[#f4f5f8] border border-slate-100 p-5 shadow-card flex items-center justify-between">
-            {/* Texture de points discrète */}
+          {/* Conteneur Carrousel avec support Touch Swipe */}
+          <div
+            className="relative overflow-hidden rounded-3xl bg-[#f4f5f8] border border-slate-100 shadow-card cursor-grab active:cursor-grabbing select-none"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            {/* Texture de points discrète en arrière-plan */}
             <div
-              className="absolute top-2 left-2 w-32 h-20 opacity-15 pointer-events-none"
+              className="absolute top-2 left-2 w-36 h-24 opacity-15 pointer-events-none z-0"
               style={{
                 backgroundImage: 'radial-gradient(#5e17eb 1px, transparent 1px)',
                 backgroundSize: '8px 8px',
               }}
             />
 
-            {/* Texte et bouton à gauche */}
-            <div className="relative z-10 max-w-[190px]">
-              <div className="inline-block bg-white px-2.5 py-0.5 rounded-full text-[9px] font-bold text-slate-700 shadow-sm mb-2">
-                Today&apos;s Offers
-              </div>
+            {/* Piste de glissement (Slider Track) */}
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+            >
+              {SPECIAL_OFFERS.map((offer) => (
+                <div
+                  key={offer.id}
+                  className="w-full shrink-0 p-5 flex items-center justify-between relative z-10 min-w-full"
+                >
+                  {/* Texte et bouton à gauche */}
+                  <div className="relative z-10 max-w-[190px]">
+                    <div className="inline-block bg-white px-2.5 py-0.5 rounded-full text-[9px] font-bold text-slate-700 shadow-sm mb-2">
+                      {offer.tag}
+                    </div>
 
-              <h3 className="text-sm font-black text-[#181528] leading-tight tracking-tight">
-                Get Special Offer
-              </h3>
+                    <h3 className="text-sm font-black text-[#181528] leading-tight tracking-tight">
+                      {offer.title}
+                    </h3>
 
-              <p className="text-xs text-slate-600 mt-1 font-medium">
-                Up to <span className="text-xl font-black text-[#181528]">20</span>
-                <span className="text-xl font-black text-[#ff7a00]">%</span>
-              </p>
+                    <p className="text-xs text-slate-600 mt-1 font-medium">
+                      {offer.discountPrefix}{' '}
+                      <span className="text-xl font-black text-[#181528]">{offer.discountValue}</span>
+                      <span className="text-xl font-black text-[#ff7a00]">{offer.discountSuffix}</span>
+                    </p>
 
-              <Link
-                href="/app/request"
-                className="inline-block mt-3 bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-xs px-5 py-2 rounded-full shadow-purple-cta active:scale-95 transition-all"
-              >
-                Claim
-              </Link>
-            </div>
+                    <Link
+                      href={offer.ctaHref}
+                      className="inline-block mt-3 bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-xs px-5 py-2 rounded-full shadow-purple-cta active:scale-95 transition-all"
+                    >
+                      {offer.ctaText}
+                    </Link>
+                  </div>
 
-            {/* Photo de la mécanicienne dans un arc stylisé (comme la maquette) */}
-            <div className="relative w-32 h-32 shrink-0 flex items-center justify-center">
-              <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-white shadow-md bg-white relative">
-                <img
-                  src="/images/special_offer_mechanic.jpg"
-                  alt="Mécanicienne Pro"
-                  className="w-full h-full object-cover object-center"
-                />
-              </div>
+                  {/* Photo de l'offre dans l'arc circulaire stylisé */}
+                  <div className="relative w-32 h-32 shrink-0 flex items-center justify-center">
+                    <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-white shadow-md bg-white relative">
+                      <img
+                        src={offer.image}
+                        alt={offer.title}
+                        className="w-full h-full object-cover object-center"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Indicateurs de carrousel (1 pilule violette + 3 cercles lavande) */}
+          {/* Indicateurs de carrousel interactifs (Cliquables avec animation fluide) */}
           <div className="flex items-center justify-center gap-1.5 pt-0.5">
-            <span className="w-5 h-1.5 rounded-full bg-[#5e17eb]" />
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-200" />
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-200" />
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-200" />
+            {SPECIAL_OFFERS.map((_, idx) => {
+              const isActive = idx === activeSlide;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setActiveSlide(idx)}
+                  className={`transition-all duration-300 ${
+                    isActive
+                      ? 'w-6 h-1.5 rounded-full bg-[#5e17eb]'
+                      : 'w-1.5 h-1.5 rounded-full bg-purple-200 hover:bg-purple-300'
+                  }`}
+                  title={`Aller à l'offre ${idx + 1}`}
+                />
+              );
+            })}
           </div>
         </div>
 
