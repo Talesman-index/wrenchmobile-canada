@@ -1,0 +1,25 @@
+{
+  "name": "WrenchMobile Canada - Mobile Mechanics On Demand",
+  "short_name": "WrenchMobile",
+  "description": "Book certified mobile mechanics directly to your driveway across Canada.",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#0284c7",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["automotive", "utilities", "services"]
+}

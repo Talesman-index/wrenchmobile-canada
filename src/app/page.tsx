@@ -1,69 +1,254 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import React from 'react';
+import Link from 'next/link';
+import {
+  Wrench,
+  ShieldCheck,
+  MapPin,
+  Clock,
+  Star,
+  CheckCircle2,
+  ChevronRight,
+  ArrowRight,
+  Zap,
+  BatteryCharging,
+  Disc,
+  ShieldAlert,
+  Droplets,
+  Cpu,
+  Sparkles,
+  Flame,
+  Phone,
+  Car,
+  AlertTriangle,
+  Settings,
+} from 'lucide-react';
+import { SERVICE_DEFINITIONS, CANADIAN_CITIES } from '@/lib/constants';
+import { formatCAD } from '@/lib/utils';
+import { useApp } from '@/lib/store';
+
+export default function LandingPage() {
+  const { setCurrentRole } = useApp();
+
+  const iconsMap: Record<string, any> = {
+    Zap: Zap,
+    BatteryCharging: BatteryCharging,
+    Disc: Disc,
+    ShieldAlert: ShieldAlert,
+    Droplets: Droplets,
+    Cpu: Cpu,
+    AlertTriangle: AlertTriangle,
+    Wrench: Wrench,
+    Settings: Settings,
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <div className="flex-1 flex flex-col bg-[#f4f6fa] text-[#0b1b32] pb-20">
+      {/* Bannière d'assistance Canada */}
+      <div className="bg-gradient-to-r from-yellow-50 via-slate-50 to-blue-50 border-b border-slate-200 px-4 py-2 text-center text-xs text-slate-700 flex items-center justify-center gap-2">
+        <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        <span>
+          <strong className="text-[#0b1b32]">Service Actif au Canada</strong> — Mécaniciens mobiles disponibles à Montréal, Québec, Gatineau, Ottawa & Toronto
+        </span>
+      </div>
+
+      {/* Section Hero */}
+      <section className="relative px-4 pt-10 pb-14 md:pt-20 md:pb-24 overflow-hidden">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-200/40 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto text-center relative z-10 flex flex-col items-center">
+          {/* Badge Pilule */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-black text-[#0b1b32] mb-5 shadow-card">
+            <Sparkles className="w-3.5 h-3.5 text-[#eab308]" />
+            <span>N°1 de la mécanique mobile sur demande au Canada</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-[#0b1b32] max-w-2xl leading-[1.12]">
+            Panne de voiture ? <br />
+            <span className="bg-gradient-to-r from-[#0b1b32] via-[#1a3a60] to-[#0b1b32] bg-clip-text text-transparent">
+              Le mécanicien vient à vous.
+            </span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p className="mt-4 text-sm sm:text-base text-slate-600 max-w-xl leading-relaxed">
+            Réservez un mécanicien automobile certifié Sceau Rouge et faites diagnostiquer ou réparer votre véhicule directement dans votre allée ou au bureau. Aucun remorquage nécessaire.
           </p>
+
+          {/* Boutons d'action */}
+          <div className="mt-7 flex flex-col sm:flex-row items-center gap-3 w-full max-w-md">
+            <Link
+              href="/app"
+              onClick={() => setCurrentRole('customer')}
+              className="w-full sm:w-auto flex-1 bg-[#facc15] hover:bg-[#eab308] active:scale-[0.98] text-[#0b1b32] font-black py-4 px-6 rounded-2xl shadow-yellow-cta flex items-center justify-center gap-2 text-sm transition-all"
+            >
+              <Wrench className="w-4 h-4" />
+              <span>Demander un mécanicien</span>
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
+
+            <Link
+              href="/mechanic/onboarding"
+              onClick={() => setCurrentRole('mechanic')}
+              className="w-full sm:w-auto bg-white hover:bg-slate-50 border border-slate-200 text-[#0b1b32] font-bold py-4 px-5 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-card transition-all"
+            >
+              <span>Devenir mécanicien</span>
+            </Link>
+          </div>
+
+          {/* Badges de Réassurance */}
+          <div className="mt-10 grid grid-cols-3 gap-3 text-center max-w-md w-full pt-6 border-t border-slate-200">
+            <div className="bg-white p-3 rounded-2xl shadow-card border border-slate-100">
+              <p className="text-xl font-black text-[#0b1b32]">4,9 ★</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">Note moyenne</p>
+            </div>
+            <div className="bg-white p-3 rounded-2xl shadow-card border border-slate-100">
+              <p className="text-xl font-black text-[#0b1b32]">25 min</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">Arrivée moyenne</p>
+            </div>
+            <div className="bg-white p-3 rounded-2xl shadow-card border border-slate-100">
+              <p className="text-xl font-black text-[#0b1b32]">100 %</p>
+              <p className="text-[10px] text-slate-500 mt-0.5">Prix transparents</p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Comment ça fonctionne */}
+      <section className="px-4 py-12 max-w-4xl mx-auto w-full">
+        <div className="text-center mb-8">
+          <h2 className="text-xs uppercase tracking-widest text-[#0b1b32] font-black mb-1">Simple & Rapide</h2>
+          <p className="text-2xl font-black text-[#0b1b32]">Comment fonctionne MécanoMobile</p>
         </div>
-      </main>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card flex flex-col items-start">
+            <span className="w-8 h-8 rounded-2xl bg-[#facc15] text-[#0b1b32] font-black flex items-center justify-center text-sm mb-3">
+              1
+            </span>
+            <h3 className="text-base font-black text-[#0b1b32] mb-1">Indiquez votre problème</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Sélectionnez votre voiture, précisez le symptôme (ne démarre pas, batterie, crevaison, freins) et votre localisation.
+            </p>
+          </div>
+
+          <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card flex flex-col items-start">
+            <span className="w-8 h-8 rounded-2xl bg-[#0b1b32] text-white font-black flex items-center justify-center text-sm mb-3">
+              2
+            </span>
+            <h3 className="text-base font-black text-[#0b1b32] mb-1">Trouvez un pro à proximité</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Les mécaniciens certifiés à proximité reçoivent votre demande. Suivez l’arrivée du technicien en direct sur la carte.
+            </p>
+          </div>
+
+          <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card flex flex-col items-start">
+            <span className="w-8 h-8 rounded-2xl bg-emerald-50 text-emerald-600 font-black flex items-center justify-center text-sm mb-3">
+              3
+            </span>
+            <h3 className="text-base font-black text-[#0b1b32] mb-1">Réparé sur place</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Votre mécanicien effectue l’intervention avec ses outils et pièces certifiées. Paiement sécurisé en CAD via Stripe.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Populaires */}
+      <section className="px-4 py-12 max-w-4xl mx-auto w-full">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-xs uppercase tracking-widest text-[#0b1b32] font-black mb-1">Atelier Mobile</h2>
+            <p className="text-2xl font-black text-[#0b1b32]">Services Automobiles Populaires</p>
+          </div>
+          <Link
+            href="/app/request"
+            onClick={() => setCurrentRole('customer')}
+            className="text-xs font-bold text-[#0b1b32] flex items-center gap-1 hover:underline"
+          >
+            <span>Commander un service</span>
+            <ChevronRight className="w-4 h-4 text-[#facc15]" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {SERVICE_DEFINITIONS.slice(0, 6).map((service) => {
+            const Icon = iconsMap[service.iconName] || Wrench;
+
+            return (
+              <Link
+                key={service.type}
+                href={`/app/request?service=${service.type}`}
+                onClick={() => setCurrentRole('customer')}
+                className="bg-white hover:bg-slate-50 border border-slate-100 hover:border-yellow-300 rounded-3xl p-4 transition-all shadow-card hover:shadow-card-hover group flex flex-col justify-between"
+              >
+                <div>
+                  <div className="w-11 h-11 rounded-2xl bg-[#0b1b32]/5 group-hover:bg-[#0b1b32] text-[#0b1b32] group-hover:text-[#facc15] flex items-center justify-center mb-3 transition-all">
+                    <Icon className="w-5 h-5 stroke-[2.2] group-hover:scale-110 transition-transform" />
+                  </div>
+                  <h3 className="font-black text-[#0b1b32] text-sm group-hover:text-[#0b1b32] transition-colors leading-tight">
+                    {service.shortLabel}
+                  </h3>
+                  <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">{service.shortDesc}</p>
+                </div>
+
+                <div className="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                  <span className="font-black text-[#0b1b32]">Dès {formatCAD(service.basePriceCAD)}</span>
+                  <span className="text-slate-400 font-mono">{service.estimatedDuration}</span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Espace Mécaniciens Partenaires */}
+      <section className="px-4 py-8 max-w-4xl mx-auto w-full">
+        <div className="bg-[#0b1b32] text-white rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-card">
+          <div className="max-w-lg relative z-10">
+            <span className="text-[10px] font-black uppercase tracking-wider text-[#facc15] bg-white/10 px-3 py-1 rounded-full">
+              Pour Mécaniciens Certifiés
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-white mt-3 tracking-tight">
+              Prenez la route avec votre savoir-faire.
+            </h2>
+            <p className="text-slate-300 text-xs mt-2 leading-relaxed">
+              Générez des revenus plus élevés selon votre propre horaire. Conservez 88 % des montants de main-d&apos;œuvre et de pièces avec versements directs en dollars canadiens (CAD).
+            </p>
+
+            <div className="mt-6">
+              <Link
+                href="/mechanic/onboarding"
+                onClick={() => setCurrentRole('mechanic')}
+                className="inline-flex items-center gap-2 bg-[#facc15] hover:bg-[#eab308] text-[#0b1b32] font-black py-3.5 px-6 rounded-2xl shadow-yellow-cta text-xs transition-all active:scale-95"
+              >
+                <span>Rejoindre comme mécanicien</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Villes Desservies & Pied de page */}
+      <footer className="px-4 pt-8 max-w-4xl mx-auto w-full text-center">
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+          Disponible dans les grandes régions métropolitaines canadiennes
+        </p>
+        <div className="flex flex-wrap justify-center gap-1.5 max-w-xl mx-auto mb-6">
+          {CANADIAN_CITIES.map((city) => (
+            <span
+              key={city.name}
+              className="text-xs px-3 py-1 bg-white border border-slate-200 text-[#0b1b32] rounded-full font-bold shadow-sm"
+            >
+              📍 {city.name}, {city.province}
+            </span>
+          ))}
+        </div>
+        <p className="text-xs text-slate-400">
+          © {new Date().getFullYear()} MécanoMobile Canada Inc. Tous droits réservés. Application Progressive Web App (PWA).
+        </p>
+      </footer>
     </div>
   );
 }
