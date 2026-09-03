@@ -35,12 +35,12 @@ export default function AdminLayout({
       <aside className="w-full md:w-64 bg-slate-950 border-b md:border-b-0 md:border-r border-slate-800/90 p-4 shrink-0 flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2 px-2 py-3 mb-4">
-            <div className="w-7 h-7 rounded-lg bg-purple-600 flex items-center justify-center text-white">
+            <div className="w-7 h-7 rounded-xl bg-[#5e17eb] flex items-center justify-center text-white shadow-sm">
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-bold text-white tracking-tight">ADMINISTRATION</p>
-              <p className="text-[10px] text-slate-400">Console Opérations Canada</p>
+              <p className="text-xs font-black text-white tracking-tight">ADMINISTRATION</p>
+              <p className="text-[10px] text-purple-300">Console Opérations Canada</p>
             </div>
           </div>
 
@@ -55,7 +55,7 @@ export default function AdminLayout({
                   href={item.href}
                   className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-all whitespace-nowrap ${
                     isActive
-                      ? 'bg-purple-600 text-white font-semibold shadow-md shadow-purple-900/40'
+                      ? 'bg-[#5e17eb] text-white font-bold shadow-md shadow-purple-900/40'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                   }`}
                 >

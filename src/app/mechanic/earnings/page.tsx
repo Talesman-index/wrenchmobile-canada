@@ -20,26 +20,26 @@ export default function MechanicEarningsPage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-xl font-black text-slate-900 tracking-tight">Mes Revenus</h1>
+        <h1 className="text-xl font-black text-[#181528] tracking-tight">Mes Revenus</h1>
         <p className="text-xs text-slate-500 mt-0.5">Versements nets et décomptes des interventions</p>
       </div>
 
       {/* Carte solde total */}
-      <div className="bg-[#0c1f38] text-white rounded-3xl p-5 shadow-navy-cta flex flex-col gap-3">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+      <div className="bg-gradient-to-br from-[#5610d8] via-[#5e17eb] to-[#6822f3] text-white rounded-3xl p-5 shadow-purple-cta flex flex-col gap-3">
+        <span className="text-[10px] font-bold text-purple-200 uppercase tracking-wider">
           Solde net disponible (CAD)
         </span>
         <div className="flex items-baseline gap-2">
-          <span className="text-3xl font-black text-[#ff6b00]">
+          <span className="text-3xl font-black text-white">
             {formatCAD(totalEarningsCAD || 842.5)}
           </span>
-          <span className="text-xs text-emerald-400 font-bold flex items-center gap-0.5">
+          <span className="text-xs text-emerald-300 font-bold flex items-center gap-0.5">
             <ArrowUpRight className="w-3.5 h-3.5" />
             +18 % cette semaine
           </span>
         </div>
 
-        <div className="pt-3 border-t border-slate-700/80 flex items-center justify-between text-xs text-slate-300">
+        <div className="pt-3 border-t border-white/20 flex items-center justify-between text-xs text-purple-100">
           <span>Prochain virement direct :</span>
           <span className="font-bold text-white">Vendredi (Hebdomadaire)</span>
         </div>
@@ -55,7 +55,7 @@ export default function MechanicEarningsPage() {
 
         <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card">
           <span className="text-[10px] font-bold text-slate-400 uppercase">Interventions</span>
-          <p className="text-lg font-black text-slate-900 mt-1">
+          <p className="text-lg font-black text-[#181528] mt-1">
             {currentMechanicProfile.jobs_completed}
           </p>
           <p className="text-[11px] text-slate-500 mt-0.5">Missions complétées</p>

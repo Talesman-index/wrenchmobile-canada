@@ -16,15 +16,15 @@ export default function MechanicJobsPage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-xl font-black text-slate-900 tracking-tight">Mes Missions</h1>
+        <h1 className="text-xl font-black text-[#181528] tracking-tight">Mes Missions</h1>
         <p className="text-xs text-slate-500 mt-0.5">Missions actives et historique des interventions</p>
       </div>
 
       <div className="flex flex-col gap-3">
         {myJobs.length === 0 ? (
           <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center shadow-card">
-            <Briefcase className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-            <p className="text-sm font-bold text-slate-800">Aucune mission pour le moment</p>
+            <Briefcase className="w-8 h-8 text-purple-300 mx-auto mb-2" />
+            <p className="text-sm font-bold text-[#181528]">Aucune mission pour le moment</p>
             <p className="text-xs text-slate-500 mt-1">
               Basculez en mode EN LIGNE sur votre tableau de bord pour recevoir les demandes.
             </p>
@@ -39,7 +39,7 @@ export default function MechanicJobsPage() {
                 key={job.id}
                 href={`/mechanic/jobs/${job.id}`}
                 className={`bg-white border rounded-3xl p-4 transition-all shadow-card hover:shadow-card-hover flex flex-col gap-3 ${
-                  isLive ? 'border-[#ff6b00] ring-2 ring-orange-100' : 'border-slate-100'
+                  isLive ? 'border-[#5e17eb] ring-2 ring-purple-100' : 'border-slate-100'
                 }`}
               >
                 <div className="flex items-start justify-between">
@@ -47,10 +47,10 @@ export default function MechanicJobsPage() {
                     <span className={`text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${badge.bg}`}>
                       {badge.label}
                     </span>
-                    <h2 className="text-sm font-black text-slate-900 mt-2">
+                    <h2 className="text-sm font-black text-[#181528] mt-2">
                       {job.vehicle?.year} {job.vehicle?.make} {job.vehicle?.model}
                     </h2>
-                    <p className="text-xs text-[#ff6b00] font-bold capitalize mt-0.5">
+                    <p className="text-xs text-[#5e17eb] font-bold capitalize mt-0.5">
                       {job.service_type.replace(/_/g, ' ')}
                     </p>
                   </div>
@@ -69,11 +69,11 @@ export default function MechanicJobsPage() {
 
                 <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                   <div className="flex items-center gap-1.5 line-clamp-1">
-                    <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <MapPin className="w-3.5 h-3.5 text-[#5e17eb] shrink-0" />
                     <span className="line-clamp-1 text-[11px]">{job.address}</span>
                   </div>
 
-                  <div className="flex items-center gap-1 text-[#ff6b00] font-black shrink-0 ml-2">
+                  <div className="flex items-center gap-1 text-[#5e17eb] font-black shrink-0 ml-2">
                     <span>{isLive ? 'Gérer la mission' : 'Voir le rapport'}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </div>

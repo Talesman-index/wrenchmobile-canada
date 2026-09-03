@@ -45,7 +45,7 @@ export default function MechanicProfilePage() {
 
       {/* Carte identité */}
       <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full overflow-hidden bg-slate-100 border-2 border-[#ff6b00] shrink-0 shadow-md">
+        <div className="w-16 h-16 rounded-full overflow-hidden bg-[#f3ebff] border-2 border-[#5e17eb] shrink-0 shadow-md">
           <img
             src={currentMechanicProfile.avatar_url}
             alt={currentMechanicProfile.first_name}
@@ -53,7 +53,7 @@ export default function MechanicProfilePage() {
           />
         </div>
         <div>
-          <h2 className="text-base font-black text-slate-900">
+          <h2 className="text-base font-black text-[#181528]">
             {currentMechanicProfile.first_name} {currentMechanicProfile.last_name}
           </h2>
           <div className="flex items-center gap-2 mt-1 text-xs">
@@ -69,7 +69,7 @@ export default function MechanicProfilePage() {
 
       {/* Formulaire de profil mécanicien */}
       <form onSubmit={handleSave} className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card flex flex-col gap-3 text-xs">
-        <h3 className="font-black text-sm text-slate-900 mb-1">Paramètres professionnels</h3>
+        <h3 className="font-black text-sm text-[#181528] mb-1">Paramètres professionnels</h3>
 
         <div>
           <label className="block font-bold text-slate-700 mb-1">Nom de l&apos;atelier mobile</label>
@@ -77,7 +77,7 @@ export default function MechanicProfilePage() {
             type="text"
             value={businessName}
             onChange={(e) => setBusinessName(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-slate-900 focus:border-[#0c1f38] outline-none"
+            className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] focus:bg-white focus:ring-2 focus:ring-purple-200 outline-none transition-all"
           />
         </div>
 
@@ -87,7 +87,7 @@ export default function MechanicProfilePage() {
             rows={3}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-slate-900 focus:border-[#0c1f38] outline-none resize-none"
+            className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] focus:bg-white focus:ring-2 focus:ring-purple-200 outline-none resize-none transition-all"
           />
         </div>
 
@@ -97,17 +97,17 @@ export default function MechanicProfilePage() {
             type="number"
             value={radius}
             onChange={(e) => setRadius(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-slate-900 focus:border-[#0c1f38] outline-none"
+            className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] focus:bg-white focus:ring-2 focus:ring-purple-200 outline-none transition-all"
           />
         </div>
 
         <button
           type="submit"
-          className="mt-2 w-full bg-[#0c1f38] hover:bg-[#162e52] text-white font-black py-3.5 rounded-2xl shadow-navy-cta text-xs flex items-center justify-center gap-1.5 transition-all active:scale-98"
+          className="mt-2 w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3.5 rounded-2xl shadow-purple-cta text-xs flex items-center justify-center gap-1.5 transition-all active:scale-98"
         >
           {saved ? (
             <>
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-300" />
               <span>Modifications sauvegardées !</span>
             </>
           ) : (

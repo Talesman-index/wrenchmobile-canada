@@ -74,10 +74,10 @@ export default function MechanicHomePage() {
             />
           </div>
           <div>
-            <p className="text-[10px] font-black text-[#c88e05] uppercase tracking-wider">
+            <p className="text-[10px] font-black text-[#5e17eb] uppercase tracking-wider">
               Technicien de terrain
             </p>
-            <h1 className="text-base font-black text-slate-900 tracking-tight">
+            <h1 className="text-base font-black text-[#181528] tracking-tight">
               {currentMechanicProfile.first_name} {currentMechanicProfile.last_name}
             </h1>
           </div>
@@ -123,7 +123,7 @@ export default function MechanicHomePage() {
       <div className="grid grid-cols-3 gap-2.5">
         <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex flex-col shadow-card">
           <span className="text-[10px] text-slate-400 font-bold uppercase">Gains du jour</span>
-          <span className="text-base font-black text-slate-900 mt-1">
+          <span className="text-base font-black text-[#181528] mt-1">
             {formatCAD(todayEarningsCAD || 205.0)}
           </span>
         </div>
@@ -137,7 +137,7 @@ export default function MechanicHomePage() {
 
         <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex flex-col shadow-card">
           <span className="text-[10px] text-slate-400 font-bold uppercase">Évaluation</span>
-          <span className="text-base font-black text-[#c88e05] mt-1 flex items-center gap-1">
+          <span className="text-base font-black text-[#5e17eb] mt-1 flex items-center gap-1">
             <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
             <span>{currentMechanicProfile.rating.toFixed(1)}</span>
           </span>
@@ -146,12 +146,12 @@ export default function MechanicHomePage() {
 
       {/* BANNIÈRE DE MISSION ACTIVE */}
       {activeMechanicJob && (
-        <div className="bg-gradient-to-r from-[#0c1f38] to-[#162e52] text-white rounded-3xl p-5 shadow-navy-cta flex flex-col gap-3">
+        <div className="bg-gradient-to-r from-[#5610d8] via-[#5e17eb] to-[#7c3aed] text-white rounded-3xl p-5 shadow-purple-cta flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-[9px] font-black uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full">
               MISSION EN COURS
             </span>
-            <span className="text-xs text-[#e5a910] capitalize font-medium">
+            <span className="text-xs text-purple-200 capitalize font-bold">
               {activeMechanicJob.status.replace(/_/g, ' ')}
             </span>
           </div>
@@ -160,21 +160,21 @@ export default function MechanicHomePage() {
             <h2 className="text-base font-black">
               {activeMechanicJob.vehicle?.year} {activeMechanicJob.vehicle?.make} {activeMechanicJob.vehicle?.model}
             </h2>
-            <p className="text-xs text-[#e5a910] capitalize font-bold mt-0.5">
+            <p className="text-xs text-purple-200 capitalize font-bold mt-0.5">
               {activeMechanicJob.service_type.replace(/_/g, ' ')}
             </p>
-            <p className="text-[11px] text-slate-300 mt-1 line-clamp-1 flex items-center gap-1">
-              <MapPin className="w-3 h-3 text-amber-400 shrink-0" />
+            <p className="text-[11px] text-purple-100 mt-1 line-clamp-1 flex items-center gap-1">
+              <MapPin className="w-3 h-3 text-purple-300 shrink-0" />
               <span>{activeMechanicJob.address}</span>
             </p>
           </div>
 
           <Link
             href={`/mechanic/jobs/${activeMechanicJob.id}`}
-            className="w-full bg-[#e5a910] text-[#0c1f38] hover:bg-[#c88e05] font-black py-3 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-amber-cta active:scale-98 transition-all"
+            className="w-full bg-white text-[#5e17eb] hover:bg-purple-50 font-black py-3 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-md active:scale-98 transition-all"
           >
             <span>Reprendre la mission en cours</span>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 text-[#5e17eb]" />
           </Link>
         </div>
       )}
@@ -183,8 +183,8 @@ export default function MechanicHomePage() {
       {currentMechanicProfile.is_available && incomingRequests.length > 0 && (
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-black text-slate-900 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-[#c88e05]" />
+            <h2 className="text-sm font-black text-[#181528] flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-[#5e17eb]" />
               <span>Demandes d&apos;assistance entrantes ({incomingRequests.length})</span>
             </h2>
           </div>
@@ -192,18 +192,18 @@ export default function MechanicHomePage() {
           {incomingRequests.map((req) => (
             <div
               key={req.id}
-              className="bg-white border-2 border-[#e5a910] rounded-3xl p-4 shadow-card-hover flex flex-col gap-3.5 animate-in slide-in-from-bottom-2 duration-300"
+              className="bg-white border-2 border-purple-300 rounded-3xl p-4 shadow-card-hover flex flex-col gap-3.5 animate-in slide-in-from-bottom-2 duration-300"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-amber-50 text-[#c88e05] flex items-center justify-center shrink-0 border border-amber-200">
+                  <div className="w-11 h-11 rounded-2xl bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center shrink-0 border border-purple-200">
                     <Car className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="font-black text-sm text-slate-900">
+                    <h3 className="font-black text-sm text-[#181528]">
                       {req.vehicle?.year} {req.vehicle?.make} {req.vehicle?.model}
                     </h3>
-                    <p className="text-xs text-[#c88e05] font-bold capitalize">
+                    <p className="text-xs text-[#5e17eb] font-bold capitalize">
                       {req.service_type.replace(/_/g, ' ')}
                     </p>
                   </div>
@@ -218,12 +218,12 @@ export default function MechanicHomePage() {
               </div>
 
               {/* Adresse et distance */}
-              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-xs flex items-center justify-between">
+              <div className="bg-[#f8f9fd] p-3 rounded-2xl border border-slate-100 text-xs flex items-center justify-between">
                 <div className="flex items-center gap-2 text-slate-700 line-clamp-1">
-                  <MapPin className="w-4 h-4 text-[#c88e05] shrink-0" />
+                  <MapPin className="w-4 h-4 text-[#5e17eb] shrink-0" />
                   <span className="line-clamp-1">{req.address}</span>
                 </div>
-                <span className="text-[11px] font-mono text-[#0c1f38] font-black shrink-0 ml-2">
+                <span className="text-[11px] font-mono text-[#5e17eb] font-black shrink-0 ml-2">
                   ~3,8 km
                 </span>
               </div>
@@ -237,7 +237,7 @@ export default function MechanicHomePage() {
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <button
                   onClick={() => handleDeclineRequest(req.id)}
-                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <X className="w-4 h-4 text-red-500" />
                   <span>Refuser</span>
@@ -245,9 +245,9 @@ export default function MechanicHomePage() {
 
                 <button
                   onClick={() => handleAcceptRequest(req.id)}
-                  className="bg-[#e5a910] hover:bg-[#c88e05] text-[#0c1f38] font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-amber-cta active:scale-98 transition-all"
+                  className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-purple-cta active:scale-98 transition-all"
                 >
-                  <Check className="w-4 h-4 text-[#0c1f38]" />
+                  <Check className="w-4 h-4 text-white" />
                   <span>Accepter la mission</span>
                 </button>
               </div>
@@ -259,10 +259,10 @@ export default function MechanicHomePage() {
       {/* État en attente si En Ligne mais sans appel immédiat */}
       {currentMechanicProfile.is_available && incomingRequests.length === 0 && !activeMechanicJob && (
         <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center flex flex-col items-center shadow-card">
-          <div className="w-12 h-12 rounded-full bg-amber-50 text-[#c88e05] flex items-center justify-center mb-3">
-            <Wrench className="w-6 h-6 animate-pulse" />
+          <div className="w-12 h-12 rounded-full bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center mb-3">
+            <Wrench className="w-6 h-6 animate-pulse text-[#5e17eb]" />
           </div>
-          <h2 className="text-sm font-black text-slate-900">En attente de demandes à proximité...</h2>
+          <h2 className="text-sm font-black text-[#181528]">En attente de demandes à proximité...</h2>
           <p className="text-xs text-slate-500 mt-1 max-w-xs">
             Vous recevrez une alerte instantanée dès qu&apos;un automobiliste à {currentMechanicProfile.city} aura besoin d&apos;assistance.
           </p>
