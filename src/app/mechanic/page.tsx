@@ -138,7 +138,8 @@ export default function MechanicHomePage() {
         <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex flex-col shadow-card">
           <span className="text-[10px] text-slate-400 font-bold uppercase">Évaluation</span>
           <span className="text-base font-black text-[#c88e05] mt-1 flex items-center gap-1">
-            ★ {currentMechanicProfile.rating.toFixed(1)}
+            <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+            <span>{currentMechanicProfile.rating.toFixed(1)}</span>
           </span>
         </div>
       </div>
@@ -162,8 +163,9 @@ export default function MechanicHomePage() {
             <p className="text-xs text-[#e5a910] capitalize font-bold mt-0.5">
               {activeMechanicJob.service_type.replace(/_/g, ' ')}
             </p>
-            <p className="text-[11px] text-slate-300 mt-1 line-clamp-1">
-              📍 {activeMechanicJob.address}
+            <p className="text-[11px] text-slate-300 mt-1 line-clamp-1 flex items-center gap-1">
+              <MapPin className="w-3 h-3 text-amber-400 shrink-0" />
+              <span>{activeMechanicJob.address}</span>
             </p>
           </div>
 

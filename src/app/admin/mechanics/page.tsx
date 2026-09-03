@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp } from '@/lib/store';
-import { ShieldCheck, Check, X, UserX, AlertCircle, Wrench, Search } from 'lucide-react';
+import { ShieldCheck, Check, X, UserX, AlertCircle, Wrench, Search, MapPin, Star } from 'lucide-react';
 import { getStatusBadge } from '@/lib/utils';
 import { VerificationStatus } from '@/types/database';
 
@@ -93,10 +93,19 @@ export default function AdminMechanicsPage() {
                   <p className="text-xs text-purple-400 font-medium mt-0.5">{m.business_name || 'Atelier Mobile Indépendant'}</p>
                   <p className="text-xs text-slate-400 mt-1 max-w-xl line-clamp-2">{m.bio}</p>
 
-                  <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-400">
-                    <span>📍 {m.city}, {m.province} (Rayon {m.service_radius_km} km)</span>
-                    <span>🛠️ {m.years_experience} ans d&apos;expérience</span>
-                    <span>⭐ {m.rating.toFixed(1)} ({m.jobs_completed} interventions)</span>
+                  <div className="flex flex-wrap gap-4 mt-2 text-xs text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                      <span>{m.city}, {m.province} (Rayon {m.service_radius_km} km)</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Wrench className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                      <span>{m.years_experience} ans d&apos;expérience</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
+                      <span>{m.rating.toFixed(1)} ({m.jobs_completed} interventions)</span>
+                    </span>
                   </div>
                 </div>
               </div>

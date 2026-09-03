@@ -137,8 +137,9 @@ export default function ExploreMapPage() {
                 <p className="text-xs text-slate-500 mt-0.5">{selectedMechanic.city}, QC • Certifié Sceau Rouge</p>
 
                 <div className="flex items-center gap-2 mt-1 text-xs">
-                  <span className="text-amber-500 font-black flex items-center gap-0.5">
-                    ★ {selectedMechanic.rating.toFixed(1)}
+                  <span className="text-amber-500 font-black flex items-center gap-1">
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    <span>{selectedMechanic.rating.toFixed(1)}</span>
                   </span>
                   <span className="text-slate-300">•</span>
                   <span className="text-slate-500">{selectedMechanic.jobs_completed} interventions</span>
@@ -155,9 +156,9 @@ export default function ExploreMapPage() {
           </div>
 
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-            <div className="flex items-center gap-2 text-slate-500 font-bold text-[11px]">
+            <div className="flex items-center gap-1.5 text-slate-500 font-bold text-[11px]">
               <Clock className="w-3.5 h-3.5 text-[#5e17eb]" />
-              <span>⏱ ~15 min • 3,5 km</span>
+              <span>~15 min • 3,5 km</span>
             </div>
 
             <Link

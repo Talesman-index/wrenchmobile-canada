@@ -98,8 +98,11 @@ export default function LandingPage() {
 
           {/* Badges de Réassurance */}
           <div className="mt-10 grid grid-cols-3 gap-3 text-center max-w-md w-full pt-6 border-t border-slate-200">
-            <div className="bg-white p-3 rounded-2xl shadow-card border border-slate-100">
-              <p className="text-xl font-black text-[#5e17eb]">4,9 ★</p>
+            <div className="bg-white p-3 rounded-2xl shadow-card border border-slate-100 flex flex-col items-center justify-center">
+              <div className="flex items-center gap-1 text-[#5e17eb] font-black text-xl">
+                <span>4,9</span>
+                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              </div>
               <p className="text-[10px] text-slate-500 mt-0.5">Note moyenne</p>
             </div>
             <div className="bg-white p-3 rounded-2xl shadow-card border border-slate-100">
@@ -235,13 +238,14 @@ export default function LandingPage() {
         <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
           Disponible dans les grandes régions métropolitaines canadiennes
         </p>
-        <div className="flex flex-wrap justify-center gap-1.5 max-w-xl mx-auto mb-6">
+        <div className="flex flex-wrap justify-center gap-2 max-w-xl mx-auto mb-6">
           {CANADIAN_CITIES.map((city) => (
             <span
               key={city.name}
-              className="text-xs px-3 py-1 bg-white border border-slate-200 text-[#181528] rounded-full font-bold shadow-sm"
+              className="text-xs px-3 py-1.5 bg-white border border-slate-200 text-[#181528] rounded-full font-bold shadow-sm flex items-center gap-1.5"
             >
-              📍 {city.name}, {city.province}
+              <MapPin className="w-3 h-3 text-[#5e17eb] shrink-0" />
+              <span>{city.name}, {city.province}</span>
             </span>
           ))}
         </div>

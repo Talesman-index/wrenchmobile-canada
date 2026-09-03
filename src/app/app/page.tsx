@@ -192,7 +192,7 @@ export default function CustomerHomePage() {
               onClick={() => setShowCityPicker(!showCityPicker)}
               className="flex items-center gap-1.5 text-sm font-black text-white hover:text-purple-200 transition-colors mt-0.5"
             >
-              <span className="text-amber-400 text-sm">📍</span>
+              <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
               <span>{selectedCity}</span>
               <ChevronDown className="w-3.5 h-3.5 text-purple-200" />
             </button>
@@ -539,9 +539,9 @@ export default function CustomerHomePage() {
 
                   {/* Raccourci & Bouton Réserver */}
                   <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
+                    <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
                       <Clock className="w-3.5 h-3.5 text-[#5e17eb]" />
-                      <span>⏱ ~15 min • 3,5 km</span>
+                      <span>~15 min • 3,5 km</span>
                     </div>
 
                     <span className="text-[11px] font-black text-white bg-[#5e17eb] group-hover:bg-[#4c0ec4] px-4 py-1.5 rounded-full transition-colors shadow-purple-cta">

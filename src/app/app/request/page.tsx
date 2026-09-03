@@ -370,19 +370,21 @@ function RequestMechanicFlowContent() {
           <div className="bg-slate-100 p-1 rounded-2xl border border-slate-200 flex items-center gap-1 text-xs">
             <button
               onClick={() => setBookingType('asap')}
-              className={`flex-1 py-2 rounded-xl font-black transition-all ${
+              className={`flex-1 py-2.5 rounded-xl font-black transition-all flex items-center justify-center gap-1.5 ${
                 bookingType === 'asap' ? 'bg-[#5e17eb] text-white shadow-sm' : 'text-slate-600'
               }`}
             >
-              ⚡ Urgence Immédiate (~25 min)
+              <Zap className="w-3.5 h-3.5" />
+              <span>Urgence Immédiate (~25 min)</span>
             </button>
             <button
               onClick={() => setBookingType('scheduled')}
-              className={`flex-1 py-2 rounded-xl font-black transition-all ${
+              className={`flex-1 py-2.5 rounded-xl font-black transition-all flex items-center justify-center gap-1.5 ${
                 bookingType === 'scheduled' ? 'bg-[#5e17eb] text-white shadow-sm' : 'text-slate-600'
               }`}
             >
-              📅 Planifier un rendez-vous
+              <Calendar className="w-3.5 h-3.5" />
+              <span>Planifier un rendez-vous</span>
             </button>
           </div>
 
@@ -532,7 +534,7 @@ function RequestMechanicFlowContent() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase">
-                    {bookingType === 'asap' ? '⚡ Urgence Immédiate' : `📅 Août ${selectedDay} • ${selectedTimeSlot}`}
+                    {bookingType === 'asap' ? 'Urgence Immédiate' : `Août ${selectedDay} • ${selectedTimeSlot}`}
                   </p>
                   <p className="text-xs font-black text-[#181528] line-clamp-1">{locationAddress}</p>
                 </div>

@@ -77,7 +77,10 @@ export default function AdminRequestsPage() {
                 <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-xs text-slate-400">
                   <span>Client : <strong className="text-slate-200">{req.customer_name}</strong></span>
                   <span>Mécanicien : <strong className="text-slate-200">{req.mechanic ? `${req.mechanic.first_name} ${req.mechanic.last_name}` : 'En recherche'}</strong></span>
-                  <span>📍 {req.city}, {req.province}</span>
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                    <span>{req.city}, {req.province}</span>
+                  </span>
                 </div>
               </div>
 

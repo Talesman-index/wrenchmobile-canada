@@ -56,9 +56,11 @@ export default function MechanicProfilePage() {
           <h2 className="text-base font-black text-slate-900">
             {currentMechanicProfile.first_name} {currentMechanicProfile.last_name}
           </h2>
-          <p className="text-xs text-slate-500">{currentMechanicProfile.city}, {currentMechanicProfile.province}</p>
           <div className="flex items-center gap-2 mt-1 text-xs">
-            <span className="text-amber-500 font-black">★ {currentMechanicProfile.rating.toFixed(1)}</span>
+            <span className="text-amber-500 font-black flex items-center gap-1">
+              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+              <span>{currentMechanicProfile.rating.toFixed(1)}</span>
+            </span>
             <span className="text-slate-300">•</span>
             <span className="text-slate-500">{currentMechanicProfile.jobs_completed} interventions</span>
           </div>

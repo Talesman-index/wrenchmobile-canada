@@ -37,11 +37,11 @@ export default function MechanicsListPage() {
 
   const filterChips = [
     { id: 'all', label: 'Tous' },
-    { id: 'red_seal', label: 'Sceau Rouge 🎖️' },
-    { id: 'fast', label: 'Rapide (< 20 min) ⏱️' },
-    { id: 'top_rated', label: 'Mieux notés ★ 4.8+' },
-    { id: 'diagnostic', label: 'Diagnostic OBD 💻' },
-    { id: 'brakes', label: 'Freins & Sécurité 🛡️' },
+    { id: 'red_seal', label: 'Sceau Rouge' },
+    { id: 'fast', label: 'Moins de 20 min' },
+    { id: 'top_rated', label: 'Mieux notés (4.8+)' },
+    { id: 'diagnostic', label: 'Diagnostic OBD' },
+    { id: 'brakes', label: 'Freins & Sécurité' },
   ];
 
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
@@ -237,22 +237,22 @@ export default function MechanicsListPage() {
 
                 {/* Puces de spécialités */}
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  <span className="text-[10px] font-bold bg-[#f3ebff] text-[#5e17eb] px-2 py-0.5 rounded-lg">
-                    ⚡ Batterie & Boost
+                  <span className="text-[10px] font-bold bg-[#f3ebff] text-[#5e17eb] px-2.5 py-0.5 rounded-lg">
+                    Batterie & Boost
                   </span>
-                  <span className="text-[10px] font-bold bg-[#f3ebff] text-[#5e17eb] px-2 py-0.5 rounded-lg">
-                    🛡️ Freinage
+                  <span className="text-[10px] font-bold bg-[#f3ebff] text-[#5e17eb] px-2.5 py-0.5 rounded-lg">
+                    Freinage
                   </span>
-                  <span className="text-[10px] font-bold bg-[#f3ebff] text-[#5e17eb] px-2 py-0.5 rounded-lg">
-                    💻 OBD-II
+                  <span className="text-[10px] font-bold bg-[#f3ebff] text-[#5e17eb] px-2.5 py-0.5 rounded-lg">
+                    OBD-II
                   </span>
                 </div>
 
                 {/* Raccourci & Bouton Réserver */}
                 <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
+                  <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
                     <Clock className="w-3.5 h-3.5 text-[#5e17eb]" />
-                    <span>⏱ Arrivée estimée : ~15-25 min</span>
+                    <span>Arrivée estimée : ~15-25 min</span>
                   </div>
 
                   <div className="flex items-center gap-2">
