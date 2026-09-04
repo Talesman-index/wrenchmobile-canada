@@ -108,7 +108,7 @@ export default function ExploreMapPage() {
 
         <div className="absolute top-3 left-3 z-[400] bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 text-[11px] font-bold text-[#181528] shadow-md flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>{mechanics.length} Mécaniciens mobiles en service</span>
+          <span>{mechanics.length} Unités Mobiles d&apos;Atelier en service</span>
         </div>
       </div>
 
@@ -119,22 +119,23 @@ export default function ExploreMapPage() {
             <div className="flex items-start gap-3">
               <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-sm">
                 <img
-                  src={selectedMechanic.avatar_url || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80'}
+                  src={selectedMechanic.avatar_url || '/images/landing/mechanic_pro.jpg'}
                   alt={selectedMechanic.first_name}
                   className="w-full h-full object-cover"
                 />
                 <span className="absolute bottom-1 right-1 bg-[#5e17eb] text-white font-black text-[8px] px-1 py-0.2 rounded">
-                  -10 %
+                  Pro
                 </span>
               </div>
 
               <div>
                 <div className="flex items-center gap-1.5">
                   <h3 className="font-black text-sm text-[#181528]">
-                    {selectedMechanic.business_name || `${selectedMechanic.first_name} ${selectedMechanic.last_name}`}
+                    {selectedMechanic.first_name} {selectedMechanic.last_name}
                   </h3>
                 </div>
-                <p className="text-xs text-slate-500 mt-0.5">{selectedMechanic.city}, QC • Certifié Sceau Rouge</p>
+                <p className="text-xs text-[#5e17eb] font-bold mt-0.5">{selectedMechanic.business_name}</p>
+                <p className="text-[11px] text-slate-500">Atelier MécanoMobile • {selectedMechanic.city}</p>
 
                 <div className="flex items-center gap-2 mt-1 text-xs">
                   <span className="text-amber-500 font-black flex items-center gap-1">

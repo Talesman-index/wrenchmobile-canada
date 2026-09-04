@@ -91,8 +91,8 @@ export default function MechanicsListPage() {
           </button>
 
           <div className="text-center">
-            <h1 className="text-base font-black text-white tracking-tight">Prestataires de Service</h1>
-            <p className="text-[11px] text-purple-200">Mécaniciens certifiés à domicile</p>
+            <h1 className="text-base font-black text-white tracking-tight">Notre Équipe d&apos;Atelier</h1>
+            <p className="text-[11px] text-purple-200">Maîtres mécaniciens & techniciens certifiés</p>
           </div>
 
           <Link
@@ -109,7 +109,7 @@ export default function MechanicsListPage() {
           <Search className="w-4 h-4 text-[#5e17eb] absolute left-4 top-3.5" />
           <input
             type="text"
-            placeholder="Rechercher par nom, ville, spécialité..."
+            placeholder="Rechercher par nom, spécialité..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-white text-[#181528] border-none rounded-2xl pl-11 pr-4 py-3 text-xs placeholder:text-slate-400 focus:ring-2 focus:ring-purple-300 outline-none shadow-sm font-medium"
@@ -136,30 +136,26 @@ export default function MechanicsListPage() {
           ))}
         </div>
 
-        {/* Compteur et sélecteur de ville */}
+        {/* Compteur d'équipe */}
         <div className="flex items-center justify-between text-xs px-1">
           <span className="font-extrabold text-[#181528]">
-            {filteredMechanics.length} prestataire{filteredMechanics.length > 1 ? 's' : ''} disponible{filteredMechanics.length > 1 ? 's' : ''}
+            {filteredMechanics.length} technicien{filteredMechanics.length > 1 ? 's' : ''} en service
           </span>
-
-          <select
-            value={selectedCity}
-            onChange={(e) => setSelectedCity(e.target.value)}
-            className="bg-white border border-slate-200 text-[#181528] font-bold text-[11px] rounded-xl px-2.5 py-1 outline-none focus:border-[#5e17eb]"
-          >
-            <option value="Toutes les villes">Toutes les villes</option>
-            {CANADIAN_CITIES.map((c) => (
-              <option key={c.name} value={`${c.name}, ${c.province}`}>
-                {c.name}, {c.province}
-              </option>
-            ))}
-          </select>
+          <span className="text-[11px] text-slate-400 font-medium">
+            Atelier Mobile MécanoMobile
+          </span>
         </div>
 
         {/* Liste des cartes prestataires */}
         <div className="flex flex-col gap-3.5">
           {filteredMechanics.map((mech, index) => {
             const isFav = savedFavorites.includes(mech.id);
+            const cardImage =
+              index === 0
+                ? '/images/service_provider_mechanics.jpg'
+                : index === 1
+                ? '/images/special_offer_mechanic.jpg'
+                : '/images/offer_battery_mechanic.jpg';
 
             return (
               <Link
@@ -170,14 +166,8 @@ export default function MechanicsListPage() {
                 {/* Photo bannière avec bouton coeur et badge Sceau Rouge */}
                 <div className="relative h-40 w-full rounded-2xl overflow-hidden bg-slate-100">
                   <img
-                    src={
-                      index === 0
-                        ? '/images/service_provider_mechanics.jpg'
-                        : index === 1
-                        ? '/images/special_offer_mechanic.jpg'
-                        : 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=600&auto=format&fit=crop&q=80'
-                    }
-                    alt={mech.business_name || mech.first_name}
+                    src={cardImage}
+                    alt={`${mech.first_name} ${mech.last_name}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
 
@@ -208,22 +198,25 @@ export default function MechanicsListPage() {
 
                   {/* Badge d'intervention mobile */}
                   <div className="absolute bottom-2.5 right-2.5 bg-[#5e17eb]/90 backdrop-blur-md text-white text-[10px] font-black px-2 py-0.5 rounded-full">
-                    Atelier Mobile
+                    Atelier & Mobile
                   </div>
                 </div>
 
-                {/* Infos du prestataire */}
+                {/* Infos du technicien */}
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="font-black text-sm text-[#181528] group-hover:text-[#5e17eb] transition-colors">
-                      {mech.business_name || `${mech.first_name} ${mech.last_name}`}
+                      {mech.first_name} {mech.last_name}
                     </h3>
+                    <p className="text-[11px] font-bold text-[#5e17eb] mt-0.5">
+                      {mech.business_name}
+                    </p>
                     <p className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
                       <MapPin className="w-3.5 h-3.5 text-[#5e17eb]" />
-                      <span>{mech.city}, {mech.province} • Rayon {mech.service_radius_km} km</span>
+                      <span>Atelier MécanoMobile • {mech.years_experience} ans d&apos;expérience</span>
                     </p>
                     <p className="text-[11px] text-slate-600 mt-1 line-clamp-1">
-                      {mech.bio || 'Spécialiste de la mécanique automobile mobile et diagnostic multimarque.'}
+                      {mech.bio}
                     </p>
                   </div>
 

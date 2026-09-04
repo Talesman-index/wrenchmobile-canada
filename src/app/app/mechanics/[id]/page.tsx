@@ -170,11 +170,14 @@ export default function MechanicDetailPage() {
 
         <div>
           <h1 className="text-xl font-black text-[#181528] tracking-tight">
-            {mechanic.business_name || `${mechanic.first_name} ${mechanic.last_name}`}
+            {mechanic.first_name} {mechanic.last_name}
           </h1>
+          <p className="text-xs font-bold text-[#5e17eb] mt-0.5">
+            {mechanic.business_name}
+          </p>
           <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1 font-medium">
             <MapPin className="w-3.5 h-3.5 text-[#5e17eb]" />
-            <span>{mechanic.city}, {mechanic.province} • Rayon d’intervention {mechanic.service_radius_km} km</span>
+            <span>Atelier MécanoMobile • {mechanic.city}, {mechanic.province}</span>
           </p>
         </div>
 

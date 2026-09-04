@@ -458,21 +458,27 @@ export default function CustomerHomePage() {
           </div>
         </div>
 
-        {/* SECTION 3: Prestataires de Service / Mécaniciens */}
+        {/* SECTION 3: Notre Équipe de Techniciens d'Atelier */}
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Prestataires de Service</h2>
-              <p className="text-[11px] text-slate-400">Techniciens certifiés Sceau Rouge</p>
+              <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Notre Équipe d&apos;Atelier</h2>
+              <p className="text-[11px] text-slate-400">Maîtres mécaniciens & techniciens certifiés Sceau Rouge</p>
             </div>
             <Link href="/app/mechanics" className="text-xs font-bold text-[#5e17eb] hover:underline">
-              Voir tout
+              Voir l&apos;équipe
             </Link>
           </div>
 
           <div className="flex flex-col gap-3">
             {mechanics.map((mech, index) => {
               const isFav = savedFavorites.includes(mech.id);
+              const cardImage =
+                index === 0
+                  ? '/images/service_provider_mechanics.jpg'
+                  : index === 1
+                  ? '/images/special_offer_mechanic.jpg'
+                  : '/images/offer_battery_mechanic.jpg';
 
               return (
                 <Link
@@ -480,15 +486,11 @@ export default function CustomerHomePage() {
                   href={`/app/mechanics/${mech.id}`}
                   className="bg-white border border-slate-100 rounded-3xl p-3.5 shadow-card hover:shadow-card-hover transition-all flex flex-col gap-3 group relative"
                 >
-                  {/* Photo bannière avec bouton coeur rouge en haut à droite */}
+                  {/* Photo bannière */}
                   <div className="relative h-36 w-full rounded-2xl overflow-hidden bg-slate-100">
                     <img
-                      src={
-                        index === 0
-                          ? '/images/service_provider_mechanics.jpg'
-                          : 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=600&auto=format&fit=crop&q=80'
-                      }
-                      alt={mech.business_name || mech.first_name}
+                      src={cardImage}
+                      alt={`${mech.first_name} ${mech.last_name}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
 
@@ -513,19 +515,22 @@ export default function CustomerHomePage() {
                     <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white text-[10px] font-bold">
                       <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                       <span>{mech.rating.toFixed(1)}</span>
-                      <span className="text-slate-300">({mech.jobs_completed} avis)</span>
+                      <span className="text-slate-300">({mech.jobs_completed} interventions)</span>
                     </div>
                   </div>
 
-                  {/* Infos du prestataire */}
+                  {/* Infos du technicien */}
                   <div className="flex items-start justify-between">
                     <div>
                       <h3 className="font-black text-sm text-[#181528] group-hover:text-[#5e17eb] transition-colors">
-                        {mech.business_name || `${mech.first_name} ${mech.last_name}`}
+                        {mech.first_name} {mech.last_name}
                       </h3>
+                      <p className="text-[11px] font-bold text-[#5e17eb] mt-0.5">
+                        {mech.business_name}
+                      </p>
                       <p className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
                         <MapPin className="w-3.5 h-3.5 text-[#5e17eb]" />
-                        <span>{mech.city}, {mech.province} • Service Mobile ({mech.service_radius_km} km)</span>
+                        <span>Atelier MécanoMobile • {mech.years_experience} ans d&apos;expérience</span>
                       </p>
                     </div>
 
@@ -541,11 +546,11 @@ export default function CustomerHomePage() {
                   <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
                       <Clock className="w-3.5 h-3.5 text-[#5e17eb]" />
-                      <span>~15 min • 3,5 km</span>
+                      <span>{mech.is_available ? 'Disponible aujourd\'hui' : 'En intervention'}</span>
                     </div>
 
                     <span className="text-[11px] font-black text-white bg-[#5e17eb] group-hover:bg-[#4c0ec4] px-4 py-1.5 rounded-full transition-colors shadow-purple-cta">
-                      Réserver
+                      Prendre RDV
                     </span>
                   </div>
                 </Link>
