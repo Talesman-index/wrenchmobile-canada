@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Compass, Heart, MessageSquare, User } from 'lucide-react';
+import { Home, Compass, Car, MessageSquare, User } from 'lucide-react';
 import { useApp } from '@/lib/store';
 
 export default function CustomerBottomNav() {
@@ -11,11 +11,11 @@ export default function CustomerBottomNav() {
   const { activeCustomerRequest } = useApp();
 
   const navItems: { href: string; label: string; icon: any; badge?: boolean }[] = [
-    { href: '/app', label: 'Accueil', icon: Home },
-    { href: '/app/explore', label: 'Explorer', icon: Compass, badge: Boolean(activeCustomerRequest) },
-    { href: '/app/vehicles', label: 'Garage', icon: Heart },
+    { href: '/app', label: 'Home', icon: Home },
+    { href: '/app/explore', label: 'Explore', icon: Compass, badge: Boolean(activeCustomerRequest) },
+    { href: '/app/vehicles', label: 'Garage', icon: Car },
     { href: '/app/chat', label: 'Messages', icon: MessageSquare },
-    { href: '/app/profile', label: 'Profil', icon: User },
+    { href: '/app/profile', label: 'Profile', icon: User },
   ];
 
   return (
@@ -44,7 +44,7 @@ export default function CustomerBottomNav() {
                   <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5] text-[#5e17eb]' : 'stroke-[1.8]'}`} />
                 </div>
                 {item.badge && (
-                  <span className="absolute 0 right-0 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white animate-pulse" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white animate-pulse" />
                 )}
               </div>
               <span className={`text-[10px] mt-0.5 tracking-tight font-extrabold ${isActive ? 'text-[#5e17eb]' : 'text-slate-400'}`}>

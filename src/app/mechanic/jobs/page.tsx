@@ -3,8 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { useApp } from '@/lib/store';
-import { Briefcase, Car, MapPin, ChevronRight, Clock, ShieldCheck } from 'lucide-react';
-import { formatCAD, getStatusBadge } from '@/lib/utils';
+import { Briefcase, MapPin, ChevronRight } from 'lucide-react';
+import { formatGBP, getStatusBadge } from '@/lib/utils';
 
 export default function MechanicJobsPage() {
   const { serviceRequests, currentMechanicProfile } = useApp();
@@ -16,17 +16,17 @@ export default function MechanicJobsPage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-xl font-black text-[#181528] tracking-tight">Mes Missions</h1>
-        <p className="text-xs text-slate-500 mt-0.5">Missions actives et historique des interventions</p>
+        <h1 className="text-xl font-black text-[#181528] tracking-tight">My Jobs</h1>
+        <p className="text-xs text-slate-500 mt-0.5">Active dispatches and completed mobile repair history</p>
       </div>
 
       <div className="flex flex-col gap-3">
         {myJobs.length === 0 ? (
           <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center shadow-card">
             <Briefcase className="w-8 h-8 text-purple-300 mx-auto mb-2" />
-            <p className="text-sm font-bold text-[#181528]">Aucune mission pour le moment</p>
+            <p className="text-sm font-bold text-[#181528]">No jobs at the moment</p>
             <p className="text-xs text-slate-500 mt-1">
-              Basculez en mode EN LIGNE sur votre tableau de bord pour recevoir les demandes.
+              Switch to ONLINE on your dashboard to start receiving incoming London requests.
             </p>
           </div>
         ) : (
@@ -57,13 +57,13 @@ export default function MechanicJobsPage() {
 
                   <div className="text-right">
                     <p className="text-sm font-black text-emerald-600">
-                      {formatCAD(
+                      {formatGBP(
                         job.final_amount
                           ? (job.labor_amount || 0) + (job.parts_amount || 0) * 0.9
                           : job.estimated_amount * 0.88
                       )}
                     </p>
-                    <p className="text-[10px] text-slate-400">Gain net</p>
+                    <p className="text-[10px] text-slate-400">Net payout</p>
                   </div>
                 </div>
 
@@ -74,7 +74,7 @@ export default function MechanicJobsPage() {
                   </div>
 
                   <div className="flex items-center gap-1 text-[#5e17eb] font-black shrink-0 ml-2">
-                    <span>{isLive ? 'Gérer la mission' : 'Voir le rapport'}</span>
+                    <span>{isLive ? 'Manage Job' : 'View Report'}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </div>
                 </div>

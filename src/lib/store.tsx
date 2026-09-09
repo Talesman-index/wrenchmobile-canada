@@ -13,16 +13,16 @@ import {
   ServiceType,
   VerificationStatus,
 } from '@/types/database';
-import { PLATFORM_FEE_PERCENTAGE, CANADIAN_CITIES } from './constants';
+import { PLATFORM_FEE_PERCENTAGE, LONDON_AREAS } from './constants';
 
 interface AppContextType {
-  // Utilisateur actuel & rôle
+  // Current user & role
   currentRole: UserRole;
   setCurrentRole: (role: UserRole) => void;
   currentUser: Profile;
   updateCurrentUser: (profile: Partial<Profile>) => void;
 
-  // Véhicules
+  // Vehicles
   vehicles: Vehicle[];
   primaryVehicle: Vehicle | undefined;
   addVehicle: (v: Omit<Vehicle, 'id' | 'user_id' | 'created_at'>) => Vehicle;
@@ -30,14 +30,14 @@ interface AppContextType {
   deleteVehicle: (id: string) => void;
   setPrimaryVehicle: (id: string) => void;
 
-  // Mécaniciens
+  // Mechanics
   mechanics: MechanicProfile[];
   currentMechanicProfile: MechanicProfile;
   toggleMechanicAvailability: () => void;
   updateMechanicVerification: (mechanicId: string, status: VerificationStatus) => void;
   updateMechanicProfile: (id: string, updates: Partial<MechanicProfile>) => void;
 
-  // Demandes de service
+  // Service requests
   serviceRequests: ServiceRequest[];
   activeCustomerRequest: ServiceRequest | undefined;
   activeMechanicJob: ServiceRequest | undefined;
@@ -66,7 +66,7 @@ interface AppContextType {
   submitReview: (requestId: string, rating: number, comment?: string) => void;
   cancelRequest: (requestId: string) => void;
 
-  // Plateforme & Statistiques
+  // Platform & Stats
   payments: Payment[];
   reviews: Review[];
   resetDemoData: () => void;
@@ -75,10 +75,10 @@ interface AppContextType {
 const SEED_CUSTOMER: Profile = {
   id: 'usr-cust-001',
   role: 'customer',
-  first_name: 'David',
-  last_name: 'Tremblay',
-  email: 'david.tremblay@example.ca',
-  phone: '+1 (514) 555-0192',
+  first_name: 'James',
+  last_name: 'Wilson',
+  email: 'james.wilson@example.co.uk',
+  phone: '+44 20 7946 0912',
   avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
   created_at: new Date().toISOString(),
 };
@@ -87,25 +87,26 @@ const SEED_VEHICLES: Vehicle[] = [
   {
     id: 'veh-001',
     user_id: 'usr-cust-001',
-    make: 'Ford',
-    model: 'F-150 SuperCrew',
+    make: 'BMW',
+    model: '3 Series Touring',
     year: 2022,
-    trim: 'XLT 4x4 EcoBoost',
-    fuel_type: 'Essence',
-    license_plate: 'QCB-8492',
-    vin: '1FTFW1E84NKD39281',
+    trim: '330e M Sport PHEV',
+    fuel_type: 'Hybrid',
+    license_plate: 'LN22 XKP',
+    vin: 'WBA31AY08NFP19284',
     is_primary: true,
     created_at: new Date().toISOString(),
   },
   {
     id: 'veh-002',
     user_id: 'usr-cust-001',
-    make: 'Toyota',
-    model: 'RAV4 Hybride',
+    make: 'Land Rover',
+    model: 'Range Rover Evoque',
     year: 2023,
-    trim: 'XSE AWD',
-    fuel_type: 'Hybride',
-    license_plate: 'QC-5928K',
+    trim: 'D200 R-Dynamic SE',
+    fuel_type: 'Diesel',
+    license_plate: 'LD71 WXY',
+    vin: 'SALVA2BC6MH109283',
     is_primary: false,
     created_at: new Date().toISOString(),
   },
@@ -115,22 +116,22 @@ const SEED_MECHANICS: MechanicProfile[] = [
   {
     id: 'mech-001',
     user_id: 'usr-mech-001',
-    first_name: 'Marc-André',
-    last_name: 'Bouchard',
-    email: 'marc.bouchard@mecanomobile.ca',
-    phone: '+1 (514) 555-0144',
-    business_name: "Chef d'Atelier & Maître Mécanicien",
-    bio: 'Maître mécanicien certifié Sceau Rouge avec 12+ années d’expérience. Responsable de la flotte mobile et du diagnostic avancé pour notre atelier MécanoMobile.',
-    years_experience: 12,
-    city: 'Montréal',
-    province: 'QC',
-    latitude: 45.5017,
-    longitude: -73.5673,
-    service_radius_km: 40,
+    first_name: 'Marcus',
+    last_name: 'Sterling',
+    email: 'marcus.sterling@wrenchmobile.co.uk',
+    phone: '+44 20 7946 0144',
+    business_name: 'Master Mobile Technician & Fleet Lead',
+    bio: 'IMI Level 4 Certified Master Tech with 14+ years experience across German and British prestige marques. Fully equipped mobile workshop van for Central London.',
+    years_experience: 14,
+    city: 'Westminster',
+    province: 'London',
+    latitude: 51.5074,
+    longitude: -0.1278,
+    service_radius_km: 30,
     verification_status: 'verified',
     is_available: true,
     rating: 4.98,
-    jobs_completed: 142,
+    jobs_completed: 184,
     avatar_url: '/images/landing/mechanic_pro.jpg',
     services_offered: [
       'battery_jump',
@@ -149,21 +150,21 @@ const SEED_MECHANICS: MechanicProfile[] = [
     id: 'mech-002',
     user_id: 'usr-mech-002',
     first_name: 'Sarah',
-    last_name: 'Kowalski',
-    email: 'sarah.k@mecanomobile.ca',
-    phone: '+1 (514) 555-0188',
-    business_name: 'Spécialiste Diagnostic & Électrique',
-    bio: 'Technicienne senior certifiée en diagnostic électronique et systèmes hybrides/multiplexés. Spécialiste de notre unité d’intervention mobile.',
-    years_experience: 8,
-    city: 'Montréal',
-    province: 'QC',
-    latitude: 45.5200,
-    longitude: -73.5800,
-    service_radius_km: 35,
+    last_name: 'Jenkins',
+    email: 'sarah.jenkins@wrenchmobile.co.uk',
+    phone: '+44 20 7946 0188',
+    business_name: 'Diagnostic & EV/Hybrid Specialist',
+    bio: 'Senior automotive technician certified in dealer-level electronic diagnostics, high-voltage battery systems and ECU coding. Rapid mobile response.',
+    years_experience: 9,
+    city: 'Camden',
+    province: 'London',
+    latitude: 51.5390,
+    longitude: -0.1426,
+    service_radius_km: 25,
     verification_status: 'verified',
     is_available: true,
-    rating: 4.95,
-    jobs_completed: 89,
+    rating: 4.96,
+    jobs_completed: 112,
     avatar_url: '/images/special_offer_mechanic.jpg',
     services_offered: [
       'battery_jump',
@@ -178,22 +179,22 @@ const SEED_MECHANICS: MechanicProfile[] = [
   {
     id: 'mech-003',
     user_id: 'usr-mech-003',
-    first_name: 'Alexandre',
-    last_name: 'Gagnon',
-    email: 'alex.gagnon@mecanomobile.ca',
-    phone: '+1 (514) 555-0112',
-    business_name: "Technicien Entretien & Dépannage",
-    bio: 'Technicien mobile dédié aux entretiens périodiques (vidanges, freins, pneus, batterie) à bord de notre camionnette-atelier tout équipée.',
-    years_experience: 5,
-    city: 'Montréal',
-    province: 'QC',
-    latitude: 45.4800,
-    longitude: -73.6100,
-    service_radius_km: 30,
+    first_name: 'David',
+    last_name: 'Clarke',
+    email: 'david.clarke@wrenchmobile.co.uk',
+    phone: '+44 20 7946 0112',
+    business_name: 'Mobile Servicing & Rapid Response',
+    bio: 'Dedicated mobile technician carrying high-grade oils, OEM brake parts and on-site tyre fitting machinery. Ready across South and East London.',
+    years_experience: 6,
+    city: 'Southwark',
+    province: 'London',
+    latitude: 51.5033,
+    longitude: -0.0895,
+    service_radius_km: 20,
     verification_status: 'verified',
     is_available: true,
-    rating: 4.92,
-    jobs_completed: 64,
+    rating: 4.93,
+    jobs_completed: 78,
     avatar_url: '/images/service_provider_mechanics.jpg',
     services_offered: ['oil_change', 'flat_tire', 'battery_jump', 'brake_service'],
     created_at: new Date().toISOString(),
@@ -204,33 +205,33 @@ const SEED_REQUESTS: ServiceRequest[] = [
   {
     id: 'req-hist-001',
     customer_id: 'usr-cust-001',
-    customer_name: 'David Tremblay',
-    customer_phone: '+1 (514) 555-0192',
+    customer_name: 'James Wilson',
+    customer_phone: '+44 20 7946 0912',
     mechanic_id: 'mech-001',
     mechanic: SEED_MECHANICS[0],
     vehicle_id: 'veh-001',
     vehicle: SEED_VEHICLES[0],
     service_type: 'brake_service',
-    description: 'Grincement aigu à la roue avant gauche lors du freinage par temps froid.',
-    latitude: 45.5017,
-    longitude: -73.5673,
-    address: '1000 Rue de la Gauchetière O, Montréal, QC H3B 4W5',
-    city: 'Montréal',
-    province: 'QC',
+    description: 'High-pitched squeal from front nearside brake when slowing at low speeds in wet weather.',
+    latitude: 51.5194,
+    longitude: -0.1588,
+    address: '45 Baker Street, Marylebone, London, W1U 8ED',
+    city: 'Westminster',
+    province: 'London',
     status: 'completed',
-    estimated_amount: 175.0,
-    labor_amount: 120.0,
-    parts_amount: 85.0,
+    estimated_amount: 139.0,
+    labor_amount: 85.0,
+    parts_amount: 64.0,
     additional_fee: 0,
-    platform_fee: 24.6,
-    tax_amount: 34.37,
-    final_amount: 263.97,
-    diagnostic_notes: 'Plaquettes céramiques avant usées à 2mm. Remplacement effectué selon spécifications d’origine et lubrification des coulisseaux.',
-    work_performed: 'Remplacement plaquettes de frein essieu avant & nettoyage des étriers',
-    parts_used: 'Jeu de plaquettes céramiques Raybestos Element3',
+    platform_fee: 17.88,
+    tax_amount: 33.38,
+    final_amount: 200.26,
+    diagnostic_notes: 'Front brake pads worn down to 2.5mm. Replaced with Brembo OEM-grade pads, lubed caliper slider pins and cleaned carriers.',
+    work_performed: 'Front axle brake pads replacement, caliper slide service & brake wear sensor reset',
+    parts_used: 'Brembo Low-Met Ceramic Front Pad Set & Electronic Wear Sensor',
     eta_minutes: 0,
-    created_at: new Date(Date.now() - 86400000 * 4).toISOString(),
-    updated_at: new Date(Date.now() - 86400000 * 4).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 3).toISOString(),
+    updated_at: new Date(Date.now() - 86400000 * 3).toISOString(),
   },
 ];
 
@@ -240,14 +241,14 @@ const SEED_PAYMENTS: Payment[] = [
     request_id: 'req-hist-001',
     customer_id: 'usr-cust-001',
     mechanic_id: 'mech-001',
-    subtotal: 205.0,
-    platform_fee: 24.6,
-    tax_amount: 34.37,
-    total: 263.97,
-    currency: 'CAD',
+    subtotal: 149.0,
+    platform_fee: 17.88,
+    tax_amount: 33.38,
+    total: 200.26,
+    currency: 'GBP',
     payment_status: 'succeeded',
     stripe_payment_id: 'pi_3Nh49kL893KlM94Jk',
-    created_at: new Date(Date.now() - 86400000 * 4).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 3).toISOString(),
   },
 ];
 
@@ -258,8 +259,8 @@ const SEED_REVIEWS: Review[] = [
     customer_id: 'usr-cust-001',
     mechanic_id: 'mech-001',
     rating: 5,
-    comment: 'Marc-André est arrivé rapidement en plein centre-ville de Montréal malgré la neige. Freins comme neufs !',
-    created_at: new Date(Date.now() - 86400000 * 4).toISOString(),
+    comment: 'Marcus arrived right on time outside our Marylebone flat. Replaced the brake pads cleanly and with zero fuss. Super professional service!',
+    created_at: new Date(Date.now() - 86400000 * 3).toISOString(),
   },
 ];
 
@@ -275,10 +276,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [reviews, setReviews] = useState<Review[]>(SEED_REVIEWS);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Charger depuis le stockage local
+  // Load from local storage
   useEffect(() => {
     try {
-      const storedState = localStorage.getItem('wrench_app_state_v1');
+      const storedState = localStorage.getItem('wrench_app_state_london_v1');
       if (storedState) {
         const parsed = JSON.parse(storedState);
         if (parsed.currentRole) setCurrentRole(parsed.currentRole);
@@ -290,17 +291,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         if (parsed.reviews) setReviews(parsed.reviews);
       }
     } catch (e) {
-      console.warn('Erreur chargement état démo:', e);
+      console.warn('Error loading demo state:', e);
     }
     setIsLoaded(true);
   }, []);
 
-  // Sauvegarder dans le stockage local
+  // Save to local storage
   useEffect(() => {
     if (!isLoaded) return;
     try {
       localStorage.setItem(
-        'wrench_app_state_v1',
+        'wrench_app_state_london_v1',
         JSON.stringify({
           currentRole,
           currentUser,
@@ -312,7 +313,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         })
       );
     } catch (e) {
-      console.warn('Erreur sauvegarde état démo:', e);
+      console.warn('Error saving demo state:', e);
     }
   }, [isLoaded, currentRole, currentUser, vehicles, mechanics, serviceRequests, payments, reviews]);
 
@@ -421,8 +422,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       latitude: data.latitude,
       longitude: data.longitude,
       address: data.address,
-      city: data.city || 'Montréal',
-      province: data.province || 'QC',
+      city: data.city || 'Westminster',
+      province: data.province || 'London',
       status: 'searching',
       estimated_amount: data.estimated_amount,
       photos: data.photos || [],
@@ -432,7 +433,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     setServiceRequests((prev) => [newRequest, ...prev]);
 
-    // Simulation de recherche et affectation automatique d'un mécanicien
+    // Simulated search and automatic dispatch
     setTimeout(() => {
       const candidate = mechanics.find((m) => m.verification_status === 'verified' && m.is_available) || mechanics[0];
       if (candidate) {
@@ -495,7 +496,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   ) => {
     const subtotal = quote.labor_amount + quote.parts_amount + (quote.additional_fee || 0);
     const platformFee = Math.round(subtotal * PLATFORM_FEE_PERCENTAGE * 100) / 100;
-    const taxAmount = Math.round((subtotal + platformFee) * 0.14975 * 100) / 100;
+    // 20% UK standard VAT
+    const taxAmount = Math.round((subtotal + platformFee) * 0.20 * 100) / 100;
     const finalAmount = Math.round((subtotal + platformFee + taxAmount) * 100) / 100;
 
     setServiceRequests((prev) =>
@@ -522,11 +524,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const processPayment = async (requestId: string): Promise<Payment> => {
     const req = serviceRequests.find((r) => r.id === requestId);
-    if (!req) throw new Error('Demande introuvable');
+    if (!req) throw new Error('Service request not found');
 
     const subtotal = (req.labor_amount || 0) + (req.parts_amount || 0) + (req.additional_fee || 0);
     const platformFee = req.platform_fee || Math.round(subtotal * PLATFORM_FEE_PERCENTAGE * 100) / 100;
-    const taxAmount = req.tax_amount || Math.round((subtotal + platformFee) * 0.14975 * 100) / 100;
+    const taxAmount = req.tax_amount || Math.round((subtotal + platformFee) * 0.20 * 100) / 100;
     const total = req.final_amount || subtotal + platformFee + taxAmount;
 
     const newPayment: Payment = {
@@ -538,9 +540,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       platform_fee: platformFee,
       tax_amount: taxAmount,
       total,
-      currency: 'CAD',
+      currency: 'GBP',
       payment_status: 'succeeded',
-      stripe_payment_id: `pi_test_${Math.random().toString(36).substring(2, 10)}`,
+      stripe_payment_id: `pi_uk_${Math.random().toString(36).substring(2, 10)}`,
       created_at: new Date().toISOString(),
     };
 
@@ -558,7 +560,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       )
     );
 
-    // Incrémenter les interventions réalisées par le mécanicien
+    // Increment completed jobs count for mechanic
     setMechanics((prev) =>
       prev.map((m) =>
         m.id === req.mechanic_id ? { ...m, jobs_completed: m.jobs_completed + 1 } : m
@@ -605,7 +607,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setPayments(SEED_PAYMENTS);
     setReviews(SEED_REVIEWS);
     try {
-      localStorage.removeItem('wrench_app_state_v1');
+      localStorage.removeItem('wrench_app_state_london_v1');
     } catch {}
   };
 
@@ -663,7 +665,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 export function useApp() {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error('useApp doit être utilisé au sein d’un AppProvider');
+    throw new Error('useApp must be used within an AppProvider');
   }
   return context;
 }

@@ -6,13 +6,8 @@ import { useApp } from '@/lib/store';
 import { useToast } from '@/components/ui/ToastProvider';
 import {
   Wrench,
-  Car,
   ChevronRight,
   ChevronLeft,
-  ShieldCheck,
-  Plus,
-  ArrowRight,
-  Sparkles,
   MapPin,
   Clock,
   Search,
@@ -25,88 +20,86 @@ import {
   ShieldAlert,
   Droplets,
   Cpu,
-  Flame,
-  CheckCircle2,
   Bell,
   ChevronDown,
   AlertTriangle,
   Settings,
   X,
 } from 'lucide-react';
-import { formatCAD, getStatusBadge } from '@/lib/utils';
-import { SERVICE_DEFINITIONS, CANADIAN_CITIES } from '@/lib/constants';
+import { formatGBP, getStatusBadge } from '@/lib/utils';
+import { SERVICE_DEFINITIONS, LONDON_AREAS } from '@/lib/constants';
 import ServiceIcon from '@/components/ui/ServiceIcon';
 
 const SPECIAL_OFFERS = [
   {
     id: 'offer-1',
-    tag: 'Offre du Jour',
-    title: 'Diagnostic Mobile',
-    discountPrefix: 'Jusqu’à',
+    tag: 'Daily Special',
+    title: 'Mobile Diagnostics',
+    discountPrefix: 'Up to',
     discountValue: '20',
     discountSuffix: '%',
-    desc: 'Sur votre premier diagnostic complet à domicile ou au bureau.',
+    desc: 'On your first complete OBD-II diagnostic scan at home or office.',
     image: '/images/special_offer_mechanic.jpg',
-    ctaText: 'En profiter',
-    ctaHref: '/app/request',
+    ctaText: 'Claim Offer',
+    ctaHref: '/app/request?service=diagnostic_scan',
   },
   {
     id: 'offer-2',
-    tag: 'Batterie & Démarrage',
-    title: 'Pack Batterie Express',
-    discountPrefix: 'Rabais',
+    tag: 'Battery & Starting',
+    title: 'Express Battery Pack',
+    discountPrefix: 'Save',
     discountValue: '25',
     discountSuffix: '%',
-    desc: 'Boost & remplacement de batterie livré et installé sur place.',
+    desc: 'Jump start or brand new battery supplied, fitted and coded on site.',
     image: '/images/offer_battery_mechanic.jpg',
-    ctaText: 'En profiter',
+    ctaText: 'Claim Offer',
     ctaHref: '/app/request?service=battery_jump',
   },
   {
     id: 'offer-3',
-    tag: 'Freins & Sécurité',
-    title: 'Plaquettes & Disques',
-    discountPrefix: 'Économisez',
-    discountValue: '30',
-    discountSuffix: '$',
-    desc: 'Changement de freins certifié Sceau Rouge directement chez vous.',
+    tag: 'Brakes & Safety',
+    title: 'Brake Pads & Discs',
+    discountPrefix: 'Save',
+    discountValue: '25',
+    discountSuffix: '£',
+    desc: 'IMI-certified brake overhaul carried out directly on your driveway.',
     image: '/images/offer_brakes_mechanic.jpg',
-    ctaText: 'Réserver',
+    ctaText: 'Book Now',
     ctaHref: '/app/request?service=brake_service',
   },
   {
     id: 'offer-4',
-    tag: 'Entretien Mobile',
-    title: 'Check-Up 40 Points',
-    discountPrefix: 'Dès',
-    discountValue: '69',
-    discountSuffix: '$',
-    desc: 'Triage complet et vidange sans vous déplacer au garage.',
+    tag: 'Mobile Servicing',
+    title: '40-Point Inspection',
+    discountPrefix: 'From',
+    discountValue: '59',
+    discountSuffix: '£',
+    desc: 'Comprehensive multi-point triage & oil top-up without garage visits.',
     image: '/images/service_provider_mechanics.jpg',
-    ctaText: 'Commander',
+    ctaText: 'Order Now',
     ctaHref: '/app/request?service=oil_change',
   },
 ];
 
 export default function CustomerHomePage() {
-  const { currentUser, primaryVehicle, vehicles, activeCustomerRequest, mechanics } = useApp();
+  const { activeCustomerRequest, mechanics } = useApp();
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [savedFavorites, setSavedFavorites] = useState<string[]>(['mech-001']);
-  const [selectedCity, setSelectedCity] = useState('Montréal, QC');
-  const [showCityPicker, setShowCityPicker] = useState(false);
+  const [selectedArea, setSelectedArea] = useState('Westminster, London');
+  const [showAreaPicker, setShowAreaPicker] = useState(false);
 
-  // Modales "Voir tout"
+  // Modals "View all"
   const [showAllServicesModal, setShowAllServicesModal] = useState(false);
   const [showAllOffersModal, setShowAllOffersModal] = useState(false);
 
-  // État du carrousel d'offres spéciales
+  // Carousel state
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartXRef = useRef<number | null>(null);
   const touchEndXRef = useRef<number | null>(null);
 
-  // Auto-play du slider toutes les 4,5 secondes
+  // Auto-play slider
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
@@ -115,7 +108,7 @@ export default function CustomerHomePage() {
     return () => clearInterval(timer);
   }, [isPaused]);
 
-  // Gestion du swipe tactile mobile (Touch gesture)
+  // Touch swipe support
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartXRef.current = e.targetTouches[0].clientX;
   };
@@ -155,23 +148,11 @@ export default function CustomerHomePage() {
     );
   };
 
-  const iconsMap: Record<string, any> = {
-    Zap: Zap,
-    BatteryCharging: BatteryCharging,
-    Disc: Disc,
-    ShieldAlert: ShieldAlert,
-    Droplets: Droplets,
-    Cpu: Cpu,
-    AlertTriangle: AlertTriangle,
-    Wrench: Wrench,
-    Settings: Settings,
-  };
-
   return (
     <div className="flex flex-col gap-4 -mx-4 -mt-3 pb-6">
-      {/* En-tête Violet Royal avec courbes topographiques, Localisation et Recherche */}
+      {/* Royal Purple Header with Location & Search */}
       <div className="relative bg-gradient-to-b from-[#5610d8] via-[#5e17eb] to-[#6822f3] text-white rounded-b-[36px] p-5 pt-4 shadow-purple-cta overflow-hidden flex flex-col gap-4">
-        {/* Lignes topographiques décoratives en arrière-plan */}
+        {/* Background contour lines */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none opacity-15"
           viewBox="0 0 400 220"
@@ -184,26 +165,25 @@ export default function CustomerHomePage() {
           <path d="M-10 190 C 160 150, 300 230, 450 170" stroke="white" strokeWidth="1.5" />
         </svg>
 
-        {/* Barre supérieure : Localisation & Cloche de notification */}
+        {/* Top bar: London Area & Notification bell */}
         <div className="relative z-10 flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-[11px] text-purple-200 font-medium">Localisation</span>
+            <span className="text-[11px] text-purple-200 font-medium">Your Location</span>
             <button
-              onClick={() => setShowCityPicker(!showCityPicker)}
+              onClick={() => setShowAreaPicker(!showAreaPicker)}
               className="flex items-center gap-1.5 text-sm font-black text-white hover:text-purple-200 transition-colors mt-0.5"
             >
               <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span>{selectedCity}</span>
+              <span>{selectedArea}</span>
               <ChevronDown className="w-3.5 h-3.5 text-purple-200" />
             </button>
           </div>
 
-          {/* Cloche avec badge rouge */}
           <button
             onClick={() =>
               toast({
-                title: 'Mécaniciens en service',
-                message: '3 mécaniciens mobiles certifiés sont actuellement disponibles près de votre position.',
+                title: 'Mobile Mechanics Active',
+                message: '3 certified mobile vans are currently available near Westminster and Central London.',
                 type: 'wrench',
               })
             }
@@ -214,23 +194,24 @@ export default function CustomerHomePage() {
           </button>
         </div>
 
-        {/* Menu déroulant des villes */}
-        {showCityPicker && (
+        {/* London Area Picker Dropdown */}
+        {showAreaPicker && (
           <div className="relative z-50 bg-white text-[#181528] border border-slate-100 rounded-2xl shadow-2xl p-2 animate-in fade-in zoom-in-95">
             <p className="px-3 py-1 text-[10px] font-black text-slate-400 uppercase tracking-wider">
-              Changer de ville canadienne
+              Select London Borough
             </p>
-            {CANADIAN_CITIES.map((c) => (
+            {LONDON_AREAS.map((c) => (
               <button
                 key={c.name}
                 onClick={() => {
-                  setSelectedCity(`${c.name}, ${c.province}`);
-                  setShowCityPicker(false);
+                  setSelectedArea(`${c.name}, London`);
+                  setShowAreaPicker(false);
                 }}
                 className="w-full text-left px-3 py-2 text-xs text-[#181528] hover:bg-[#f3ebff] hover:text-[#5e17eb] font-bold flex items-center justify-between rounded-xl"
               >
-                <span>{c.name}, {c.province}</span>
-                {selectedCity.startsWith(c.name) && (
+                <span>{c.name}</span>
+                <span className="text-[10px] text-slate-400 font-normal">{c.region}</span>
+                {selectedArea.startsWith(c.name) && (
                   <span className="text-[#5e17eb] font-black">✓</span>
                 )}
               </button>
@@ -238,13 +219,13 @@ export default function CustomerHomePage() {
           </div>
         )}
 
-        {/* Barre de recherche + Bouton Filtre */}
+        {/* Search Bar + Map Filter Button */}
         <div className="relative z-10 flex items-center gap-2.5">
           <div className="relative flex-1">
             <Search className="w-4 h-4 text-[#5e17eb] absolute left-4 top-3.5" />
             <input
               type="text"
-              placeholder="Rechercher un service, garage ou panne..."
+              placeholder="Search service, fault or mechanic..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white text-[#181528] border-none rounded-2xl pl-11 pr-4 py-3 text-xs placeholder:text-slate-400 focus:ring-2 focus:ring-purple-300 outline-none shadow-sm font-medium"
@@ -254,31 +235,31 @@ export default function CustomerHomePage() {
           <Link
             href="/app/explore"
             className="w-11 h-11 rounded-2xl bg-white text-[#5e17eb] hover:bg-[#f3ebff] flex items-center justify-center shrink-0 shadow-md transition-colors"
-            title="Filtres & Carte"
+            title="Map & Coverage"
           >
             <SlidersHorizontal className="w-4 h-4 stroke-[2.5]" />
           </Link>
         </div>
       </div>
 
-      {/* Contenu principal */}
+      {/* Main Content Area */}
       <div className="px-4 flex flex-col gap-5 -mt-1">
-        {/* SECTION 1: Offres Spéciales (Carrousel interactif animé avec glissement / swipe) */}
+        {/* SECTION 1: Special Offers Carousel */}
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Offres Spéciales</h2>
+            <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Special Offers</h2>
             <div className="flex items-center gap-2">
               <button
                 onClick={prevSlide}
                 className="w-6 h-6 rounded-full bg-slate-100 hover:bg-[#f3ebff] hover:text-[#5e17eb] flex items-center justify-center text-slate-500 transition-colors"
-                title="Offre précédente"
+                title="Previous offer"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={nextSlide}
                 className="w-6 h-6 rounded-full bg-slate-100 hover:bg-[#f3ebff] hover:text-[#5e17eb] flex items-center justify-center text-slate-500 transition-colors"
-                title="Offre suivante"
+                title="Next offer"
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -286,12 +267,12 @@ export default function CustomerHomePage() {
                 href="/app/offers"
                 className="text-xs font-bold text-[#5e17eb] hover:underline ml-1"
               >
-                Voir tout
+                View all
               </Link>
             </div>
           </div>
 
-          {/* Conteneur Carrousel avec support Touch Swipe */}
+          {/* Carousel Track */}
           <div
             className="relative overflow-hidden rounded-3xl bg-[#f4f5f8] border border-slate-100 shadow-card cursor-grab active:cursor-grabbing select-none"
             onTouchStart={handleTouchStart}
@@ -300,16 +281,6 @@ export default function CustomerHomePage() {
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
-            {/* Texture de points discrète en arrière-plan */}
-            <div
-              className="absolute top-2 left-2 w-36 h-24 opacity-15 pointer-events-none z-0"
-              style={{
-                backgroundImage: 'radial-gradient(#5e17eb 1px, transparent 1px)',
-                backgroundSize: '8px 8px',
-              }}
-            />
-
-            {/* Piste de glissement (Slider Track) */}
             <div
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${activeSlide * 100}%)` }}
@@ -319,7 +290,6 @@ export default function CustomerHomePage() {
                   key={offer.id}
                   className="w-full shrink-0 p-5 flex items-center justify-between relative z-10 min-w-full"
                 >
-                  {/* Texte et bouton à gauche */}
                   <div className="relative z-10 max-w-[190px]">
                     <div className="inline-block bg-white px-2.5 py-0.5 rounded-full text-[9px] font-bold text-slate-700 shadow-sm mb-2">
                       {offer.tag}
@@ -343,7 +313,6 @@ export default function CustomerHomePage() {
                     </Link>
                   </div>
 
-                  {/* Photo de l'offre dans l'arc circulaire stylisé */}
                   <div className="relative w-32 h-32 shrink-0 flex items-center justify-center">
                     <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-white shadow-md bg-white relative">
                       <img
@@ -358,7 +327,7 @@ export default function CustomerHomePage() {
             </div>
           </div>
 
-          {/* Indicateurs de carrousel interactifs */}
+          {/* Dots */}
           <div className="flex items-center justify-center gap-1.5 pt-0.5">
             {SPECIAL_OFFERS.map((_, idx) => {
               const isActive = idx === activeSlide;
@@ -371,14 +340,14 @@ export default function CustomerHomePage() {
                       ? 'w-6 h-1.5 rounded-full bg-[#5e17eb]'
                       : 'w-1.5 h-1.5 rounded-full bg-purple-200 hover:bg-purple-300'
                   }`}
-                  title={`Aller à l'offre ${idx + 1}`}
+                  title={`Go to slide ${idx + 1}`}
                 />
               );
             })}
           </div>
         </div>
 
-        {/* Mission en direct si active */}
+        {/* Live Service Request Card if active */}
         {activeCustomerRequest && (
           <Link
             href={`/app/services/${activeCustomerRequest.id}`}
@@ -391,14 +360,14 @@ export default function CustomerHomePage() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-[9px] font-black uppercase tracking-wider bg-white/20 text-white px-2 py-0.5 rounded-full">
-                    Mission en cours
+                    Active Mission
                   </span>
                   <span className="text-xs font-bold text-white">
                     {getStatusBadge(activeCustomerRequest.status).label}
                   </span>
                 </div>
                 <p className="text-xs font-bold mt-0.5">
-                  {activeCustomerRequest.vehicle?.make} {activeCustomerRequest.vehicle?.model} • ~{activeCustomerRequest.eta_minutes || 20} min d&apos;arrivée
+                  {activeCustomerRequest.vehicle?.make} {activeCustomerRequest.vehicle?.model} • ~{activeCustomerRequest.eta_minutes || 20} min ETA
                 </p>
               </div>
             </div>
@@ -406,18 +375,18 @@ export default function CustomerHomePage() {
           </Link>
         )}
 
-        {/* SECTION 2: Services (4 Boutons circulaires stylisés) */}
+        {/* SECTION 2: Popular Services */}
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Services</h2>
-              <p className="text-[11px] text-slate-400">Interventions rapides à domicile</p>
+              <p className="text-[11px] text-slate-400">Mobile interventions at your doorstep</p>
             </div>
             <Link
               href="/app/services-list"
               className="text-xs font-bold text-[#5e17eb] hover:underline"
             >
-              Voir tout
+              View all
             </Link>
           </div>
 
@@ -425,23 +394,23 @@ export default function CustomerHomePage() {
             {[
               {
                 type: 'mechanic_repair',
-                label: 'Entretien',
-                fullLabel: 'Entretien Auto',
+                label: 'Servicing',
+                fullLabel: 'Routine Servicing',
               },
               {
                 type: 'bodywork_dent',
-                label: 'Débosselage',
-                fullLabel: 'Carrosserie',
+                label: 'Brakes',
+                fullLabel: 'Brakes & Discs',
               },
               {
                 type: 'oil_change',
-                label: 'Vidange',
-                fullLabel: 'Vidange & Huile',
+                label: 'Oil Change',
+                fullLabel: 'Full Oil Service',
               },
               {
                 type: 'car_wash',
-                label: 'Lavage',
-                fullLabel: 'Lavage Mobile',
+                label: 'Valeting',
+                fullLabel: 'Mobile Valet',
               },
             ].map((cat) => (
               <Link
@@ -458,15 +427,15 @@ export default function CustomerHomePage() {
           </div>
         </div>
 
-        {/* SECTION 3: Notre Équipe de Techniciens d'Atelier */}
+        {/* SECTION 3: Mobile Mechanics Fleet */}
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Notre Équipe d&apos;Atelier</h2>
-              <p className="text-[11px] text-slate-400">Maîtres mécaniciens & techniciens certifiés Sceau Rouge</p>
+              <h2 className="text-base font-extrabold text-[#181528] tracking-tight">Our London Workshop Fleet</h2>
+              <p className="text-[11px] text-slate-400">IMI-certified Level 3 & 4 mobile technicians</p>
             </div>
             <Link href="/app/mechanics" className="text-xs font-bold text-[#5e17eb] hover:underline">
-              Voir l&apos;équipe
+              View team
             </Link>
           </div>
 
@@ -486,7 +455,7 @@ export default function CustomerHomePage() {
                   href={`/app/mechanics/${mech.id}`}
                   className="bg-white border border-slate-100 rounded-3xl p-3.5 shadow-card hover:shadow-card-hover transition-all flex flex-col gap-3 group relative"
                 >
-                  {/* Photo bannière */}
+                  {/* Photo banner */}
                   <div className="relative h-36 w-full rounded-2xl overflow-hidden bg-slate-100">
                     <img
                       src={cardImage}
@@ -494,12 +463,12 @@ export default function CustomerHomePage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
 
-                    {/* Badge Sceau Rouge */}
+                    {/* IMI Certified Badge */}
                     <span className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-md text-[#5e17eb] text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-sm">
-                      Sceau Rouge
+                      IMI Certified
                     </span>
 
-                    {/* Bouton Coeur / Favori */}
+                    {/* Heart button */}
                     <button
                       onClick={(e) => toggleFavorite(mech.id, e)}
                       className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-slate-700 shadow-md active:scale-90 transition-transform"
@@ -511,15 +480,15 @@ export default function CustomerHomePage() {
                       />
                     </button>
 
-                    {/* Note en overlay sombre */}
+                    {/* Rating overlay */}
                     <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white text-[10px] font-bold">
                       <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                       <span>{mech.rating.toFixed(1)}</span>
-                      <span className="text-slate-300">({mech.jobs_completed} interventions)</span>
+                      <span className="text-slate-300">({mech.jobs_completed} jobs)</span>
                     </div>
                   </div>
 
-                  {/* Infos du technicien */}
+                  {/* Technician Info */}
                   <div className="flex items-start justify-between">
                     <div>
                       <h3 className="font-black text-sm text-[#181528] group-hover:text-[#5e17eb] transition-colors">
@@ -530,27 +499,27 @@ export default function CustomerHomePage() {
                       </p>
                       <p className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
                         <MapPin className="w-3.5 h-3.5 text-[#5e17eb]" />
-                        <span>Atelier MécanoMobile • {mech.years_experience} ans d&apos;expérience</span>
+                        <span>WrenchMobile London • {mech.years_experience} yrs experience</span>
                       </p>
                     </div>
 
                     <div className="text-right">
                       <span className="text-xs font-black text-[#5e17eb]">
-                        Dès {formatCAD(89)}
+                        From {formatGBP(59)}
                       </span>
                       <span className="block text-[10px] text-slate-400">Diagnostic</span>
                     </div>
                   </div>
 
-                  {/* Raccourci & Bouton Réserver */}
+                  {/* Booking shortcut */}
                   <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
                       <Clock className="w-3.5 h-3.5 text-[#5e17eb]" />
-                      <span>{mech.is_available ? 'Disponible aujourd\'hui' : 'En intervention'}</span>
+                      <span>{mech.is_available ? 'Available today' : 'On job'}</span>
                     </div>
 
                     <span className="text-[11px] font-black text-white bg-[#5e17eb] group-hover:bg-[#4c0ec4] px-4 py-1.5 rounded-full transition-colors shadow-purple-cta">
-                      Prendre RDV
+                      Book Now
                     </span>
                   </div>
                 </Link>
@@ -560,14 +529,14 @@ export default function CustomerHomePage() {
         </div>
       </div>
 
-      {/* MODALE "VOIR TOUT" : TOUS LES SERVICES DISPONIBLES */}
+      {/* MODAL: ALL SERVICES */}
       {showAllServicesModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-white border border-slate-100 rounded-3xl p-5 w-full max-w-lg shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h2 className="text-base font-black text-[#181528]">Tous les Services Mobiles</h2>
-                <p className="text-xs text-slate-500">Sélectionnez la prestation souhaitée à domicile</p>
+                <h2 className="text-base font-black text-[#181528]">All Mobile Services</h2>
+                <p className="text-xs text-slate-500">Select the desired mobile service at your location</p>
               </div>
               <button
                 onClick={() => setShowAllServicesModal(false)}
@@ -592,7 +561,7 @@ export default function CustomerHomePage() {
                     </h3>
                     <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">{srv.shortDesc}</p>
                     <p className="text-[11px] font-black text-[#5e17eb] mt-1">
-                      Dès {formatCAD(srv.basePriceCAD)}
+                      From {formatGBP(srv.basePriceGBP)}
                     </p>
                   </div>
                 </Link>
@@ -602,14 +571,14 @@ export default function CustomerHomePage() {
         </div>
       )}
 
-      {/* MODALE "VOIR TOUT" : TOUTES LES OFFRES SPÉCIALES */}
+      {/* MODAL: ALL OFFERS */}
       {showAllOffersModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-white border border-slate-100 rounded-3xl p-5 w-full max-w-lg shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h2 className="text-base font-black text-[#181528]">Toutes les Offres Spéciales</h2>
-                <p className="text-xs text-slate-500">Profitez de tarifs réduits sur nos prestations mobiles</p>
+                <h2 className="text-base font-black text-[#181528]">All Special Offers</h2>
+                <p className="text-xs text-slate-500">Exclusive discounts on mobile repairs and servicing</p>
               </div>
               <button
                 onClick={() => setShowAllOffersModal(false)}

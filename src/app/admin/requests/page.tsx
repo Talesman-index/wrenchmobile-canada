@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useApp } from '@/lib/store';
-import { ClipboardList, Car, MapPin, DollarSign, Calendar } from 'lucide-react';
-import { formatCAD, getStatusBadge } from '@/lib/utils';
+import { MapPin } from 'lucide-react';
+import { formatGBP, getStatusBadge } from '@/lib/utils';
 
 export default function AdminRequestsPage() {
   const { serviceRequests } = useApp();
@@ -19,9 +19,9 @@ export default function AdminRequestsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Toutes les Demandes de Service</h1>
+          <h1 className="text-2xl font-black text-white tracking-tight">Service Requests Master Log</h1>
           <p className="text-xs text-slate-400 mt-1">
-            Supervision du flux complet de dispatching et d&apos;exécution sur le territoire canadien.
+            Real-time dispatching and operational fulfillment supervision across Greater London.
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export default function AdminRequestsPage() {
               filter === 'all' ? 'bg-purple-600 text-white font-bold' : 'text-slate-400 hover:text-white'
             }`}
           >
-            Toutes ({serviceRequests.length})
+            All ({serviceRequests.length})
           </button>
           <button
             onClick={() => setFilter('active')}
@@ -40,7 +40,7 @@ export default function AdminRequestsPage() {
               filter === 'active' ? 'bg-purple-600 text-white font-bold' : 'text-slate-400 hover:text-white'
             }`}
           >
-            En cours
+            Active
           </button>
           <button
             onClick={() => setFilter('completed')}
@@ -48,7 +48,7 @@ export default function AdminRequestsPage() {
               filter === 'completed' ? 'bg-purple-600 text-white font-bold' : 'text-slate-400 hover:text-white'
             }`}
           >
-            Terminées
+            Completed
           </button>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default function AdminRequestsPage() {
                   <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${badge.bg}`}>
                     {badge.label}
                   </span>
-                  <span className="font-mono text-xs text-slate-400">ID : {req.id}</span>
+                  <span className="font-mono text-xs text-slate-400">ID: {req.id}</span>
                 </div>
 
                 <h2 className="text-sm font-bold text-white">
@@ -75,21 +75,21 @@ export default function AdminRequestsPage() {
                 </h2>
 
                 <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-xs text-slate-400">
-                  <span>Client : <strong className="text-slate-200">{req.customer_name}</strong></span>
-                  <span>Mécanicien : <strong className="text-slate-200">{req.mechanic ? `${req.mechanic.first_name} ${req.mechanic.last_name}` : 'En recherche'}</strong></span>
+                  <span>Customer: <strong className="text-slate-200">{req.customer_name}</strong></span>
+                  <span>Mechanic: <strong className="text-slate-200">{req.mechanic ? `${req.mechanic.first_name} ${req.mechanic.last_name}` : 'Searching / Dispatching'}</strong></span>
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                    <span>{req.city}, {req.province}</span>
+                    <span>{req.city}, London</span>
                   </span>
                 </div>
               </div>
 
               <div className="text-right border-t md:border-t-0 pt-2 md:pt-0 border-slate-800 shrink-0">
                 <p className="text-base font-bold text-white font-mono">
-                  {formatCAD(req.final_amount || req.estimated_amount)}
+                  {formatGBP(req.final_amount || req.estimated_amount)}
                 </p>
                 <p className="text-[10px] text-slate-400">
-                  {req.final_amount ? 'Payé en totalité' : 'Montant estimé'}
+                  {req.final_amount ? 'Settled in full' : 'Estimated call-out'}
                 </p>
               </div>
             </div>

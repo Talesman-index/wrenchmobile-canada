@@ -11,14 +11,10 @@ import {
   Navigation,
   CheckCircle2,
   Clock,
-  DollarSign,
-  FileText,
   Sparkles,
   ChevronLeft,
-  AlertCircle,
-  Camera,
 } from 'lucide-react';
-import { formatCAD, getStatusBadge } from '@/lib/utils';
+import { formatGBP, getStatusBadge } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 
 const MapComponent = dynamic(() => import('@/components/ui/MapComponent'), {
@@ -36,7 +32,7 @@ export default function MechanicJobExecutionPage() {
   const [diagnosticNotes, setDiagnosticNotes] = useState('');
   const [workPerformed, setWorkPerformed] = useState('');
   const [partsUsed, setPartsUsed] = useState('');
-  const [laborAmount, setLaborAmount] = useState('120');
+  const [laborAmount, setLaborAmount] = useState('95');
   const [partsAmount, setPartsAmount] = useState('0');
   const [additionalFee, setAdditionalFee] = useState('0');
 
@@ -45,12 +41,12 @@ export default function MechanicJobExecutionPage() {
   if (!request) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-        <p className="text-slate-500 text-sm">Mission introuvable.</p>
+        <p className="text-slate-500 text-sm">Job not found.</p>
         <button
           onClick={() => router.push('/mechanic/jobs')}
           className="mt-4 bg-[#0c1f38] text-white text-xs font-bold px-4 py-2 rounded-2xl"
         >
-          Retour aux missions
+          Back to Jobs
         </button>
       </div>
     );
@@ -73,8 +69,8 @@ export default function MechanicJobExecutionPage() {
   const handleSubmitQuote = (e: React.FormEvent) => {
     e.preventDefault();
     submitFinalQuote(request.id, {
-      diagnostic_notes: diagnosticNotes.trim() || 'Diagnostic standard complété par le mécanicien.',
-      work_performed: workPerformed.trim() || 'Intervention terminée avec succès selon les spécifications manufacturier.',
+      diagnostic_notes: diagnosticNotes.trim() || 'Standard vehicle inspection & diagnostics completed by certified technician.',
+      work_performed: workPerformed.trim() || 'Service carried out in full compliance with OEM guidelines.',
       parts_used: partsUsed.trim() || undefined,
       labor_amount: Number(laborAmount) || 0,
       parts_amount: Number(partsAmount) || 0,
@@ -84,7 +80,7 @@ export default function MechanicJobExecutionPage() {
 
   return (
     <div className="flex flex-col gap-4 pb-6">
-      {/* En-tête de mission */}
+      {/* Job Header */}
       <div className="flex items-center justify-between">
         <button
           onClick={() => router.push('/mechanic/jobs')}
@@ -98,7 +94,7 @@ export default function MechanicJobExecutionPage() {
         <div className="w-9" />
       </div>
 
-      {/* Carte GPS de destination client */}
+      {/* GPS Destination Map */}
       <div className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-card p-1.5 flex flex-col gap-2">
         <div className="flex items-center justify-between px-3 pt-1">
           <div className="flex items-center gap-2 text-[#181528] text-xs">
@@ -129,11 +125,11 @@ export default function MechanicJobExecutionPage() {
         </div>
       </div>
 
-      {/* Détails du client & Véhicule */}
+      {/* Customer & Vehicle Details */}
       <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card flex flex-col gap-3">
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase">Client</p>
+            <p className="text-[10px] font-bold text-slate-400 uppercase">Customer</p>
             <h2 className="text-sm font-black text-[#181528]">{request.customer_name}</h2>
             <p className="text-xs text-slate-500 font-mono mt-0.5">{request.customer_phone}</p>
           </div>
@@ -156,7 +152,7 @@ export default function MechanicJobExecutionPage() {
                 {request.vehicle?.year} {request.vehicle?.make} {request.vehicle?.model}
               </p>
               <p className="text-[10px] text-slate-500 font-mono">
-                {request.vehicle?.license_plate || 'SANS PLAQUE'}
+                {request.vehicle?.license_plate || 'NO REG'}
               </p>
             </div>
           </div>
@@ -166,19 +162,19 @@ export default function MechanicJobExecutionPage() {
         </div>
 
         <div className="text-xs text-slate-700 bg-[#f8f9fd] p-3 rounded-2xl border border-slate-100">
-          <span className="text-slate-400 block text-[10px] font-black uppercase mb-0.5">Symptôme signalé :</span>
+          <span className="text-slate-400 block text-[10px] font-black uppercase mb-0.5">Reported Issue:</span>
           {request.description}
         </div>
       </div>
 
-      {/* BOUTONS D'AVANCEMENT DU STATUT DE MISSION */}
+      {/* Progress Action Buttons */}
       {request.status === 'accepted' && (
         <button
           onClick={handleStartTrip}
           className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-4 rounded-2xl shadow-purple-cta flex items-center justify-center gap-2 text-sm transition-all active:scale-[0.98]"
         >
           <Navigation className="w-4 h-4" />
-          <span>Démarrer le trajet vers le client</span>
+          <span>Start Route to Customer</span>
         </button>
       )}
 
@@ -188,7 +184,7 @@ export default function MechanicJobExecutionPage() {
           className="w-full bg-[#181528] hover:bg-slate-900 text-white font-black py-4 rounded-2xl shadow-card flex items-center justify-center gap-2 text-sm transition-all active:scale-[0.98]"
         >
           <MapPin className="w-4 h-4 text-[#5e17eb]" />
-          <span>Marquer &quot;Arrivé sur place&quot;</span>
+          <span>Mark &quot;Arrived on Site&quot;</span>
         </button>
       )}
 
@@ -198,56 +194,56 @@ export default function MechanicJobExecutionPage() {
           className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl shadow-md flex items-center justify-center gap-2 text-sm transition-all active:scale-[0.98]"
         >
           <Wrench className="w-4 h-4" />
-          <span>Commencer l&apos;intervention & diagnostic</span>
+          <span>Begin Inspection & Repairs</span>
         </button>
       )}
 
-      {/* FORMULAIRE DE FINALISATION DE FACTURE */}
+      {/* Final Quote & Job Report Form */}
       {request.status === 'in_progress' && (
         <form onSubmit={handleSubmitQuote} className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card-hover flex flex-col gap-3 text-xs">
           <div className="flex items-center gap-2 mb-1">
             <Sparkles className="w-4 h-4 text-[#5e17eb]" />
-            <h2 className="text-sm font-black text-[#181528]">Rapport de terrain & Devis final</h2>
+            <h2 className="text-sm font-black text-[#181528]">Field Report & Final Quote</h2>
           </div>
 
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Constat de diagnostic</label>
+            <label className="block font-bold text-slate-700 mb-1">Diagnostic Findings</label>
             <textarea
               rows={3}
               value={diagnosticNotes}
               onChange={(e) => setDiagnosticNotes(e.target.value)}
-              placeholder="Ex : Tension batterie mesurée à 10,2V. Alternateur délivre 14,1V. Remplacement de la batterie requis."
+              placeholder="e.g. Battery voltage measured 10.2V. Alternateur output steady at 14.1V. Battery replacement required."
               className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-[#181528] focus:border-[#5e17eb] focus:bg-white outline-none resize-none"
               required
             />
           </div>
 
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Travaux effectués</label>
+            <label className="block font-bold text-slate-700 mb-1">Work Undertaken</label>
             <input
               type="text"
               value={workPerformed}
               onChange={(e) => setWorkPerformed(e.target.value)}
-              placeholder="Ex : Installation batterie neuve Groupe 35 + nettoyage des bornes"
+              placeholder="e.g. Installed new Yuasa 096 AGM battery + terminal cleaning"
               className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] focus:bg-white outline-none"
               required
             />
           </div>
 
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Pièces et fournitures utilisées</label>
+            <label className="block font-bold text-slate-700 mb-1">Parts & Consumables Used</label>
             <input
               type="text"
               value={partsUsed}
               onChange={(e) => setPartsUsed(e.target.value)}
-              placeholder="Ex : Batterie Interstate AGM MTX-35"
+              placeholder="e.g. Yuasa YBX9096 12V 70Ah 760A AGM"
               className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] focus:bg-white outline-none"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-slate-100">
             <div>
-              <label className="block font-bold text-slate-700 mb-1">Main-d&apos;œuvre (CAD $)</label>
+              <label className="block font-bold text-slate-700 mb-1">Labour (GBP £)</label>
               <input
                 type="number"
                 value={laborAmount}
@@ -258,7 +254,7 @@ export default function MechanicJobExecutionPage() {
             </div>
 
             <div>
-              <label className="block font-bold text-slate-700 mb-1">Pièces (CAD $)</label>
+              <label className="block font-bold text-slate-700 mb-1">Parts (GBP £)</label>
               <input
                 type="number"
                 value={partsAmount}
@@ -268,33 +264,37 @@ export default function MechanicJobExecutionPage() {
             </div>
           </div>
 
+          <p className="text-[11px] text-slate-500 italic">
+            Standard 20% UK VAT will be calculated and applied automatically to the invoice.
+          </p>
+
           <button
             type="submit"
             className="mt-2 w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3.5 rounded-2xl shadow-purple-cta text-xs transition-all active:scale-98"
           >
-            Transmettre le devis final au client
+            Send Final Quote to Customer
           </button>
         </form>
       )}
 
-      {/* Si en attente de paiement du client */}
+      {/* Awaiting Payment */}
       {request.status === 'awaiting_payment' && (
         <div className="bg-[#f3ebff] border border-purple-200 rounded-3xl p-5 text-center flex flex-col gap-2">
           <Clock className="w-8 h-8 text-[#5e17eb] mx-auto animate-pulse" />
-          <h2 className="text-sm font-black text-[#181528]">En attente du paiement du client</h2>
+          <h2 className="text-sm font-black text-[#181528]">Awaiting Customer Payment</h2>
           <p className="text-xs text-slate-600">
-            Le client a reçu le montant de {formatCAD(request.final_amount || 0)} sur son application pour validation via Stripe.
+            The customer has received the invoice total of {formatGBP(request.final_amount || 0)} for verification and card payment via Stripe.
           </p>
         </div>
       )}
 
-      {/* Si terminé */}
+      {/* Completed */}
       {request.status === 'completed' && (
         <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-5 text-center flex flex-col gap-2">
           <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
-          <h2 className="text-sm font-black text-slate-900">Mission complétée & payée</h2>
+          <h2 className="text-sm font-black text-slate-900">Job Completed & Settled</h2>
           <p className="text-xs text-slate-600">
-            Votre versement net de {formatCAD((request.labor_amount || 0) + (request.parts_amount || 0) * 0.9)} a été crédité à votre compte.
+            Your net payout of {formatGBP((request.labor_amount || 0) + (request.parts_amount || 0) * 0.9)} has been credited to your Wrench balance.
           </p>
         </div>
       )}

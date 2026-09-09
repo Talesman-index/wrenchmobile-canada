@@ -4,26 +4,19 @@ import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useApp } from '@/lib/store';
 import {
-  Wrench,
   Car,
-  MapPin,
   Phone,
+  Video,
   MessageSquare,
   Star,
-  ShieldCheck,
-  CheckCircle2,
-  Clock,
   CreditCard,
   ChevronLeft,
-  DollarSign,
   FileText,
   Sparkles,
   Lock,
-  Share2,
   Receipt,
-  Download,
 } from 'lucide-react';
-import { formatCAD, getStatusBadge } from '@/lib/utils';
+import { formatGBP, getStatusBadge } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
@@ -34,12 +27,12 @@ const MapComponent = dynamic(() => import('@/components/ui/MapComponent'), {
 });
 
 const STATUS_STEPS = [
-  { key: 'accepted', label: 'Assigné' },
-  { key: 'mechanic_on_the_way', label: 'En route' },
-  { key: 'arrived', label: 'Arrivé' },
-  { key: 'in_progress', label: 'En cours' },
-  { key: 'awaiting_payment', label: 'Paiement' },
-  { key: 'completed', label: 'Terminé' },
+  { key: 'accepted', label: 'Assigned' },
+  { key: 'mechanic_on_the_way', label: 'En Route' },
+  { key: 'arrived', label: 'Arrived' },
+  { key: 'in_progress', label: 'Working' },
+  { key: 'awaiting_payment', label: 'Payment' },
+  { key: 'completed', label: 'Completed' },
 ];
 
 export default function ServiceTrackingPage() {
@@ -59,12 +52,12 @@ export default function ServiceTrackingPage() {
   if (!request) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-        <p className="text-slate-500 text-sm">Demande de service introuvable.</p>
+        <p className="text-slate-500 text-sm">Service request not found.</p>
         <button
           onClick={() => router.push('/app/services')}
-          className="mt-4 bg-[#0c1f38] text-white text-xs font-bold px-4 py-2 rounded-2xl shadow-md"
+          className="mt-4 bg-[#5e17eb] text-white text-xs font-bold px-4 py-2 rounded-2xl shadow-md"
         >
-          Voir tous les services
+          View All Services
         </button>
       </div>
     );
@@ -104,7 +97,7 @@ export default function ServiceTrackingPage() {
 
   return (
     <div className="flex flex-col gap-4 pb-4">
-      {/* En-tête */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <button
           onClick={() => router.push('/app/services')}
@@ -118,7 +111,7 @@ export default function ServiceTrackingPage() {
         <div className="w-9" />
       </div>
 
-      {/* Barre de progression des statuts */}
+      {/* Progress timeline */}
       <div className="bg-white border border-slate-100 rounded-3xl p-3.5 shadow-card">
         <div className="flex items-center justify-between gap-1 overflow-x-auto pb-1">
           {STATUS_STEPS.map((step, idx) => {
@@ -151,12 +144,12 @@ export default function ServiceTrackingPage() {
         </div>
       </div>
 
-      {/* Carte de suivi d'itinéraire en direct */}
+      {/* Live Route Map if not finished */}
       {request.status !== 'completed' && (
         <div className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-card p-1.5 flex flex-col gap-2">
           {request.status === 'mechanic_on_the_way' && (
             <div className="bg-[#f3ebff] border border-purple-200 px-3 py-1.5 rounded-2xl flex items-center justify-between text-xs">
-              <span className="text-slate-700 font-bold">Temps d&apos;arrivée estimé</span>
+              <span className="text-slate-700 font-bold">Estimated Arrival Time</span>
               <span className="font-black text-[#5e17eb] font-mono">
                 ~{request.eta_minutes || 20} minutes
               </span>
@@ -174,14 +167,14 @@ export default function ServiceTrackingPage() {
         </div>
       )}
 
-      {/* Fiche du mécanicien assigné */}
+      {/* Assigned Technician Card */}
       {mechanic && (
         <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-3">
               <div className="w-12 h-12 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-sm">
                 <img
-                  src={mechanic.avatar_url || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80'}
+                  src={mechanic.avatar_url || '/images/landing/mechanic_pro.jpg'}
                   alt={mechanic.first_name}
                   className="w-full h-full object-cover"
                 />
@@ -192,7 +185,7 @@ export default function ServiceTrackingPage() {
                     {mechanic.first_name} {mechanic.last_name}
                   </h2>
                   <span className="text-[9px] bg-[#f3ebff] text-[#5e17eb] font-black px-2 py-0.5 rounded-full">
-                    Sceau Rouge
+                    IMI Certified
                   </span>
                 </div>
                 <div className="flex items-center gap-2 mt-1 text-xs">
@@ -201,24 +194,31 @@ export default function ServiceTrackingPage() {
                     <span>{mechanic.rating.toFixed(1)}</span>
                   </span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-slate-500">{mechanic.jobs_completed} interventions</span>
+                  <span className="text-slate-500">{mechanic.jobs_completed} jobs completed</span>
                 </div>
               </div>
             </div>
 
-            {/* Actions d'appel et de message */}
+            {/* Direct Call & Message */}
             <div className="flex items-center gap-2">
-              <a
-                href={`tel:${mechanic.phone}`}
-                className="w-9 h-9 rounded-2xl bg-[#f3ebff] hover:bg-[#5e17eb] text-[#5e17eb] hover:text-white flex items-center justify-center transition-colors"
-                title="Appeler le mécanicien"
+              <Link
+                href="/app/chat?call=video"
+                className="w-9 h-9 rounded-2xl bg-orange-50 hover:bg-[#ff6b00] text-[#ff6b00] hover:text-white flex items-center justify-center transition-colors shadow-sm"
+                title="Live video diagnostics"
+              >
+                <Video className="w-4 h-4" />
+              </Link>
+              <Link
+                href="/app/chat?call=voice"
+                className="w-9 h-9 rounded-2xl bg-[#f3ebff] hover:bg-[#5e17eb] text-[#5e17eb] hover:text-white flex items-center justify-center transition-colors shadow-sm"
+                title="Voice call"
               >
                 <Phone className="w-4 h-4" />
-              </a>
+              </Link>
               <Link
                 href="/app/chat"
-                className="w-9 h-9 rounded-2xl bg-[#f3ebff] hover:bg-[#5e17eb] text-[#5e17eb] hover:text-white flex items-center justify-center transition-colors"
-                title="Envoyer un message"
+                className="w-9 h-9 rounded-2xl bg-[#f3ebff] hover:bg-[#5e17eb] text-[#5e17eb] hover:text-white flex items-center justify-center transition-colors shadow-sm"
+                title="Send message"
               >
                 <MessageSquare className="w-4 h-4" />
               </Link>
@@ -227,7 +227,7 @@ export default function ServiceTrackingPage() {
         </div>
       )}
 
-      {/* Détails du véhicule et de l'adresse */}
+      {/* Vehicle and Location Details */}
       <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -239,7 +239,7 @@ export default function ServiceTrackingPage() {
                 {request.vehicle?.year} {request.vehicle?.make} {request.vehicle?.model}
               </p>
               <p className="text-[10px] text-slate-500 font-mono">
-                {request.vehicle?.license_plate || 'SANS PLAQUE'}
+                {request.vehicle?.license_plate || 'NO REG PLATE'}
               </p>
             </div>
           </div>
@@ -249,35 +249,35 @@ export default function ServiceTrackingPage() {
         </div>
 
         <div className="text-xs text-slate-700 bg-slate-50 p-3 rounded-2xl border border-slate-100">
-          <span className="text-slate-400 block text-[10px] font-black uppercase mb-0.5">Symptôme signalé :</span>
+          <span className="text-slate-400 block text-[10px] font-black uppercase mb-0.5">Reported Symptoms:</span>
           {request.description}
         </div>
       </div>
 
-      {/* Rapport de diagnostic de terrain */}
+      {/* Field Diagnostic Report */}
       {(request.diagnostic_notes || request.work_performed || request.status === 'awaiting_payment' || request.status === 'completed') && (
         <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card flex flex-col gap-2.5">
           <div className="flex items-center gap-2 text-xs font-black text-[#181528]">
             <FileText className="w-4 h-4 text-[#5e17eb]" />
-            <span>Rapport de diagnostic du technicien</span>
+            <span>Technician Diagnostic & Repair Report</span>
           </div>
 
           <div className="space-y-2 text-xs text-slate-700 bg-[#f8f9fd] p-3.5 rounded-2xl border border-slate-100">
             {request.diagnostic_notes && (
               <div>
-                <strong className="text-slate-400 block text-[10px] uppercase">Diagnostic :</strong>
+                <strong className="text-slate-400 block text-[10px] uppercase">Diagnosis:</strong>
                 <p className="mt-0.5">{request.diagnostic_notes}</p>
               </div>
             )}
             {request.work_performed && (
               <div className="pt-2 border-t border-slate-200">
-                <strong className="text-slate-400 block text-[10px] uppercase">Travaux effectués :</strong>
+                <strong className="text-slate-400 block text-[10px] uppercase">Work Carried Out:</strong>
                 <p className="mt-0.5">{request.work_performed}</p>
               </div>
             )}
             {request.parts_used && (
               <div className="pt-2 border-t border-slate-200">
-                <strong className="text-slate-400 block text-[10px] uppercase">Pièces installées :</strong>
+                <strong className="text-slate-400 block text-[10px] uppercase">Parts Fitted:</strong>
                 <p className="mt-0.5 font-mono text-emerald-700">{request.parts_used}</p>
               </div>
             )}
@@ -285,40 +285,40 @@ export default function ServiceTrackingPage() {
         </div>
       )}
 
-      {/* DEVIS FINAL & BOUTON DE PAIEMENT */}
+      {/* FINAL QUOTE & PAYMENT BUTTON */}
       {request.status === 'awaiting_payment' && (
         <div className="bg-white border-2 border-[#5e17eb] rounded-3xl p-5 shadow-card-hover animate-in zoom-in-95 duration-200">
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-5 h-5 text-[#5e17eb]" />
-            <h2 className="text-sm font-black text-[#181528]">Votre mécanicien a finalisé le devis</h2>
+            <h2 className="text-sm font-black text-[#181528]">Technician has finalized the quote</h2>
           </div>
 
           <div className="bg-[#f8f9fd] rounded-2xl p-3.5 border border-slate-100 space-y-2 text-xs">
             <div className="flex justify-between text-slate-700">
-              <span>Main-d&apos;œuvre</span>
-              <span className="font-semibold">{formatCAD(request.labor_amount || 0)}</span>
+              <span>Labour</span>
+              <span className="font-semibold">{formatGBP(request.labor_amount || 0)}</span>
             </div>
             <div className="flex justify-between text-slate-700">
-              <span>Pièces et matériel</span>
-              <span className="font-semibold">{formatCAD(request.parts_amount || 0)}</span>
+              <span>Parts & Materials</span>
+              <span className="font-semibold">{formatGBP(request.parts_amount || 0)}</span>
             </div>
             {request.additional_fee ? (
               <div className="flex justify-between text-slate-700">
-                <span>Frais écologiques</span>
-                <span className="font-semibold">{formatCAD(request.additional_fee)}</span>
+                <span>Environmental & Disposal Fee</span>
+                <span className="font-semibold">{formatGBP(request.additional_fee)}</span>
               </div>
             ) : null}
             <div className="flex justify-between text-slate-500 text-[11px] pt-1 border-t border-slate-200">
-              <span>Frais de service (12 %)</span>
-              <span>{formatCAD(request.platform_fee || 0)}</span>
+              <span>Platform Service Fee (12%)</span>
+              <span>{formatGBP(request.platform_fee || 0)}</span>
             </div>
             <div className="flex justify-between text-slate-500 text-[11px]">
-              <span>Taxes canadiennes (TPS + TVQ / TVH)</span>
-              <span>{formatCAD(request.tax_amount || 0)}</span>
+              <span>UK VAT (20%)</span>
+              <span>{formatGBP(request.tax_amount || 0)}</span>
             </div>
             <div className="flex justify-between text-base font-black text-[#181528] pt-2 border-t border-slate-300">
-              <span>Total CAD</span>
-              <span className="text-[#5e17eb] font-black">{formatCAD(request.final_amount || 0)}</span>
+              <span>Total GBP</span>
+              <span className="text-[#5e17eb] font-black">{formatGBP(request.final_amount || 0)}</span>
             </div>
           </div>
 
@@ -327,25 +327,25 @@ export default function ServiceTrackingPage() {
             className="mt-4 w-full bg-[#5e17eb] hover:bg-[#4c0ec4] active:scale-[0.98] text-white font-black py-4 px-6 rounded-2xl shadow-purple-cta flex items-center justify-center gap-2 text-base transition-all"
           >
             <CreditCard className="w-5 h-5" />
-            <span>Confirmer & Payer ({formatCAD(request.final_amount || 0)})</span>
+            <span>Confirm & Pay ({formatGBP(request.final_amount || 0)})</span>
           </button>
         </div>
       )}
 
-      {/* REÇU ÉLECTRONIQUE AVEC CODE-BARRES & AVIS */}
+      {/* DIGITAL VAT INVOICE & RATING */}
       {request.status === 'completed' && (
         <div className="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col gap-4 shadow-card">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center gap-2">
               <Receipt className="w-5 h-5 text-[#5e17eb]" />
-              <h2 className="text-sm font-black text-[#181528]">Reçu électronique / Facture</h2>
+              <h2 className="text-sm font-black text-[#181528]">Digital VAT Invoice & Receipt</h2>
             </div>
             <span className="text-[10px] bg-emerald-50 text-emerald-600 font-black px-2.5 py-0.5 rounded-full border border-emerald-200">
-              PAYÉ EN TOTALITÉ
+              PAID IN FULL
             </span>
           </div>
 
-          {/* Graphique Code-barres SVG */}
+          {/* Barcode Graphic SVG */}
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-center flex flex-col items-center">
             <svg viewBox="0 0 200 40" className="w-48 h-10">
               {Array.from({ length: 38 }).map((_, i) => (
@@ -360,18 +360,18 @@ export default function ServiceTrackingPage() {
               ))}
             </svg>
             <span className="font-mono text-[10px] text-slate-500 mt-1 tracking-widest uppercase">
-              #MM-CAN-{request.id.slice(-6)}
+              #WML-UK-{request.id.slice(-6)}
             </span>
           </div>
 
-          {/* Détails du reçu */}
+          {/* Receipt details */}
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between text-slate-500">
-              <span>Client</span>
+              <span>Customer</span>
               <span className="font-bold text-slate-800">{request.customer_name}</span>
             </div>
             <div className="flex justify-between text-slate-500">
-              <span>Véhicule</span>
+              <span>Vehicle</span>
               <span className="font-bold text-slate-800">
                 {request.vehicle?.year} {request.vehicle?.make} {request.vehicle?.model}
               </span>
@@ -383,16 +383,16 @@ export default function ServiceTrackingPage() {
               </span>
             </div>
             <div className="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-100">
-              <span>Total payé (CAD)</span>
-              <span className="text-[#5e17eb] font-black">{formatCAD(request.final_amount || 0)}</span>
+              <span>Total Paid (GBP)</span>
+              <span className="text-[#5e17eb] font-black">{formatGBP(request.final_amount || 0)}</span>
             </div>
           </div>
 
-          {/* Évaluation 5 étoiles */}
+          {/* 5-Star Review Form */}
           {!reviewSubmitted ? (
             <form onSubmit={handleReviewSubmit} className="pt-3 border-t border-slate-100 flex flex-col gap-3">
               <label className="text-xs font-black text-[#181528] text-center">
-                Comment s&apos;est passée l&apos;intervention avec {mechanic.first_name} ?
+                How was your service experience with {mechanic.first_name}?
               </label>
 
               <div className="flex justify-center gap-2">
@@ -414,7 +414,7 @@ export default function ServiceTrackingPage() {
 
               <input
                 type="text"
-                placeholder="Laissez un commentaire sur le service (optionnel)..."
+                placeholder="Leave comments regarding the service (optional)..."
                 value={ratingComment}
                 onChange={(e) => setRatingComment(e.target.value)}
                 className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-xs text-[#181528] focus:border-[#5e17eb] outline-none"
@@ -424,12 +424,12 @@ export default function ServiceTrackingPage() {
                 type="submit"
                 className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3 rounded-2xl text-xs shadow-purple-cta active:scale-98 transition-all"
               >
-                Envoyer mon avis
+                Submit Review
               </button>
             </form>
           ) : (
             <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl text-center text-xs text-emerald-700 font-bold">
-              ✓ Merci d&apos;avoir évalué {mechanic.first_name} !
+              ✓ Thank you for reviewing {mechanic.first_name}!
             </div>
           )}
 
@@ -437,12 +437,12 @@ export default function ServiceTrackingPage() {
             onClick={() => router.push('/app')}
             className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-2xl text-xs"
           >
-            Retour à l&apos;accueil
+            Return to Home
           </button>
         </div>
       )}
 
-      {/* MODAL DE PAIEMENT STRIPE */}
+      {/* STRIPE PAYMENT MODAL */}
       {showPaymentModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-white border border-slate-100 rounded-3xl p-5 w-full max-w-md shadow-2xl flex flex-col gap-4">
@@ -450,29 +450,29 @@ export default function ServiceTrackingPage() {
               <div className="flex items-center gap-2">
                 <Lock className="w-4 h-4 text-[#5e17eb]" />
                 <span className="text-xs font-black text-[#181528] uppercase tracking-wider">
-                  Paiement Sécurisé Stripe (CAD)
+                  Secure Stripe Payment (GBP)
                 </span>
               </div>
               <button
                 onClick={() => setShowPaymentModal(false)}
                 className="text-slate-400 hover:text-slate-700 text-xs font-bold"
               >
-                Annuler
+                Cancel
               </button>
             </div>
 
             <div className="bg-[#f8f9fd] rounded-2xl p-4 border border-slate-100">
-              <p className="text-xs text-slate-500">Montant total à débiter :</p>
+              <p className="text-xs text-slate-500">Total amount to authorize:</p>
               <p className="text-3xl font-black text-[#181528] mt-1">
-                {formatCAD(request.final_amount || 0)}
+                {formatGBP(request.final_amount || 0)}
               </p>
               <p className="text-[11px] text-slate-400 mt-1">
-                Traité par Stripe Canada en CAD • Toutes taxes incluses
+                Processed securely by Stripe UK in GBP • Includes 20% UK VAT
               </p>
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-700">Carte de crédit</label>
+              <label className="text-xs font-bold text-slate-700">Credit / Debit Card</label>
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CreditCard className="w-4 h-4 text-slate-500" />
@@ -487,7 +487,7 @@ export default function ServiceTrackingPage() {
               disabled={isPaying}
               className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 shadow-purple-cta text-sm transition-all active:scale-[0.98]"
             >
-              {isPaying ? 'Traitement du paiement CAD...' : `Autoriser & Payer ${formatCAD(request.final_amount || 0)}`}
+              {isPaying ? 'Processing GBP payment...' : `Authorize & Pay ${formatGBP(request.final_amount || 0)}`}
             </button>
           </div>
         </div>

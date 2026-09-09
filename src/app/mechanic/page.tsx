@@ -7,22 +7,15 @@ import { useApp } from '@/lib/store';
 import {
   Wrench,
   Power,
-  DollarSign,
-  Briefcase,
   Star,
   MapPin,
   Car,
   ChevronRight,
-  AlertCircle,
-  Clock,
   Sparkles,
   Check,
   X,
-  Navigation,
-  Flame,
 } from 'lucide-react';
-import { formatCAD } from '@/lib/utils';
-import { SERVICE_DEFINITIONS } from '@/lib/constants';
+import { formatGBP } from '@/lib/utils';
 
 export default function MechanicHomePage() {
   const router = useRouter();
@@ -36,7 +29,7 @@ export default function MechanicHomePage() {
 
   const [dismissedRequests, setDismissedRequests] = useState<string[]>([]);
 
-  // Trouver les demandes entrantes non assignées
+  // Find incoming unassigned requests
   const incomingRequests = serviceRequests.filter(
     (r) =>
       r.status === 'searching' &&
@@ -52,18 +45,18 @@ export default function MechanicHomePage() {
     setDismissedRequests((prev) => [...prev, requestId]);
   };
 
-  // Calcul des gains du jour
+  // Calculate day earnings in GBP
   const completedJobs = serviceRequests.filter(
     (r) => r.mechanic_id === currentMechanicProfile.id && r.status === 'completed'
   );
-  const todayEarningsCAD = completedJobs.reduce(
+  const todayEarningsGBP = completedJobs.reduce(
     (acc, job) => acc + ((job.labor_amount || 0) + (job.parts_amount || 0) * 0.9),
     0
   );
 
   return (
     <div className="flex flex-col gap-4">
-      {/* En-tête technicien & Interrupteur disponibilité */}
+      {/* Header & Online Switch */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
@@ -75,7 +68,7 @@ export default function MechanicHomePage() {
           </div>
           <div>
             <p className="text-[10px] font-black text-[#5e17eb] uppercase tracking-wider">
-              Technicien de terrain
+              Mobile Field Technician
             </p>
             <h1 className="text-base font-black text-[#181528] tracking-tight">
               {currentMechanicProfile.first_name} {currentMechanicProfile.last_name}
@@ -83,7 +76,7 @@ export default function MechanicHomePage() {
           </div>
         </div>
 
-        {/* Bouton EN LIGNE / HORS LIGNE */}
+        {/* ONLINE / OFFLINE Toggle */}
         <button
           onClick={toggleMechanicAvailability}
           className={`px-4 py-2 rounded-2xl font-black text-xs flex items-center gap-2 transition-all shadow-md ${
@@ -93,11 +86,11 @@ export default function MechanicHomePage() {
           }`}
         >
           <Power className="w-3.5 h-3.5" />
-          <span>{currentMechanicProfile.is_available ? 'EN LIGNE' : 'HORS LIGNE'}</span>
+          <span>{currentMechanicProfile.is_available ? 'ONLINE' : 'OFFLINE'}</span>
         </button>
       </div>
 
-      {/* Bannière d'état */}
+      {/* Status banner */}
       <div
         className={`p-3.5 rounded-3xl border text-xs flex items-center justify-between shadow-card transition-colors ${
           currentMechanicProfile.is_available
@@ -113,30 +106,30 @@ export default function MechanicHomePage() {
           />
           <span className="font-semibold text-[11px]">
             {currentMechanicProfile.is_available
-              ? 'Vous êtes actif et recevez les missions de dépannage à proximité'
-              : 'Vous êtes hors ligne. Basculez en mode EN LIGNE pour recevoir des demandes.'}
+              ? 'You are active and receiving mobile breakdown & service calls in Greater London'
+              : 'You are currently offline. Switch to ONLINE to receive customer requests.'}
           </span>
         </div>
       </div>
 
-      {/* Métriques rapides */}
+      {/* Quick Metrics */}
       <div className="grid grid-cols-3 gap-2.5">
         <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex flex-col shadow-card">
-          <span className="text-[10px] text-slate-400 font-bold uppercase">Gains du jour</span>
+          <span className="text-[10px] text-slate-400 font-bold uppercase">Today&apos;s Earnings</span>
           <span className="text-base font-black text-[#181528] mt-1">
-            {formatCAD(todayEarningsCAD || 205.0)}
+            {formatGBP(todayEarningsGBP || 185.0)}
           </span>
         </div>
 
         <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex flex-col shadow-card">
-          <span className="text-[10px] text-slate-400 font-bold uppercase">Missions</span>
+          <span className="text-[10px] text-slate-400 font-bold uppercase">Jobs</span>
           <span className="text-base font-black text-emerald-600 mt-1">
             {currentMechanicProfile.jobs_completed}
           </span>
         </div>
 
         <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex flex-col shadow-card">
-          <span className="text-[10px] text-slate-400 font-bold uppercase">Évaluation</span>
+          <span className="text-[10px] text-slate-400 font-bold uppercase">Rating</span>
           <span className="text-base font-black text-[#5e17eb] mt-1 flex items-center gap-1">
             <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
             <span>{currentMechanicProfile.rating.toFixed(1)}</span>
@@ -144,12 +137,12 @@ export default function MechanicHomePage() {
         </div>
       </div>
 
-      {/* BANNIÈRE DE MISSION ACTIVE */}
+      {/* ACTIVE JOB BANNER */}
       {activeMechanicJob && (
         <div className="bg-gradient-to-r from-[#5610d8] via-[#5e17eb] to-[#7c3aed] text-white rounded-3xl p-5 shadow-purple-cta flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-[9px] font-black uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full">
-              MISSION EN COURS
+              ACTIVE JOB
             </span>
             <span className="text-xs text-purple-200 capitalize font-bold">
               {activeMechanicJob.status.replace(/_/g, ' ')}
@@ -173,19 +166,19 @@ export default function MechanicHomePage() {
             href={`/mechanic/jobs/${activeMechanicJob.id}`}
             className="w-full bg-white text-[#5e17eb] hover:bg-purple-50 font-black py-3 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-md active:scale-98 transition-all"
           >
-            <span>Reprendre la mission en cours</span>
+            <span>Resume Job</span>
             <ChevronRight className="w-4 h-4 text-[#5e17eb]" />
           </Link>
         </div>
       )}
 
-      {/* DEMANDES ENTRANTES */}
+      {/* INCOMING REQUESTS */}
       {currentMechanicProfile.is_available && incomingRequests.length > 0 && (
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-black text-[#181528] flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-[#5e17eb]" />
-              <span>Demandes d&apos;assistance entrantes ({incomingRequests.length})</span>
+              <span>Incoming Breakdown Requests ({incomingRequests.length})</span>
             </h2>
           </div>
 
@@ -211,20 +204,20 @@ export default function MechanicHomePage() {
 
                 <div className="text-right">
                   <p className="text-base font-black text-emerald-600">
-                    {formatCAD(req.estimated_amount * 0.88)}
+                    {formatGBP(req.estimated_amount * 0.88)}
                   </p>
-                  <p className="text-[10px] text-slate-400 font-medium">Gain net estimé</p>
+                  <p className="text-[10px] text-slate-400 font-medium">Est. Net Payout</p>
                 </div>
               </div>
 
-              {/* Adresse et distance */}
+              {/* Address & Distance */}
               <div className="bg-[#f8f9fd] p-3 rounded-2xl border border-slate-100 text-xs flex items-center justify-between">
                 <div className="flex items-center gap-2 text-slate-700 line-clamp-1">
                   <MapPin className="w-4 h-4 text-[#5e17eb] shrink-0" />
                   <span className="line-clamp-1">{req.address}</span>
                 </div>
                 <span className="text-[11px] font-mono text-[#5e17eb] font-black shrink-0 ml-2">
-                  ~3,8 km
+                  ~2.1 miles
                 </span>
               </div>
 
@@ -233,14 +226,14 @@ export default function MechanicHomePage() {
                 &ldquo;{req.description}&rdquo;
               </p>
 
-              {/* Boutons Accepter / Refuser */}
+              {/* Action buttons */}
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <button
                   onClick={() => handleDeclineRequest(req.id)}
                   className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <X className="w-4 h-4 text-red-500" />
-                  <span>Refuser</span>
+                  <span>Decline</span>
                 </button>
 
                 <button
@@ -248,7 +241,7 @@ export default function MechanicHomePage() {
                   className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-purple-cta active:scale-98 transition-all"
                 >
                   <Check className="w-4 h-4 text-white" />
-                  <span>Accepter la mission</span>
+                  <span>Accept Job</span>
                 </button>
               </div>
             </div>
@@ -256,15 +249,15 @@ export default function MechanicHomePage() {
         </div>
       )}
 
-      {/* État en attente si En Ligne mais sans appel immédiat */}
+      {/* Idle waiting state */}
       {currentMechanicProfile.is_available && incomingRequests.length === 0 && !activeMechanicJob && (
         <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center flex flex-col items-center shadow-card">
           <div className="w-12 h-12 rounded-full bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center mb-3">
             <Wrench className="w-6 h-6 animate-pulse text-[#5e17eb]" />
           </div>
-          <h2 className="text-sm font-black text-[#181528]">En attente de demandes à proximité...</h2>
+          <h2 className="text-sm font-black text-[#181528]">Waiting for nearby London calls...</h2>
           <p className="text-xs text-slate-500 mt-1 max-w-xs">
-            Vous recevrez une alerte instantanée dès qu&apos;un automobiliste à {currentMechanicProfile.city} aura besoin d&apos;assistance.
+            You will receive an instant push notification as soon as a driver in {currentMechanicProfile.city} requests assistance.
           </p>
         </div>
       )}

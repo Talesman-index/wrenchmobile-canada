@@ -9,8 +9,6 @@ import {
   ClipboardList,
   CreditCard,
   Star,
-  Users,
-  Wrench,
   ArrowLeft,
 } from 'lucide-react';
 
@@ -22,16 +20,16 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/admin', label: 'Vue d’ensemble', icon: LayoutDashboard },
-    { href: '/admin/mechanics', label: 'Vérification Mécaniciens', icon: ShieldCheck },
-    { href: '/admin/requests', label: 'Demandes de service', icon: ClipboardList },
-    { href: '/admin/payments', label: 'Finances & Versements', icon: CreditCard },
-    { href: '/admin/reviews', label: 'Avis & Qualité', icon: Star },
+    { href: '/admin', label: 'Overview', icon: LayoutDashboard },
+    { href: '/admin/mechanics', label: 'Mechanic Approvals', icon: ShieldCheck },
+    { href: '/admin/requests', label: 'Service Requests', icon: ClipboardList },
+    { href: '/admin/payments', label: 'Finance & Payouts', icon: CreditCard },
+    { href: '/admin/reviews', label: 'Reviews & Quality', icon: Star },
   ];
 
   return (
     <div className="flex-1 flex flex-col md:flex-row min-h-screen bg-[#070a11] text-slate-100">
-      {/* Barre latérale d'administration */}
+      {/* Admin Sidebar */}
       <aside className="w-full md:w-64 bg-slate-950 border-b md:border-b-0 md:border-r border-slate-800/90 p-4 shrink-0 flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2 px-2 py-3 mb-4">
@@ -40,7 +38,7 @@ export default function AdminLayout({
             </div>
             <div>
               <p className="text-xs font-black text-white tracking-tight">ADMINISTRATION</p>
-              <p className="text-[10px] text-purple-300">Console Opérations Canada</p>
+              <p className="text-[10px] text-purple-300">London Operations Console</p>
             </div>
           </div>
 
@@ -73,12 +71,12 @@ export default function AdminLayout({
             className="flex items-center gap-2 text-xs text-slate-400 hover:text-slate-200 px-3 py-2 rounded-xl hover:bg-slate-900 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Retour à l&apos;App Client</span>
+            <span>Return to Customer App</span>
           </Link>
         </div>
       </aside>
 
-      {/* Zone de contenu principale */}
+      {/* Main Content Area */}
       <main className="flex-1 p-4 md:p-8 max-w-6xl overflow-y-auto">{children}</main>
     </div>
   );

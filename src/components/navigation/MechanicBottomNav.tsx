@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Briefcase, DollarSign, UserCheck } from 'lucide-react';
+import { LayoutDashboard, Briefcase, PoundSterling, UserCheck } from 'lucide-react';
 import { useApp } from '@/lib/store';
 
 export default function MechanicBottomNav() {
@@ -11,15 +11,15 @@ export default function MechanicBottomNav() {
   const { activeMechanicJob } = useApp();
 
   const navItems = [
-    { href: '/mechanic', label: 'Accueil', icon: LayoutDashboard },
+    { href: '/mechanic', label: 'Dashboard', icon: LayoutDashboard },
     {
       href: '/mechanic/jobs',
-      label: 'Missions',
+      label: 'Jobs',
       icon: Briefcase,
       badge: Boolean(activeMechanicJob),
     },
-    { href: '/mechanic/earnings', label: 'Revenus', icon: DollarSign },
-    { href: '/mechanic/profile', label: 'Profil', icon: UserCheck },
+    { href: '/mechanic/earnings', label: 'Earnings', icon: PoundSterling },
+    { href: '/mechanic/profile', label: 'Profile', icon: UserCheck },
   ];
 
   return (
@@ -48,7 +48,7 @@ export default function MechanicBottomNav() {
                   <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5] text-[#5e17eb]' : 'stroke-[1.8]'}`} />
                 </div>
                 {item.badge && (
-                  <span className="absolute 0 right-0 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white animate-pulse" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white animate-pulse" />
                 )}
               </div>
               <span className={`text-[10px] mt-0.5 tracking-tight font-extrabold ${isActive ? 'text-[#5e17eb]' : 'text-slate-400'}`}>

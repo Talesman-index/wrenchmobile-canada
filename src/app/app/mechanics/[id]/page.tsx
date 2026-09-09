@@ -10,21 +10,12 @@ import {
   Heart,
   Star,
   MapPin,
-  Clock,
   Phone,
   MessageSquare,
-  ShieldCheck,
   CheckCircle2,
-  Wrench,
-  Car,
-  Calendar,
-  Sparkles,
   ArrowRight,
-  Info,
-  DollarSign,
-  Camera,
 } from 'lucide-react';
-import { formatCAD } from '@/lib/utils';
+import { formatGBP } from '@/lib/utils';
 import { SERVICE_DEFINITIONS } from '@/lib/constants';
 import Link from 'next/link';
 
@@ -33,9 +24,9 @@ export default function MechanicDetailPage() {
   const router = useRouter();
   const id = params.id as string;
 
-  const { mechanics, reviews, setCurrentRole } = useApp();
+  const { mechanics, reviews } = useApp();
   const { showSuccess } = useToast();
-  const [activeTab, setActiveTab] = useState<'about' | 'services' | 'experts' | 'packages' | 'gallery' | 'reviews'>('about');
+  const [activeTab, setActiveTab] = useState<'about' | 'services' | 'packages' | 'gallery' | 'reviews'>('about');
   const [isSaved, setIsSaved] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<string>('pkg-1');
 
@@ -45,38 +36,38 @@ export default function MechanicDetailPage() {
   const packages = [
     {
       id: 'pkg-1',
-      name: 'Diagnostic & Bilan Santé Complet',
-      price: 95,
-      saved: 25,
+      name: 'Diagnostic & Vehicle Health Check',
+      price: 69,
+      saved: 20,
       features: [
-        'Scan électronique OBD-II tous calculateurs',
-        'Test de santé batterie & alternateur sous charge',
-        'Contrôle visuel freins, suspension et fuites de fluides',
-        'Rapport PDF complet avec photos',
+        'OBD-II electronic fault scan across all vehicle ECUs',
+        'High-rate battery & alternator load health test',
+        'Visual check of brakes, suspension and fluid leaks',
+        'Detailed PDF report with photo evidence',
       ],
     },
     {
       id: 'pkg-2',
-      name: 'Forfait Entretien Mobile Pro',
-      price: 189,
-      saved: 40,
+      name: 'Mobile Service Pro Pack',
+      price: 149,
+      saved: 30,
       features: [
-        'Vidange d’huile 100 % synthétique + filtre OEM',
-        'Permutation des 4 pneus et ajustement pression',
-        'Mise à niveau de tous les liquides (lave-glace, frein, refroidissement)',
-        'Inspection multi-points de sécurité',
+        '100% full synthetic oil replacement + OEM filter',
+        '4-wheel tyre check, pressure adjustment & tread gauge',
+        'Top-up of all vital fluids (screenwash, brake, coolant)',
+        '40-point safety and preventive inspection',
       ],
     },
     {
       id: 'pkg-3',
-      name: 'Freinage Complet Essieu Avant',
-      price: 249,
-      saved: 55,
+      name: 'Front Axle Brake Overhaul',
+      price: 195,
+      saved: 45,
       features: [
-        'Jeu de plaquettes céramiques de première qualité',
-        'Nettoyage et lubrification des étriers et coulisseaux',
-        'Contrôle de voile des disques au micromètre',
-        'Essai routier et rodage sécurisé',
+        'Premium Brembo or Ferodo ceramic brake pad set',
+        'Caliper slider pin cleaning, lubing and inspection',
+        'Disc run-out check with dial test indicator',
+        'Road test and safe brake bed-in',
       ],
     },
   ];
@@ -90,7 +81,7 @@ export default function MechanicDetailPage() {
 
   return (
     <div className="flex flex-col gap-4 -mx-4 -mt-3 pb-28">
-      {/* Photo de couverture Hero avec galerie & vidéo style Mockup */}
+      {/* Hero cover photo */}
       <div className="relative h-72 w-full bg-slate-900">
         <img
           src={
@@ -103,7 +94,7 @@ export default function MechanicDetailPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
 
-        {/* Boutons retour, partage, favori */}
+        {/* Back, share, heart */}
         <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
           <button
             onClick={() => router.back()}
@@ -114,7 +105,7 @@ export default function MechanicDetailPage() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => showSuccess('Lien du profil copié dans le presse-papiers !', 'Partage')}
+              onClick={() => showSuccess('Profile link copied to clipboard!', 'Share')}
               className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#181528] shadow-md active:scale-95 transition-all"
             >
               <Share2 className="w-4 h-4" />
@@ -128,24 +119,24 @@ export default function MechanicDetailPage() {
           </div>
         </div>
 
-        {/* Bouton Vidéo Démo au centre */}
+        {/* Video button */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <button
-            onClick={() => showSuccess('Lecture de la vidéo de démonstration.')}
+            onClick={() => showSuccess('Playing workshop walkthrough video.')}
             className="pointer-events-auto flex items-center gap-2 bg-black/50 hover:bg-black/70 backdrop-blur-md px-4 py-2 rounded-full text-white text-xs font-bold border border-white/20 transition-all active:scale-95 shadow-lg"
           >
             <div className="w-5 h-5 rounded-full bg-white text-[#5e17eb] flex items-center justify-center">
               ▶
             </div>
-            <span>Vidéo Démo</span>
+            <span>Video Tour</span>
           </button>
         </div>
 
-        {/* Mini galerie sur l'image */}
+        {/* Mini gallery strip */}
         <div className="absolute bottom-3 left-4 right-4 flex items-center gap-1.5 overflow-x-auto no-scrollbar z-10">
           {galleryPhotos.map((url, i) => (
             <div key={i} className="w-12 h-10 rounded-xl overflow-hidden border border-white/60 shrink-0 shadow-md">
-              <img src={url} alt={`Aperçu ${i}`} className="w-full h-full object-cover" />
+              <img src={url} alt={`Preview ${i}`} className="w-full h-full object-cover" />
             </div>
           ))}
           <div className="w-12 h-10 rounded-xl bg-black/60 backdrop-blur-md border border-white/60 flex items-center justify-center text-white text-xs font-black shrink-0">
@@ -154,17 +145,17 @@ export default function MechanicDetailPage() {
         </div>
       </div>
 
-      {/* Informations Principales du Prestataire */}
+      {/* Primary Details */}
       <div className="px-4 flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <span className="bg-[#f3ebff] text-[#5e17eb] text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-            Services Mobiles
+            Mobile Workshop
           </span>
 
           <div className="flex items-center gap-1 text-xs font-bold text-[#181528]">
             <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
             <span>{mechanic.rating.toFixed(1)}</span>
-            <span className="text-slate-400 font-normal">({mechanic.jobs_completed} avis)</span>
+            <span className="text-slate-400 font-normal">({mechanic.jobs_completed} reviews)</span>
           </div>
         </div>
 
@@ -177,11 +168,11 @@ export default function MechanicDetailPage() {
           </p>
           <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1 font-medium">
             <MapPin className="w-3.5 h-3.5 text-[#5e17eb]" />
-            <span>Atelier MécanoMobile • {mechanic.city}, {mechanic.province}</span>
+            <span>WrenchMobile London • {mechanic.city}, Greater London</span>
           </p>
         </div>
 
-        {/* Carte Fournisseur de Service */}
+        {/* Provider card */}
         <div className="bg-white border border-slate-100 rounded-3xl p-3.5 shadow-card flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-full overflow-hidden border border-purple-100 shrink-0">
@@ -195,7 +186,7 @@ export default function MechanicDetailPage() {
               <h2 className="text-xs font-extrabold text-[#181528]">
                 {mechanic.first_name} {mechanic.last_name}
               </h2>
-              <p className="text-[11px] text-slate-400">Maître Mécanicien • Sceau Rouge</p>
+              <p className="text-[11px] text-slate-400">Master Technician • IMI Certified</p>
             </div>
           </div>
 
@@ -203,14 +194,14 @@ export default function MechanicDetailPage() {
             <Link
               href="/app/chat"
               className="w-9 h-9 rounded-full bg-[#f3ebff] hover:bg-[#5e17eb] text-[#5e17eb] hover:text-white flex items-center justify-center transition-colors shadow-sm"
-              title="Envoyer un message"
+              title="Send message"
             >
               <MessageSquare className="w-4 h-4" />
             </Link>
             <a
               href={`tel:${mechanic.phone}`}
               className="w-9 h-9 rounded-full bg-[#f3ebff] hover:bg-[#5e17eb] text-[#5e17eb] hover:text-white flex items-center justify-center transition-colors shadow-sm"
-              title="Appeler"
+              title="Call technician"
             >
               <Phone className="w-4 h-4" />
             </a>
@@ -218,15 +209,15 @@ export default function MechanicDetailPage() {
         </div>
       </div>
 
-      {/* Onglets de navigation avec underline style Mockup */}
+      {/* Tabs */}
       <div className="px-4">
         <div className="flex items-center justify-between border-b border-slate-200">
           {[
-            { key: 'about', label: 'À propos' },
+            { key: 'about', label: 'About' },
             { key: 'services', label: 'Services' },
-            { key: 'packages', label: 'Forfaits' },
-            { key: 'gallery', label: 'Galerie' },
-            { key: 'reviews', label: 'Avis' },
+            { key: 'packages', label: 'Packages' },
+            { key: 'gallery', label: 'Gallery' },
+            { key: 'reviews', label: 'Reviews' },
           ].map((tab) => (
             <button
               key={tab.key}
@@ -246,51 +237,51 @@ export default function MechanicDetailPage() {
         </div>
       </div>
 
-      {/* Contenu de l'onglet actif */}
+      {/* Active Tab Content */}
       <div className="px-4 flex flex-col gap-4">
-        {/* ONGLET 1 : À propos */}
+        {/* TAB 1: About */}
         {activeTab === 'about' && (
           <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card flex flex-col gap-3.5">
             <div>
               <h2 className="text-xs font-black text-[#181528] uppercase tracking-wider text-slate-400">
-                À propos
+                About
               </h2>
               <p className="text-xs text-slate-600 mt-1 leading-relaxed">{mechanic.bio}</p>
             </div>
 
             <div className="pt-3 border-t border-slate-100 grid grid-cols-2 gap-3 text-xs">
               <div className="bg-[#f8f9fd] p-3 rounded-2xl border border-slate-100">
-                <span className="text-[10px] font-black uppercase text-slate-400">Expérience</span>
-                <p className="font-black text-[#181528] mt-0.5">{mechanic.years_experience} ans d’expérience</p>
+                <span className="text-[10px] font-black uppercase text-slate-400">Experience</span>
+                <p className="font-black text-[#181528] mt-0.5">{mechanic.years_experience} years in trade</p>
               </div>
 
               <div className="bg-[#f8f9fd] p-3 rounded-2xl border border-slate-100">
-                <span className="text-[10px] font-black uppercase text-slate-400">Certification</span>
-                <p className="font-black text-[#5e17eb] mt-0.5">Sceau Rouge Canadien</p>
+                <span className="text-[10px] font-black uppercase text-slate-400">Accreditation</span>
+                <p className="font-black text-[#5e17eb] mt-0.5">IMI Level 4 Certified</p>
               </div>
             </div>
 
             <div className="pt-2 border-t border-slate-100">
-              <h3 className="text-xs font-black text-[#181528] mb-2">Équipements professionnels :</h3>
+              <h3 className="text-xs font-black text-[#181528] mb-2">Van Equipment & Tooling:</h3>
               <div className="space-y-1.5 text-xs text-slate-600">
                 <p className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#5e17eb] shrink-0" />
-                  <span>Scanner de diagnostic multimarque OBD-II</span>
+                  <span>Dealer-grade OBD-II multi-marque diagnostic scan tools</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#5e17eb] shrink-0" />
-                  <span>Testeur de batterie haute intensité & alternateur</span>
+                  <span>High-rate carbon pile battery load & alternator tester</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#5e17eb] shrink-0" />
-                  <span>Crics hydrauliques extra-bas & outillage mobile complet</span>
+                  <span>Low-profile hydraulic jacks & full mobile torque set</span>
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        {/* ONGLET 2 : Services */}
+        {/* TAB 2: Services */}
         {activeTab === 'services' && (
           <div className="flex flex-col gap-2.5">
             {SERVICE_DEFINITIONS.map((srv) => (
@@ -302,19 +293,19 @@ export default function MechanicDetailPage() {
                   <h3 className="text-xs font-black text-[#181528]">{srv.label}</h3>
                   <p className="text-[11px] text-slate-500 mt-0.5">{srv.shortDesc}</p>
                   <span className="inline-block text-[10px] text-slate-400 mt-1 font-mono">
-                    Durée estimée : {srv.estimatedDuration}
+                    Est. duration: {srv.estimatedDuration}
                   </span>
                 </div>
 
                 <div className="text-right shrink-0 ml-3">
                   <span className="text-xs font-black text-[#5e17eb]">
-                    Dès {formatCAD(srv.basePriceCAD)}
+                    From {formatGBP(srv.basePriceGBP)}
                   </span>
                   <Link
                     href={`/app/request?service=${srv.type}`}
                     className="block mt-1 bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-[10px] px-3.5 py-1.5 rounded-full shadow-sm transition-colors"
                   >
-                    Choisir
+                    Select
                   </Link>
                 </div>
               </div>
@@ -322,7 +313,7 @@ export default function MechanicDetailPage() {
           </div>
         )}
 
-        {/* ONGLET 3 : Forfaits */}
+        {/* TAB 3: Packages */}
         {activeTab === 'packages' && (
           <div className="flex flex-col gap-3">
             {packages.map((pkg) => {
@@ -338,14 +329,14 @@ export default function MechanicDetailPage() {
                   <div className="flex items-start justify-between">
                     <div>
                       <span className="text-[9px] font-black text-[#5e17eb] bg-[#f3ebff] px-2 py-0.5 rounded-full uppercase">
-                        Économisez {formatCAD(pkg.saved)}
+                        Save {formatGBP(pkg.saved)}
                       </span>
                       <h3 className="text-sm font-black text-[#181528] mt-1.5">{pkg.name}</h3>
                     </div>
 
                     <div className="text-right">
-                      <span className="text-base font-black text-[#5e17eb]">{formatCAD(pkg.price)}</span>
-                      <span className="block text-[10px] text-slate-400">Tout inclus</span>
+                      <span className="text-base font-black text-[#5e17eb]">{formatGBP(pkg.price)}</span>
+                      <span className="block text-[10px] text-slate-400">All-inclusive</span>
                     </div>
                   </div>
 
@@ -363,7 +354,7 @@ export default function MechanicDetailPage() {
           </div>
         )}
 
-        {/* ONGLET 4 : Galerie */}
+        {/* TAB 4: Gallery */}
         {activeTab === 'gallery' && (
           <div className="grid grid-cols-2 gap-2.5">
             {galleryPhotos.map((url, i) => (
@@ -374,7 +365,7 @@ export default function MechanicDetailPage() {
           </div>
         )}
 
-        {/* ONGLET 5 : Avis */}
+        {/* TAB 5: Reviews */}
         {activeTab === 'reviews' && (
           <div className="flex flex-col gap-3">
             <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card flex items-center justify-between">
@@ -386,7 +377,7 @@ export default function MechanicDetailPage() {
                       <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Basé sur {mechanic.jobs_completed} interventions</p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Based on {mechanic.jobs_completed} mobile interventions</p>
                 </div>
               </div>
             </div>
@@ -400,7 +391,7 @@ export default function MechanicDetailPage() {
                     ))}
                   </div>
                   <span className="text-[10px] text-slate-400">
-                    {new Date(rev.created_at).toLocaleDateString('fr-CA')}
+                    {new Date(rev.created_at).toLocaleDateString('en-GB')}
                   </span>
                 </div>
                 <p className="text-xs text-slate-700 italic">&ldquo;{rev.comment}&rdquo;</p>
@@ -410,14 +401,14 @@ export default function MechanicDetailPage() {
         )}
       </div>
 
-      {/* Barre d'action fixe en bas (Book Service Now style Mockup) */}
+      {/* Sticky Bottom Booking Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-100 p-4 shadow-[0_-4px_24px_rgba(94,23,235,0.08)] pb-safe">
         <div className="max-w-md mx-auto">
           <Link
             href="/app/request"
             className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] active:scale-[0.98] text-white font-black py-4 px-6 rounded-2xl shadow-purple-cta flex items-center justify-center gap-2 text-sm transition-all"
           >
-            <span>Réserver ce service</span>
+            <span>Book This Technician Now</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

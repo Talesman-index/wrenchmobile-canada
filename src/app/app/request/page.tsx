@@ -20,17 +20,14 @@ import {
   MapPin,
   Camera,
   Crosshair,
-  CheckCircle2,
   Sparkles,
   Upload,
   X,
-  Fuel,
   Calendar,
-  Clock,
 } from 'lucide-react';
-import { SERVICE_DEFINITIONS, CANADIAN_CITIES } from '@/lib/constants';
+import { SERVICE_DEFINITIONS } from '@/lib/constants';
 import ServiceIcon from '@/components/ui/ServiceIcon';
-import { formatCAD } from '@/lib/utils';
+import { formatGBP } from '@/lib/utils';
 import { ServiceType } from '@/types/database';
 import dynamic from 'next/dynamic';
 
@@ -38,7 +35,7 @@ const MapComponent = dynamic(() => import('@/components/ui/MapComponent'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-44 bg-slate-100 rounded-3xl flex items-center justify-center text-slate-400 text-xs border border-slate-200 animate-pulse">
-      Chargement de la carte canadienne...
+      Loading London map...
     </div>
   ),
 });
@@ -47,12 +44,12 @@ function RequestMechanicFlowContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { vehicles, primaryVehicle, createServiceRequest } = useApp();
-  const { toast, showSuccess, showError, showWarning } = useToast();
+  const { showSuccess, showError, showWarning } = useToast();
 
   const preselectedVeh = searchParams.get('vehicle');
   const preselectedService = searchParams.get('service') as ServiceType | null;
 
-  // Étape du formulaire (1: Véhicule & Panne, 2: Détails & Photos, 3: Localisation & Confirmation)
+  // Form step (1: Vehicle, 2: Service, 3: Details & Photos, 4: Location & Time, 5: Summary)
   const [step, setStep] = useState<number>(1);
   const [selectedVehicleId, setSelectedVehicleId] = useState<string>(
     preselectedVeh || (primaryVehicle?.id || (vehicles[0]?.id ?? ''))
@@ -63,21 +60,21 @@ function RequestMechanicFlowContent() {
   const [description, setDescription] = useState<string>('');
   const [photos, setPhotos] = useState<string[]>([]);
 
-  // Programmation (Immédiat vs Planifié)
+  // Booking mode (Immediate vs Scheduled)
   const [bookingType, setBookingType] = useState<'asap' | 'scheduled'>('asap');
   const [selectedDay, setSelectedDay] = useState<number>(new Date().getDate());
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('09:30');
 
-  // Localisation (Par défaut Montréal Centre-Ville)
+  // Location (Default Central London / Marylebone)
   const [locationAddress, setLocationAddress] = useState<string>(
-    '1000 Rue de la Gauchetière O, Montréal, QC H3B 4W5'
+    '45 Baker Street, Marylebone, London, W1U 8ED'
   );
   const [coords, setCoords] = useState<{ lat: number; lng: number }>({
-    lat: 45.5017,
-    lng: -73.5673,
+    lat: 51.5194,
+    lng: -0.1588,
   });
-  const [city, setCity] = useState<string>('Montréal');
-  const [province, setProvince] = useState<string>('QC');
+  const [city, setCity] = useState<string>('Westminster');
+  const [province, setProvince] = useState<string>('London');
   const [isLocating, setIsLocating] = useState<boolean>(false);
 
   useEffect(() => {
@@ -88,7 +85,7 @@ function RequestMechanicFlowContent() {
 
   const handleUseCurrentLocation = () => {
     if (!navigator.geolocation) {
-      showError('La géolocalisation n’est pas supportée par votre navigateur.');
+      showError('Geolocation is not supported by your browser.');
       return;
     }
     setIsLocating(true);
@@ -98,14 +95,14 @@ function RequestMechanicFlowContent() {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-        setLocationAddress(`Position GPS actuelle (${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)})`);
+        setLocationAddress(`Current GPS Location (${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)})`);
         setIsLocating(false);
-        showSuccess('Position GPS actuelle détectée avec succès !', 'Localisation');
+        showSuccess('Current GPS coordinates detected successfully!', 'Location');
       },
       (error) => {
-        console.warn('Erreur géolocalisation:', error);
+        console.warn('Geolocation error:', error);
         setIsLocating(false);
-        showWarning('Impossible de récupérer le GPS exact. Utilisation de l’adresse sélectionnée.', 'Localisation');
+        showWarning('Unable to acquire high-accuracy GPS. Using selected London address.', 'Location');
       },
       { timeout: 8000, enableHighAccuracy: true }
     );
@@ -113,7 +110,7 @@ function RequestMechanicFlowContent() {
 
   const handlePhotoUploadMock = () => {
     if (photos.length >= 3) {
-      showWarning('Vous avez atteint le maximum de 3 photos.');
+      showWarning('Maximum of 3 photos reached.');
       return;
     }
     const samplePhotos = [
@@ -123,7 +120,7 @@ function RequestMechanicFlowContent() {
     ];
     const nextPhoto = samplePhotos[photos.length % samplePhotos.length];
     setPhotos([...photos, nextPhoto]);
-    showSuccess('Photo du diagnostic ajoutée avec succès.');
+    showSuccess('Diagnostic photo added.');
   };
 
   const removePhoto = (index: number) => {
@@ -137,35 +134,23 @@ function RequestMechanicFlowContent() {
     const createdReq = createServiceRequest({
       vehicle_id: selectedVehicleId,
       service_type: selectedService,
-      description: description.trim() || `Intervention ${serviceDef.label} demandée`,
+      description: description.trim() || `Mobile ${serviceDef.label} requested`,
       latitude: coords.lat,
       longitude: coords.lng,
       address: locationAddress,
       city,
       province,
       photos,
-      estimated_amount: serviceDef.basePriceCAD,
+      estimated_amount: serviceDef.basePriceGBP,
     });
 
-    // Redirection vers l'écran de recherche radar
+    // Navigate to radar search dispatch
     router.push(`/app/request/searching?id=${createdReq.id}`);
-  };
-
-  const iconsMap: Record<string, any> = {
-    Zap: Zap,
-    BatteryCharging: BatteryCharging,
-    Disc: Disc,
-    ShieldAlert: ShieldAlert,
-    Droplets: Droplets,
-    Cpu: Cpu,
-    AlertTriangle: AlertTriangle,
-    Wrench: Wrench,
-    Settings: Settings,
   };
 
   return (
     <div className="flex-1 flex flex-col justify-between">
-      {/* En-tête & Barre de progression */}
+      {/* Header & Step progress */}
       <div>
         <div className="flex items-center justify-between mb-3">
           <button
@@ -179,13 +164,13 @@ function RequestMechanicFlowContent() {
           </button>
 
           <span className="text-xs font-black text-[#181528]">
-            Étape <strong className="text-[#5e17eb]">{step}</strong> sur 5
+            Step <strong className="text-[#5e17eb]">{step}</strong> of 5
           </span>
 
           <div className="w-9" />
         </div>
 
-        {/* Barre de progression */}
+        {/* Progress bar */}
         <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mb-5">
           <div
             className="bg-gradient-to-r from-[#5e17eb] to-[#7c3aed] h-full transition-all duration-300 rounded-full"
@@ -194,12 +179,12 @@ function RequestMechanicFlowContent() {
         </div>
       </div>
 
-      {/* ÉTAPE 1 : Choix du véhicule */}
+      {/* STEP 1: Select vehicle */}
       {step === 1 && (
         <div className="flex-1 flex flex-col">
           <div>
-            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Quel véhicule a besoin d&apos;aide ?</h1>
-            <p className="text-xs text-slate-500 mt-1">Sélectionnez la voiture dans votre garage</p>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Which car needs assistance?</h1>
+            <p className="text-xs text-slate-500 mt-1">Select the vehicle from your garage</p>
           </div>
 
           <div className="mt-5 flex flex-col gap-3">
@@ -232,12 +217,12 @@ function RequestMechanicFlowContent() {
                         </p>
                         {v.is_primary && (
                           <span className="text-[9px] font-black bg-[#f3ebff] text-[#5e17eb] px-2 py-0.5 rounded-full">
-                            PRINCIPAL
+                            PRIMARY
                           </span>
                         )}
                       </div>
                       <p className="text-xs text-slate-500 mt-0.5 font-mono">
-                        {v.license_plate ? `Plaque : ${v.license_plate}` : 'Sans plaque'} • {v.fuel_type || 'Essence'}
+                        {v.license_plate ? `Reg: ${v.license_plate}` : 'No plate'} • {v.fuel_type || 'Petrol'}
                       </p>
                     </div>
                   </div>
@@ -257,23 +242,22 @@ function RequestMechanicFlowContent() {
               onClick={() => router.push('/app/vehicles')}
               className="p-3.5 border-2 border-dashed border-purple-200 hover:border-purple-300 rounded-3xl text-xs font-black text-[#5e17eb] flex items-center justify-center gap-2 bg-white/80"
             >
-              + Ajouter un autre véhicule au garage
+              + Add another vehicle to your garage
             </button>
           </div>
         </div>
       )}
 
-      {/* ÉTAPE 2 : Choix du problème */}
+      {/* STEP 2: Service selection */}
       {step === 2 && (
         <div className="flex-1 flex flex-col">
           <div>
-            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Quel est le problème ?</h1>
-            <p className="text-xs text-slate-500 mt-1">Sélectionnez la prestation ou le symptôme</p>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">What is the problem?</h1>
+            <p className="text-xs text-slate-500 mt-1">Select the required service or symptom</p>
           </div>
 
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[55vh] overflow-y-auto pr-1">
             {SERVICE_DEFINITIONS.map((srv) => {
-              const Icon = iconsMap[srv.iconName] || Wrench;
               const isSelected = srv.type === selectedService;
 
               return (
@@ -291,7 +275,7 @@ function RequestMechanicFlowContent() {
                     <p className="font-black text-xs text-[#181528] leading-tight">{srv.label}</p>
                     <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">{srv.shortDesc}</p>
                     <p className="text-[11px] font-black text-[#5e17eb] mt-1.5">
-                      Dès {formatCAD(srv.basePriceCAD)}
+                      From {formatGBP(srv.basePriceGBP)}
                     </p>
                   </div>
                 </button>
@@ -301,13 +285,13 @@ function RequestMechanicFlowContent() {
         </div>
       )}
 
-      {/* ÉTAPE 3 : Description & Photos */}
+      {/* STEP 3: Fault Details & Photos */}
       {step === 3 && (
         <div className="flex-1 flex flex-col">
           <div>
-            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Décrivez la situation</h1>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Describe the symptoms</h1>
             <p className="text-xs text-slate-500 mt-1">
-              Bruits anormaux, voyants allumés ou contexte de la panne
+              Unusual sounds, warning lights on dash or circumstances of the breakdown
             </p>
           </div>
 
@@ -315,7 +299,7 @@ function RequestMechanicFlowContent() {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Ex : La voiture clique au démarrage mais le moteur ne tourne pas. Voyant batterie allumé. Garée dans l'allée de mon domicile."
+              placeholder="e.g. Engine clicks on turnover but won't start. Red battery warning on dash. Car is parked in our private driveway."
               rows={4}
               className="w-full bg-white border border-slate-200 rounded-3xl p-4 text-xs text-[#181528] placeholder:text-slate-400 focus:border-[#5e17eb] focus:ring-2 focus:ring-purple-100 outline-none resize-none leading-relaxed shadow-card"
             />
@@ -325,15 +309,15 @@ function RequestMechanicFlowContent() {
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                   <Camera className="w-4 h-4 text-[#5e17eb]" />
-                  <span>Photos du problème (optionnel, max 3)</span>
+                  <span>Fault photos (optional, max 3)</span>
                 </label>
-                <span className="text-[10px] text-slate-400">{photos.length}/3 ajoutée(s)</span>
+                <span className="text-[10px] text-slate-400">{photos.length}/3 attached</span>
               </div>
 
               <div className="grid grid-cols-3 gap-2.5">
                 {photos.map((url, i) => (
                   <div key={i} className="relative aspect-video rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 shadow-card">
-                    <img src={url} alt="Photo panne" className="w-full h-full object-cover" />
+                    <img src={url} alt="Fault photo" className="w-full h-full object-cover" />
                     <button
                       onClick={() => removePhoto(i)}
                       className="absolute top-1 right-1 bg-black/70 text-white rounded-full p-1"
@@ -349,7 +333,7 @@ function RequestMechanicFlowContent() {
                     className="aspect-video rounded-2xl border-2 border-dashed border-slate-200 hover:border-[#5e17eb] bg-white flex flex-col items-center justify-center text-slate-400 hover:text-[#5e17eb] transition-colors shadow-card"
                   >
                     <Upload className="w-4 h-4 mb-1" />
-                    <span className="text-[10px] font-bold">Ajouter</span>
+                    <span className="text-[10px] font-bold">Attach Photo</span>
                   </button>
                 )}
               </div>
@@ -358,15 +342,15 @@ function RequestMechanicFlowContent() {
         </div>
       )}
 
-      {/* ÉTAPE 4 : Date & Localisation */}
+      {/* STEP 4: Date & Location */}
       {step === 4 && (
         <div className="flex-1 flex flex-col gap-4">
           <div>
-            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Quand & Où ?</h1>
-            <p className="text-xs text-slate-500 mt-1">Intervention d&apos;urgence ou rendez-vous planifié</p>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">When & Where?</h1>
+            <p className="text-xs text-slate-500 mt-1">Immediate roadside dispatch or planned booking</p>
           </div>
 
-          {/* Mode de réservation */}
+          {/* Booking type */}
           <div className="bg-slate-100 p-1 rounded-2xl border border-slate-200 flex items-center gap-1 text-xs">
             <button
               onClick={() => setBookingType('asap')}
@@ -375,7 +359,7 @@ function RequestMechanicFlowContent() {
               }`}
             >
               <Zap className="w-3.5 h-3.5" />
-              <span>Urgence Immédiate (~25 min)</span>
+              <span>Immediate Dispatch (~25 min)</span>
             </button>
             <button
               onClick={() => setBookingType('scheduled')}
@@ -384,23 +368,23 @@ function RequestMechanicFlowContent() {
               }`}
             >
               <Calendar className="w-3.5 h-3.5" />
-              <span>Planifier un rendez-vous</span>
+              <span>Schedule for Later</span>
             </button>
           </div>
 
-          {/* Calendrier si planifié */}
+          {/* Calendar if scheduled */}
           {bookingType === 'scheduled' && (
             <div className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black text-[#181528]">Août 2026</span>
-                <span className="text-[10px] text-slate-400 font-bold uppercase">Choisir la date</span>
+                <span className="text-xs font-black text-[#181528]">September 2026</span>
+                <span className="text-[10px] text-slate-400 font-bold uppercase">Select Date</span>
               </div>
 
               <div className="grid grid-cols-7 gap-1 text-center text-xs">
-                {['DIM', 'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'].map((d) => (
+                {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((d) => (
                   <span key={d} className="text-[9px] font-black text-slate-400 py-1">{d}</span>
                 ))}
-                {Array.from({ length: 31 }, (_, i) => i + 1).map((dayNum) => {
+                {Array.from({ length: 30 }, (_, i) => i + 1).map((dayNum) => {
                   const isPicked = dayNum === selectedDay;
                   return (
                     <button
@@ -420,7 +404,7 @@ function RequestMechanicFlowContent() {
               </div>
 
               <div className="pt-2 border-t border-slate-100">
-                <p className="text-[10px] font-black text-slate-500 uppercase mb-2">Choisir l&apos;heure</p>
+                <p className="text-[10px] font-black text-slate-500 uppercase mb-2">Select Arrival Slot</p>
                 <div className="grid grid-cols-3 gap-1.5">
                   {['09:00', '10:30', '13:00', '14:30', '16:00', '17:30'].map((slot) => (
                     <button
@@ -441,7 +425,7 @@ function RequestMechanicFlowContent() {
             </div>
           )}
 
-          {/* Localisation & Carte */}
+          {/* Location & Map */}
           <div className="flex flex-col gap-2.5">
             <button
               onClick={handleUseCurrentLocation}
@@ -449,7 +433,7 @@ function RequestMechanicFlowContent() {
               className="bg-[#f3ebff] hover:bg-purple-100 border border-purple-200 text-[#5e17eb] font-black p-3 rounded-2xl flex items-center justify-center gap-2 text-xs transition-colors shadow-card"
             >
               <Crosshair className={`w-4 h-4 text-[#5e17eb] ${isLocating ? 'animate-spin' : ''}`} />
-              <span>{isLocating ? 'Détection GPS en cours...' : 'Utiliser ma position GPS actuelle'}</span>
+              <span>{isLocating ? 'Detecting GPS location...' : 'Use Current GPS Location'}</span>
             </button>
 
             <div className="relative">
@@ -458,7 +442,7 @@ function RequestMechanicFlowContent() {
                 type="text"
                 value={locationAddress}
                 onChange={(e) => setLocationAddress(e.target.value)}
-                placeholder="Entrez l'adresse, code postal..."
+                placeholder="Enter London street, postcode (e.g. W1U 8ED)..."
                 className="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-[#181528] focus:border-[#5e17eb] outline-none shadow-card"
               />
             </div>
@@ -477,23 +461,23 @@ function RequestMechanicFlowContent() {
         </div>
       )}
 
-      {/* ÉTAPE 5 : Récapitulatif & Devis */}
+      {/* STEP 5: Order Summary */}
       {step === 5 && (
         <div className="flex-1 flex flex-col">
           <div>
-            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Récapitulatif de la commande</h1>
-            <p className="text-xs text-slate-500 mt-1">Vérifiez les détails avant la recherche du mécanicien</p>
+            <h1 className="text-2xl font-black text-[#181528] tracking-tight">Booking Summary</h1>
+            <p className="text-xs text-slate-500 mt-1">Review details before dispatching the mobile mechanic</p>
           </div>
 
           <div className="mt-4 flex flex-col gap-3">
-            {/* Véhicule */}
+            {/* Vehicle */}
             <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex items-center justify-between shadow-card">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center">
                   <Car className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">Véhicule</p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase">Vehicle</p>
                   <p className="text-xs font-black text-[#181528]">
                     {selectedVeh?.year} {selectedVeh?.make} {selectedVeh?.model}
                   </p>
@@ -503,7 +487,7 @@ function RequestMechanicFlowContent() {
                 onClick={() => setStep(1)}
                 className="text-xs text-[#5e17eb] font-black"
               >
-                Modifier
+                Change
               </button>
             </div>
 
@@ -514,7 +498,7 @@ function RequestMechanicFlowContent() {
                   <Wrench className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">Service demandé</p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase">Requested Service</p>
                   <p className="text-xs font-black text-[#181528]">{serviceDef.label}</p>
                 </div>
               </div>
@@ -522,11 +506,11 @@ function RequestMechanicFlowContent() {
                 onClick={() => setStep(2)}
                 className="text-xs text-[#5e17eb] font-black"
               >
-                Modifier
+                Change
               </button>
             </div>
 
-            {/* Localisation & Horaire */}
+            {/* Location & Slot */}
             <div className="bg-white border border-slate-100 rounded-3xl p-3.5 flex items-center justify-between shadow-card">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-600">
@@ -534,7 +518,7 @@ function RequestMechanicFlowContent() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase">
-                    {bookingType === 'asap' ? 'Urgence Immédiate' : `Août ${selectedDay} • ${selectedTimeSlot}`}
+                    {bookingType === 'asap' ? 'Immediate Dispatch' : `Sept ${selectedDay} • ${selectedTimeSlot}`}
                   </p>
                   <p className="text-xs font-black text-[#181528] line-clamp-1">{locationAddress}</p>
                 </div>
@@ -543,34 +527,34 @@ function RequestMechanicFlowContent() {
                 onClick={() => setStep(4)}
                 className="text-xs text-[#5e17eb] font-black shrink-0"
               >
-                Modifier
+                Change
               </button>
             </div>
 
-            {/* Estimation de prix */}
+            {/* Price estimate */}
             <div className="bg-gradient-to-r from-[#f8f4ff] to-[#f1e6ff] border border-purple-200 rounded-3xl p-4 shadow-card">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-800 font-bold">Diagnostic & Déplacement estimé</span>
+                <span className="text-slate-800 font-bold">Estimated Call-out & Diagnostics</span>
                 <span className="text-base font-black text-[#5e17eb]">
-                  {formatCAD(serviceDef.basePriceCAD)}
+                  {formatGBP(serviceDef.basePriceGBP)}
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 mt-1">
-                * Comprend le déplacement du fourgon atelier et le diagnostic sur place. Pièces ou main-d&apos;œuvre majeure soumises à votre approbation.
+                * Includes mobile workshop travel and on-site diagnosis. Parts and major labour require your upfront approval.
               </p>
             </div>
           </div>
         </div>
       )}
 
-      {/* Boutons d'action en bas */}
+      {/* Action buttons */}
       <div className="pt-5 pb-2">
         {step < 5 ? (
           <button
             onClick={() => setStep(step + 1)}
             className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-4 px-6 rounded-2xl shadow-purple-cta flex items-center justify-center gap-2 text-sm active:scale-[0.98] transition-all"
           >
-            <span>Continuer</span>
+            <span>Continue</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         ) : (
@@ -579,7 +563,7 @@ function RequestMechanicFlowContent() {
             className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-4 px-6 rounded-2xl shadow-purple-cta flex items-center justify-center gap-2 text-base active:scale-[0.98] transition-all"
           >
             <Sparkles className="w-5 h-5 text-white" />
-            <span>Trouver un mécanicien mobile</span>
+            <span>Dispatch Mobile Mechanic</span>
           </button>
         )}
       </div>
@@ -589,7 +573,7 @@ function RequestMechanicFlowContent() {
 
 export default function RequestMechanicFlowPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-slate-500 text-xs">Chargement de la commande...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-slate-500 text-xs">Loading booking form...</div>}>
       <RequestMechanicFlowContent />
     </Suspense>
   );

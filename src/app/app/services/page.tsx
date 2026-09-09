@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useApp } from '@/lib/store';
-import { Wrench, ChevronRight, Car, Calendar, DollarSign, Clock, ShieldCheck, Compass } from 'lucide-react';
-import { formatCAD, getStatusBadge } from '@/lib/utils';
+import { Wrench, ChevronRight, Clock } from 'lucide-react';
+import { formatGBP, getStatusBadge } from '@/lib/utils';
 
 export default function ServicesHistoryPage() {
   const { serviceRequests, currentUser } = useApp();
@@ -22,19 +22,19 @@ export default function ServicesHistoryPage() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-black text-[#181528] tracking-tight">Mes Services</h1>
-          <p className="text-xs text-slate-500 mt-0.5">Historique des réparations et missions en cours</p>
+          <h1 className="text-xl font-black text-[#181528] tracking-tight">My Services</h1>
+          <p className="text-xs text-slate-500 mt-0.5">Repair history and active mobile bookings</p>
         </div>
 
         <Link
           href="/app/request"
           className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white text-xs font-black px-4 py-2 rounded-2xl shadow-purple-cta active:scale-95 transition-all"
         >
-          + Nouvelle demande
+          + New Booking
         </Link>
       </div>
 
-      {/* Filtres par onglets */}
+      {/* Filter Tabs */}
       <div className="bg-slate-100 p-1 rounded-2xl border border-slate-200 flex items-center gap-1 text-xs">
         <button
           onClick={() => setFilter('all')}
@@ -42,7 +42,7 @@ export default function ServicesHistoryPage() {
             filter === 'all' ? 'bg-white text-[#181528] shadow-sm' : 'text-slate-500 hover:text-slate-800'
           }`}
         >
-          Tous ({userRequests.length})
+          All ({userRequests.length})
         </button>
         <button
           onClick={() => setFilter('active')}
@@ -50,7 +50,7 @@ export default function ServicesHistoryPage() {
             filter === 'active' ? 'bg-[#5e17eb] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800'
           }`}
         >
-          En cours ({userRequests.filter((r) => r.status !== 'completed' && r.status !== 'cancelled').length})
+          Active ({userRequests.filter((r) => r.status !== 'completed' && r.status !== 'cancelled').length})
         </button>
         <button
           onClick={() => setFilter('completed')}
@@ -58,17 +58,17 @@ export default function ServicesHistoryPage() {
             filter === 'completed' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-800'
           }`}
         >
-          Terminés ({userRequests.filter((r) => r.status === 'completed').length})
+          Completed ({userRequests.filter((r) => r.status === 'completed').length})
         </button>
       </div>
 
-      {/* Liste des demandes */}
+      {/* List */}
       <div className="flex flex-col gap-3">
         {filtered.length === 0 ? (
           <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center mt-4 shadow-card">
             <Wrench className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-            <p className="text-sm font-bold text-slate-800">Aucun service trouvé</p>
-            <p className="text-xs text-slate-500 mt-1">Commandez un mécanicien mobile certifié dès que votre véhicule a besoin d&apos;assistance.</p>
+            <p className="text-sm font-bold text-slate-800">No services found</p>
+            <p className="text-xs text-slate-500 mt-1">Book an IMI-certified mobile mechanic whenever your vehicle needs attention.</p>
           </div>
         ) : (
           filtered.map((req) => {
@@ -98,10 +98,10 @@ export default function ServicesHistoryPage() {
 
                   <div className="text-right">
                     <p className="text-sm font-black text-[#5e17eb]">
-                      {formatCAD(req.final_amount || req.estimated_amount)}
+                      {formatGBP(req.final_amount || req.estimated_amount)}
                     </p>
                     <p className="text-[10px] text-slate-400 font-mono">
-                      {req.final_amount ? 'Total final CAD' : 'Est. diagnostic'}
+                      {req.final_amount ? 'Final Total' : 'Est. Call-out'}
                     </p>
                   </div>
                 </div>
@@ -110,7 +110,7 @@ export default function ServicesHistoryPage() {
                   <div className="flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-slate-400" />
                     <span>
-                      {new Date(req.created_at).toLocaleDateString('fr-CA', {
+                      {new Date(req.created_at).toLocaleDateString('en-GB', {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric',
@@ -119,7 +119,7 @@ export default function ServicesHistoryPage() {
                   </div>
 
                   <div className="flex items-center gap-1 text-[#5e17eb] font-black">
-                    <span>{isLive ? 'Suivi en direct' : 'Voir le reçu / Facture'}</span>
+                    <span>{isLive ? 'Live Tracking' : 'View Receipt'}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </div>
                 </div>

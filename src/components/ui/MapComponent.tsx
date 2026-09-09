@@ -153,9 +153,10 @@ export default function MapComponent({
       <div ref={mapRef} style={{ height, width: '100%' }} className="z-0" />
       {onLocationChange && (
         <div className="absolute top-2 left-2 z-[400] bg-slate-900/90 backdrop-blur px-2.5 py-1 rounded-lg border border-slate-700 text-[11px] text-slate-300 shadow">
-          Glissez le repère ou touchez pour ajuster la position
+          Drag pin or tap map to adjust location
         </div>
       )}
+
     </div>
   );
 }

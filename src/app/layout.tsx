@@ -6,44 +6,44 @@ import TopBar from '@/components/navigation/TopBar';
 import PwaRegister from '@/components/pwa/PwaRegister';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://wrenchmobile-canada.vercel.app'),
-  title: 'WrenchMobile Canada | Mécaniciens Mobiles Certifiés à Domicile',
+  metadataBase: new URL('https://wrenchmobile-london.co.uk'),
+  title: 'WrenchMobile London | Certified Mobile Mechanics At Your Doorstep',
   description:
-    'Panne de voiture ? Réservez un mécanicien automobile certifié Sceau Rouge directement dans votre allée ou au bureau. Diagnostic & dépannage rapide sans remorquage au Canada.',
+    'Car trouble in London? Book an IMI-certified mobile mechanic directly to your home, office or roadside. Fast dealer-grade diagnostics & on-site repairs across Greater London.',
   manifest: '/manifest.json',
   keywords: [
-    'mécanicien mobile',
-    'mécanique à domicile',
-    'dépannage auto montréal',
-    'mobile mechanic canada',
-    'changement batterie domicile',
-    'vidange huile mobile',
-    'réparation freins',
-    'sceau rouge',
+    'mobile mechanic london',
+    'mechanic at home london',
+    'breakdown recovery london',
+    'mobile car repair london',
+    'mobile battery replacement',
+    'mobile oil service',
+    'brake pads replacement',
+    'IMI certified mechanic',
   ],
-  authors: [{ name: 'WrenchMobile Canada Inc.' }],
+  authors: [{ name: 'WrenchMobile London Ltd' }],
   openGraph: {
     type: 'website',
-    locale: 'fr_CA',
-    url: 'https://wrenchmobile-canada.vercel.app',
-    siteName: 'WrenchMobile Canada',
-    title: 'WrenchMobile Canada | Mécanique Mobile & Dépannage à Domicile',
+    locale: 'en_GB',
+    url: 'https://wrenchmobile-london.co.uk',
+    siteName: 'WrenchMobile London',
+    title: 'WrenchMobile London | Mobile Mechanics & Roadside Assistance',
     description:
-      'Service automobile numéro 1 sur demande au Canada. Intervention le jour même, diagnostic sur place et techniciens certifiés Sceau Rouge.',
+      'London’s #1 on-demand mobile mechanic service. Same-day appointments, driveway diagnostics and IMI-certified master technicians.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'WrenchMobile Canada - Service de mécanique automobile mobile',
+        alt: 'WrenchMobile London - On-Demand Mobile Vehicle Servicing',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'WrenchMobile Canada | Mécaniciens Mobiles à Domicile',
+    title: 'WrenchMobile London | Certified Mobile Mechanics At Your Doorstep',
     description:
-      'Panne de voiture ? Le mécanicien vient à vous. Diagnostic et réparation sur place sans remorquage.',
+      'Car won’t start? We bring the garage to you. On-site diagnostics and repairs across London.',
     images: ['/og-image.jpg'],
   },
   icons: {
@@ -72,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="h-full bg-[#f8f9fd] text-[#181528] antialiased selection:bg-[#5e17eb] selection:text-white">
+    <html lang="en" className="h-full bg-[#f8f9fd] text-[#181528] antialiased selection:bg-[#5e17eb] selection:text-white">
       <head>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       </head>

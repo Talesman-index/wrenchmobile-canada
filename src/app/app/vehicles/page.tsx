@@ -8,10 +8,7 @@ import {
   Plus,
   Trash2,
   CheckCircle2,
-  AlertCircle,
   Fuel,
-  Sparkles,
-  ChevronRight,
   Shield,
   X,
   Wrench,
@@ -21,22 +18,22 @@ import Link from 'next/link';
 
 export default function CustomerVehiclesPage() {
   const { vehicles, addVehicle, deleteVehicle, setPrimaryVehicle } = useApp();
-  const { toast, showSuccess, showWarning, confirmModal } = useToast();
+  const { showSuccess, showWarning, confirmModal } = useToast();
   const [showAddModal, setShowAddModal] = useState(false);
 
-  // Formulaire d'ajout
-  const [make, setMake] = useState('Honda');
+  // Add form
+  const [make, setMake] = useState('BMW');
   const [model, setModel] = useState('');
-  const [year, setYear] = useState<number>(2021);
+  const [year, setYear] = useState<number>(2022);
   const [licensePlate, setLicensePlate] = useState('');
   const [vin, setVin] = useState('');
-  const [fuelType, setFuelType] = useState('Essence');
+  const [fuelType, setFuelType] = useState('Petrol');
   const [isPrimary, setIsPrimary] = useState(false);
 
   const handleAddSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!model.trim()) {
-      showWarning('Veuillez spécifier le modèle du véhicule');
+      showWarning('Please specify the vehicle model');
       return;
     }
 
@@ -50,7 +47,7 @@ export default function CustomerVehiclesPage() {
       is_primary: isPrimary || vehicles.length === 0,
     });
 
-    showSuccess(`${make} ${model.trim()} ajouté avec succès à votre garage !`);
+    showSuccess(`${make} ${model.trim()} added successfully to your garage!`);
     setModel('');
     setLicensePlate('');
     setVin('');
@@ -59,11 +56,11 @@ export default function CustomerVehiclesPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* En-tête */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-black text-[#181528] tracking-tight">Mon Garage</h1>
-          <p className="text-xs text-slate-500">Gérez vos véhicules pour un dépannage express</p>
+          <h1 className="text-xl font-black text-[#181528] tracking-tight">My Garage</h1>
+          <p className="text-xs text-slate-500">Manage your vehicles for rapid 1-click mobile booking</p>
         </div>
 
         <button
@@ -71,26 +68,26 @@ export default function CustomerVehiclesPage() {
           className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-xs px-4 py-2 rounded-2xl flex items-center gap-1.5 shadow-purple-cta transition-all active:scale-95"
         >
           <Plus className="w-4 h-4 stroke-[3]" />
-          <span>Ajouter</span>
+          <span>Add Vehicle</span>
         </button>
       </div>
 
-      {/* Liste des véhicules */}
+      {/* Vehicle list */}
       <div className="flex flex-col gap-3">
         {vehicles.length === 0 ? (
           <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center flex flex-col items-center shadow-card">
             <div className="w-12 h-12 rounded-full bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center mb-3">
               <Car className="w-6 h-6" />
             </div>
-            <h2 className="text-sm font-black text-[#181528]">Votre garage est vide</h2>
+            <h2 className="text-sm font-black text-[#181528]">Your garage is empty</h2>
             <p className="text-xs text-slate-500 mt-1 max-w-xs">
-              Ajoutez votre véhicule pour commander un mécanicien en 1 clic sans devoir tout ressaisir.
+              Add your vehicle now to book a certified mobile mechanic in seconds without re-entering details.
             </p>
             <button
               onClick={() => setShowAddModal(true)}
               className="mt-4 bg-[#5e17eb] text-white font-black text-xs px-4 py-2.5 rounded-2xl shadow-purple-cta"
             >
-              Ajouter un premier véhicule
+              Add First Car
             </button>
           </div>
         ) : (
@@ -119,74 +116,73 @@ export default function CustomerVehiclesPage() {
                       </h2>
                       {veh.is_primary && (
                         <span className="text-[9px] font-black bg-[#f3ebff] text-[#5e17eb] px-2 py-0.5 rounded-full">
-                          PRINCIPAL
+                          PRIMARY
                         </span>
                       )}
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5 font-mono">
-                      {veh.license_plate ? `Plaque : ${veh.license_plate}` : 'Sans plaque renseignée'}
+                      {veh.license_plate ? `Reg: ${veh.license_plate}` : 'No plate set'}
                     </p>
                   </div>
                 </div>
 
-                {/* Bouton supprimer */}
+                {/* Delete button */}
                 <button
                   onClick={() => {
                     confirmModal({
-                      title: 'Supprimer ce véhicule ?',
-                      message: `Êtes-vous sûr de vouloir retirer ${veh.year} ${veh.make} ${veh.model} (${veh.license_plate || 'Sans plaque'}) de votre garage ?`,
+                      title: 'Delete this vehicle?',
+                      message: `Are you sure you want to remove ${veh.year} ${veh.make} ${veh.model} (${veh.license_plate || 'No plate'}) from your garage?`,
                       type: 'danger',
-                      confirmText: 'Supprimer',
-                      cancelText: 'Conserver',
+                      confirmText: 'Delete',
+                      cancelText: 'Keep',
                       onConfirm: () => {
                         deleteVehicle(veh.id);
-                        showSuccess(`${veh.make} ${veh.model} a été retiré de votre garage.`);
+                        showSuccess(`${veh.make} ${veh.model} has been removed.`);
                       },
                     });
                   }}
                   className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-rose-50 rounded-xl transition-colors"
-                  title="Supprimer"
+                  title="Delete vehicle"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Spécifications & Raccourcis */}
+              {/* Specs & Badges */}
               <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100">
                 <div className="flex items-center gap-1.5 text-slate-600 bg-[#f8f9fd] p-2 rounded-xl">
                   <Fuel className="w-3.5 h-3.5 text-[#5e17eb]" />
-                  <span>{veh.fuel_type || 'Essence'}</span>
+                  <span>{veh.fuel_type || 'Petrol'}</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-slate-600 bg-[#f8f9fd] p-2 rounded-xl">
                   <Shield className="w-3.5 h-3.5 text-emerald-600" />
-                  <span className="truncate">{veh.vin ? `NIV: ${veh.vin.slice(0, 8)}...` : 'NIV non saisi'}</span>
+                  <span className="truncate">VIN: {veh.vin ? `${veh.vin.slice(0, 8)}...` : 'Verified'}</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-1">
+              {/* Action Buttons */}
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
                 {!veh.is_primary ? (
                   <button
-                    onClick={() => {
-                      setPrimaryVehicle(veh.id);
-                      showSuccess(`${veh.make} ${veh.model} est maintenant votre véhicule principal.`);
-                    }}
-                    className="text-xs font-bold text-slate-600 hover:text-[#5e17eb] flex items-center gap-1"
+                    onClick={() => setPrimaryVehicle(veh.id)}
+                    className="text-xs text-slate-600 hover:text-[#5e17eb] font-bold flex items-center gap-1 transition-colors"
                   >
-                    Définir comme véhicule par défaut
+                    <CheckCircle2 className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Set as Primary</span>
                   </button>
                 ) : (
-                  <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Sélectionné pour les urgences
+                  <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Default Vehicle</span>
                   </span>
                 )}
 
                 <Link
                   href={`/app/request?vehicle=${veh.id}`}
-                  className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-xs px-3.5 py-1.5 rounded-full shadow-purple-cta flex items-center gap-1 active:scale-95 transition-all"
+                  className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-xs px-4 py-2 rounded-xl shadow-purple-cta active:scale-95 transition-all flex items-center gap-1.5"
                 >
-                  <Wrench className="w-3 h-3" />
-                  <span>Dépanner</span>
+                  <Wrench className="w-3.5 h-3.5" />
+                  <span>Book Service</span>
                 </Link>
               </div>
             </div>
@@ -194,28 +190,31 @@ export default function CustomerVehiclesPage() {
         )}
       </div>
 
-      {/* MODAL D'AJOUT DE VÉHICULE */}
+      {/* MODAL: ADD VEHICLE */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-white border border-slate-100 rounded-3xl p-5 w-full max-w-md shadow-2xl flex flex-col gap-4">
+          <div className="bg-white border border-slate-100 rounded-3xl p-5 w-full max-w-md shadow-2xl flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="text-sm font-black text-[#181528]">Ajouter un véhicule au garage</h2>
+              <div className="flex items-center gap-2">
+                <Car className="w-5 h-5 text-[#5e17eb]" />
+                <h2 className="text-sm font-black text-[#181528]">Add Vehicle to Garage</h2>
+              </div>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="text-slate-400 hover:text-slate-700 p-1"
+                className="p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleAddSubmit} className="flex flex-col gap-3 text-xs">
+            <form onSubmit={handleAddSubmit} className="flex flex-col gap-3.5 text-xs">
               <div className="grid grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Marque</label>
+                  <label className="block text-slate-700 font-bold mb-1">Make</label>
                   <select
                     value={make}
                     onChange={(e) => setMake(e.target.value)}
-                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] outline-none"
+                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-xs text-[#181528] focus:border-[#5e17eb] outline-none"
                   >
                     {POPULAR_VEHICLE_MAKES.map((m) => (
                       <option key={m} value={m}>
@@ -226,58 +225,67 @@ export default function CustomerVehiclesPage() {
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Année</label>
-                  <select
+                  <label className="block text-slate-700 font-bold mb-1">Year</label>
+                  <input
+                    type="number"
+                    min="1995"
+                    max="2026"
                     value={year}
                     onChange={(e) => setYear(Number(e.target.value))}
-                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] outline-none"
-                  >
-                    {Array.from({ length: 30 }, (_, i) => 2026 - i).map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
+                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-xs text-[#181528] focus:border-[#5e17eb] outline-none"
+                    required
+                  />
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Modèle</label>
+                <label className="block text-slate-700 font-bold mb-1">Model / Trim</label>
                 <input
                   type="text"
-                  placeholder="Ex : Civic, RAV4, F-150, Elantra..."
+                  placeholder="e.g. 3 Series Touring 330e M Sport"
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
-                  className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] outline-none"
+                  className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-xs text-[#181528] focus:border-[#5e17eb] outline-none"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Plaque d&apos;immatriculation</label>
+                  <label className="block text-slate-700 font-bold mb-1">Registration Plate</label>
                   <input
                     type="text"
-                    placeholder="Ex : G12 ABC"
+                    placeholder="e.g. LN22 XKP"
                     value={licensePlate}
                     onChange={(e) => setLicensePlate(e.target.value)}
-                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] uppercase font-mono focus:border-[#5e17eb] outline-none"
+                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-xs text-[#181528] focus:border-[#5e17eb] outline-none font-mono uppercase"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Motorisation</label>
+                  <label className="block text-slate-700 font-bold mb-1">Fuel Type</label>
                   <select
                     value={fuelType}
                     onChange={(e) => setFuelType(e.target.value)}
-                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-2.5 text-[#181528] focus:border-[#5e17eb] outline-none"
+                    className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-xs text-[#181528] focus:border-[#5e17eb] outline-none"
                   >
-                    <option value="Essence">Essence</option>
-                    <option value="Hybride">Hybride</option>
-                    <option value="100 % Électrique">100 % Électrique</option>
+                    <option value="Petrol">Petrol</option>
                     <option value="Diesel">Diesel</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Electric">Electric</option>
                   </select>
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">VIN (Optional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. WBA31AY08NFP19284"
+                  value={vin}
+                  onChange={(e) => setVin(e.target.value)}
+                  className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-xs text-[#181528] focus:border-[#5e17eb] outline-none font-mono uppercase"
+                />
               </div>
 
               <div className="flex items-center gap-2 pt-1">
@@ -286,19 +294,28 @@ export default function CustomerVehiclesPage() {
                   id="primaryCheck"
                   checked={isPrimary}
                   onChange={(e) => setIsPrimary(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#5e17eb] accent-[#5e17eb]"
+                  className="rounded text-[#5e17eb] focus:ring-[#5e17eb] w-4 h-4"
                 />
-                <label htmlFor="primaryCheck" className="text-slate-700 font-bold cursor-pointer">
-                  Définir comme véhicule principal
+                <label htmlFor="primaryCheck" className="text-xs text-slate-700 font-bold cursor-pointer">
+                  Set as Primary Vehicle
                 </label>
               </div>
 
-              <button
-                type="submit"
-                className="mt-2 w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3.5 rounded-2xl shadow-purple-cta text-xs transition-all active:scale-98"
-              >
-                Enregistrer dans mon garage
-              </button>
+              <div className="pt-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-2xl text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3 rounded-2xl text-xs shadow-purple-cta"
+                >
+                  Save Car
+                </button>
+              </div>
             </form>
           </div>
         </div>

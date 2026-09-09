@@ -2,9 +2,8 @@
 
 import React, { useState } from 'react';
 import { useApp } from '@/lib/store';
-import { ShieldCheck, Check, X, UserX, AlertCircle, Wrench, Search, MapPin, Star } from 'lucide-react';
+import { Check, X, Wrench, MapPin, Star } from 'lucide-react';
 import { getStatusBadge } from '@/lib/utils';
-import { VerificationStatus } from '@/types/database';
 
 export default function AdminMechanicsPage() {
   const { mechanics, updateMechanicVerification } = useApp();
@@ -30,13 +29,13 @@ export default function AdminMechanicsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Vérification des Mécaniciens</h1>
+          <h1 className="text-2xl font-black text-white tracking-tight">Mechanic Verification & Compliance</h1>
           <p className="text-xs text-slate-400 mt-1">
-            Validation des certifications Sceau Rouge et conformité des techniciens.
+            Validation of UK IMI credentials, public liability insurance, and technician vetting.
           </p>
         </div>
 
-        {/* Filtres par statut */}
+        {/* Status Filters */}
         <div className="bg-slate-900 p-1 rounded-xl border border-slate-800 flex items-center gap-1 text-xs">
           <button
             onClick={() => setFilter('all')}
@@ -44,7 +43,7 @@ export default function AdminMechanicsPage() {
               filter === 'all' ? 'bg-purple-600 text-white font-bold' : 'text-slate-400 hover:text-white'
             }`}
           >
-            Tous ({mechanics.length})
+            All ({mechanics.length})
           </button>
           <button
             onClick={() => setFilter('pending')}
@@ -52,7 +51,7 @@ export default function AdminMechanicsPage() {
               filter === 'pending' ? 'bg-purple-600 text-white font-bold' : 'text-slate-400 hover:text-white'
             }`}
           >
-            En attente ({mechanics.filter((m) => m.verification_status === 'pending').length})
+            Pending ({mechanics.filter((m) => m.verification_status === 'pending').length})
           </button>
           <button
             onClick={() => setFilter('verified')}
@@ -60,12 +59,12 @@ export default function AdminMechanicsPage() {
               filter === 'verified' ? 'bg-purple-600 text-white font-bold' : 'text-slate-400 hover:text-white'
             }`}
           >
-            Vérifiés ({mechanics.filter((m) => m.verification_status === 'verified').length})
+            Verified ({mechanics.filter((m) => m.verification_status === 'verified').length})
           </button>
         </div>
       </div>
 
-      {/* Liste des mécaniciens */}
+      {/* Mechanics List */}
       <div className="grid grid-cols-1 gap-4">
         {filteredMechanics.map((m) => {
           const badge = getStatusBadge(m.verification_status);
@@ -90,27 +89,27 @@ export default function AdminMechanicsPage() {
                     </span>
                   </div>
 
-                  <p className="text-xs text-purple-400 font-medium mt-0.5">{m.business_name || 'Atelier Mobile Indépendant'}</p>
+                  <p className="text-xs text-purple-400 font-medium mt-0.5">{m.business_name || 'Independent Mobile Technician'}</p>
                   <p className="text-xs text-slate-400 mt-1 max-w-xl line-clamp-2">{m.bio}</p>
 
                   <div className="flex flex-wrap gap-4 mt-2 text-xs text-slate-400">
                     <span className="flex items-center gap-1.5">
                       <MapPin className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                      <span>{m.city}, {m.province} (Rayon {m.service_radius_km} km)</span>
+                      <span>{m.city}, London ({m.service_radius_km} miles radius)</span>
                     </span>
                     <span className="flex items-center gap-1.5">
                       <Wrench className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                      <span>{m.years_experience} ans d&apos;expérience</span>
+                      <span>{m.years_experience} years experience</span>
                     </span>
                     <span className="flex items-center gap-1.5">
                       <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
-                      <span>{m.rating.toFixed(1)} ({m.jobs_completed} interventions)</span>
+                      <span>{m.rating.toFixed(1)} ({m.jobs_completed} call-outs)</span>
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Boutons d'action pour l'admin */}
+              {/* Admin Action Buttons */}
               <div className="flex items-center gap-2 shrink-0 border-t md:border-t-0 pt-3 md:pt-0 border-slate-800">
                 {m.verification_status !== 'verified' && (
                   <button
@@ -118,7 +117,7 @@ export default function AdminMechanicsPage() {
                     className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors shadow-md shadow-emerald-950"
                   >
                     <Check className="w-4 h-4" />
-                    <span>Valider Sceau Rouge</span>
+                    <span>Approve IMI Licence</span>
                   </button>
                 )}
 
@@ -128,7 +127,7 @@ export default function AdminMechanicsPage() {
                     className="bg-slate-800 hover:bg-red-950 text-slate-300 hover:text-red-400 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
                   >
                     <X className="w-4 h-4" />
-                    <span>Refuser</span>
+                    <span>Decline</span>
                   </button>
                 )}
               </div>

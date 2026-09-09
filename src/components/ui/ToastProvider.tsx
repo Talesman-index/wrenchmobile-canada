@@ -98,11 +98,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     []
   );
 
-  const showSuccess = useCallback((message: string, title = 'Succès') => {
+  const showSuccess = useCallback((message: string, title = 'Success') => {
     toast({ message, title, type: 'success' });
   }, [toast]);
 
-  const showError = useCallback((message: string, title = 'Erreur') => {
+  const showError = useCallback((message: string, title = 'Error') => {
     toast({ message, title, type: 'error' });
   }, [toast]);
 
@@ -110,13 +110,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     toast({ message, title, type: 'info' });
   }, [toast]);
 
-  const showWarning = useCallback((message: string, title = 'Attention') => {
+  const showWarning = useCallback((message: string, title = 'Warning') => {
     toast({ message, title, type: 'warning' });
   }, [toast]);
 
-  const showWrench = useCallback((message: string, title = 'MécanoMobile') => {
+  const showWrench = useCallback((message: string, title = 'WrenchMobile') => {
     toast({ message, title, type: 'wrench' });
   }, [toast]);
+
 
   const confirmModal = useCallback((options: ConfirmModalOptions) => {
     setActiveModal(options);
@@ -249,7 +250,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   disabled={isConfirmLoading}
                   className="w-full py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-all active:scale-[0.98]"
                 >
-                  {activeModal.cancelText || 'Annuler'}
+                  {activeModal.cancelText || 'Cancel'}
                 </button>
                 <button
                   type="button"
@@ -266,9 +267,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   {isConfirmLoading ? (
                     <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
-                    activeModal.confirmText || 'Confirmer'
+                    activeModal.confirmText || 'Confirm'
                   )}
                 </button>
+
               </div>
             </div>
           </div>
@@ -362,8 +364,9 @@ function ToastCard({ toast, onDismiss }: { toast: ToastItem; onDismiss: () => vo
         <button
           onClick={onDismiss}
           className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
-          aria-label="Fermer"
+          aria-label="Close"
         >
+
           <X className="h-4 w-4" />
         </button>
       </div>

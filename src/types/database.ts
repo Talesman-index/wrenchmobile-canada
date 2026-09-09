@@ -136,6 +136,8 @@ export interface ServiceDefinition {
   label: string;
   shortDesc: string;
   iconName: string;
-  basePriceCAD: number;
+  basePriceGBP: number;
+  basePriceCAD?: number;
   estimatedDuration: string;
 }
+

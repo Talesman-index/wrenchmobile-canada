@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp } from '@/lib/store';
-import { User, Phone, Mail, MapPin, Shield, CheckCircle2, LogOut, Wrench, Heart, Car, ChevronRight, Settings } from 'lucide-react';
+import { CheckCircle2, Wrench, Car, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CustomerProfilePage() {
@@ -28,13 +28,13 @@ export default function CustomerProfilePage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-black text-[#181528] tracking-tight">Mon Profil</h1>
+        <h1 className="text-xl font-black text-[#181528] tracking-tight">My Profile</h1>
         <span className="text-[10px] font-black uppercase tracking-wider bg-[#f3ebff] text-[#5e17eb] border border-purple-200 px-2.5 py-1 rounded-full">
-          Compte Client
+          Customer Account
         </span>
       </div>
 
-      {/* Carte d'avatar */}
+      {/* Avatar Card */}
       <div className="bg-white border border-slate-100 rounded-3xl p-5 flex items-center gap-4 shadow-card">
         <div className="w-16 h-16 rounded-full overflow-hidden bg-slate-100 border-2 border-[#5e17eb] shrink-0 shadow-md">
           <img
@@ -49,19 +49,19 @@ export default function CustomerProfilePage() {
           </h2>
           <p className="text-xs text-slate-500">{currentUser.email}</p>
           <p className="text-[11px] text-[#5e17eb] font-bold mt-0.5">
-            {vehicles.length} véhicule(s) dans le garage
+            {vehicles.length} vehicle(s) in garage
           </p>
         </div>
       </div>
 
-      {/* Liens de paramètres rapides */}
+      {/* Settings Navigation Links */}
       <div className="bg-white border border-slate-100 rounded-3xl p-2 shadow-card flex flex-col divide-y divide-slate-100 text-xs font-bold text-slate-700">
         <Link href="/app/vehicles" className="p-3.5 flex items-center justify-between hover:bg-slate-50 rounded-2xl transition-colors">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center">
               <Car className="w-4 h-4" />
             </div>
-            <span>Véhicules du Garage</span>
+            <span>Garage Vehicles</span>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-400" />
         </Link>
@@ -71,19 +71,19 @@ export default function CustomerProfilePage() {
             <div className="w-8 h-8 rounded-xl bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center">
               <Wrench className="w-4 h-4" />
             </div>
-            <span>Historique des Services & Factures</span>
+            <span>Service History & Receipts</span>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-400" />
         </Link>
       </div>
 
-      {/* Formulaire de modification */}
+      {/* Profile Details Form */}
       <form onSubmit={handleSave} className="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col gap-3 text-xs shadow-card">
-        <h3 className="font-black text-sm text-[#181528] mb-1">Informations personnelles</h3>
+        <h3 className="font-black text-sm text-[#181528] mb-1">Personal Information</h3>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-slate-600 font-bold mb-1">Prénom</label>
+            <label className="block text-slate-600 font-bold mb-1">First Name</label>
             <input
               type="text"
               value={firstName}
@@ -93,7 +93,7 @@ export default function CustomerProfilePage() {
             />
           </div>
           <div>
-            <label className="block text-slate-600 font-bold mb-1">Nom</label>
+            <label className="block text-slate-600 font-bold mb-1">Last Name</label>
             <input
               type="text"
               value={lastName}
@@ -105,7 +105,7 @@ export default function CustomerProfilePage() {
         </div>
 
         <div>
-          <label className="block text-slate-600 font-bold mb-1">Courriel</label>
+          <label className="block text-slate-600 font-bold mb-1">Email</label>
           <input
             type="email"
             value={email}
@@ -116,12 +116,12 @@ export default function CustomerProfilePage() {
         </div>
 
         <div>
-          <label className="block text-slate-600 font-bold mb-1">Numéro de téléphone canadien</label>
+          <label className="block text-slate-600 font-bold mb-1">UK Contact Number</label>
           <input
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="+1 (514) 555-0192"
+            placeholder="+44 20 7946 0912"
             className="w-full bg-[#f8f9fd] border border-slate-200 rounded-2xl p-3 text-[#181528] focus:border-[#5e17eb] outline-none"
           />
         </div>
@@ -133,30 +133,30 @@ export default function CustomerProfilePage() {
           {saved ? (
             <>
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>Modifications enregistrées !</span>
+              <span>Profile updated!</span>
             </>
           ) : (
-            <span>Enregistrer le profil</span>
+            <span>Save Changes</span>
           )}
         </button>
       </form>
 
-      {/* CTA Inscription mécanicien */}
+      {/* Switch to Mechanic CTA */}
       <div className="bg-white border border-slate-100 rounded-3xl p-5 flex flex-col gap-3 shadow-card">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-[#f3ebff] text-[#5e17eb] flex items-center justify-center">
             <Wrench className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="text-xs font-black text-[#181528]">Vous êtes mécanicien certifié ?</h4>
-            <p className="text-[11px] text-slate-500">Générez des revenus selon vos disponibilités avec notre plateforme mobile.</p>
+            <h4 className="text-xs font-black text-[#181528]">Are you a certified mechanic?</h4>
+            <p className="text-[11px] text-slate-500">Earn on your own schedule across London with our mobile platform.</p>
           </div>
         </div>
         <button
           onClick={() => setCurrentRole('mechanic')}
           className="w-full bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black py-3 rounded-2xl text-xs shadow-purple-cta active:scale-98 transition-all"
         >
-          Basculer vers l&apos;App Mécanicien
+          Switch to Mechanic App
         </button>
       </div>
     </div>

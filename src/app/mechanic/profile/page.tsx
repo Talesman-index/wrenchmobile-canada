@@ -3,20 +3,12 @@
 import React, { useState } from 'react';
 import { useApp } from '@/lib/store';
 import {
-  Wrench,
-  ShieldCheck,
-  MapPin,
   Star,
   CheckCircle2,
-  Power,
-  DollarSign,
-  Phone,
-  Mail,
-  Award,
 } from 'lucide-react';
 
 export default function MechanicProfilePage() {
-  const { currentMechanicProfile, updateMechanicProfile, toggleMechanicAvailability } = useApp();
+  const { currentMechanicProfile, updateMechanicProfile } = useApp();
 
   const [businessName, setBusinessName] = useState(currentMechanicProfile.business_name || '');
   const [bio, setBio] = useState(currentMechanicProfile.bio || '');
@@ -28,7 +20,7 @@ export default function MechanicProfilePage() {
     updateMechanicProfile(currentMechanicProfile.id, {
       business_name: businessName,
       bio,
-      service_radius_km: Number(radius) || 35,
+      service_radius_km: Number(radius) || 25,
     });
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -37,13 +29,13 @@ export default function MechanicProfilePage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-black text-slate-900 tracking-tight">Profil Technicien</h1>
+        <h1 className="text-xl font-black text-slate-900 tracking-tight">Technician Profile</h1>
         <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full">
-          Sceau Rouge Validé
+          IMI Level 4 Verified
         </span>
       </div>
 
-      {/* Carte identité */}
+      {/* Identity Card */}
       <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card flex items-center gap-4">
         <div className="w-16 h-16 rounded-full overflow-hidden bg-[#f3ebff] border-2 border-[#5e17eb] shrink-0 shadow-md">
           <img
@@ -62,17 +54,17 @@ export default function MechanicProfilePage() {
               <span>{currentMechanicProfile.rating.toFixed(1)}</span>
             </span>
             <span className="text-slate-300">•</span>
-            <span className="text-slate-500">{currentMechanicProfile.jobs_completed} interventions</span>
+            <span className="text-slate-500">{currentMechanicProfile.jobs_completed} jobs completed</span>
           </div>
         </div>
       </div>
 
-      {/* Formulaire de profil mécanicien */}
+      {/* Profile Form */}
       <form onSubmit={handleSave} className="bg-white border border-slate-100 rounded-3xl p-5 shadow-card flex flex-col gap-3 text-xs">
-        <h3 className="font-black text-sm text-[#181528] mb-1">Paramètres professionnels</h3>
+        <h3 className="font-black text-sm text-[#181528] mb-1">Professional Settings</h3>
 
         <div>
-          <label className="block font-bold text-slate-700 mb-1">Nom de l&apos;atelier mobile</label>
+          <label className="block font-bold text-slate-700 mb-1">Trading Name / Mobile Workshop</label>
           <input
             type="text"
             value={businessName}
@@ -82,7 +74,7 @@ export default function MechanicProfilePage() {
         </div>
 
         <div>
-          <label className="block font-bold text-slate-700 mb-1">Présentation / Spécialités</label>
+          <label className="block font-bold text-slate-700 mb-1">Bio / Specialisations</label>
           <textarea
             rows={3}
             value={bio}
@@ -92,7 +84,7 @@ export default function MechanicProfilePage() {
         </div>
 
         <div>
-          <label className="block font-bold text-slate-700 mb-1">Rayon d&apos;intervention (km)</label>
+          <label className="block font-bold text-slate-700 mb-1">Service Radius (Miles across Greater London)</label>
           <input
             type="number"
             value={radius}
@@ -108,10 +100,10 @@ export default function MechanicProfilePage() {
           {saved ? (
             <>
               <CheckCircle2 className="w-4 h-4 text-emerald-300" />
-              <span>Modifications sauvegardées !</span>
+              <span>Settings Saved Successfully!</span>
             </>
           ) : (
-            <span>Enregistrer les paramètres</span>
+            <span>Save Profile Settings</span>
           )}
         </button>
       </form>

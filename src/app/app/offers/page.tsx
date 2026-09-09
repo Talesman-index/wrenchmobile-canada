@@ -8,54 +8,50 @@ import {
   ChevronLeft,
   Tag,
   Copy,
-  Sparkles,
-  CheckCircle2,
-  Clock,
   ArrowRight,
-  ShieldCheck,
 } from 'lucide-react';
 
 const ALL_OFFERS = [
   {
     id: 'promo-1',
-    tag: 'Offre du Jour',
+    tag: 'Daily Special',
     code: 'FIRST20',
-    title: 'Diagnostic Automobile Complet',
-    discount: '20 % DE RABAIS',
-    desc: 'Valable sur votre tout premier diagnostic mobile OBD-II et bilan santé 40 points à votre domicile ou bureau.',
+    title: 'Full Vehicle Diagnostics Scan',
+    discount: '20% OFF',
+    desc: 'Valid on your first complete mobile OBD-II ECU scan and 40-point vehicle check at your London home or office.',
     image: '/images/special_offer_mechanic.jpg',
-    validUntil: '30 Septembre 2026',
-    ctaHref: '/app/request',
+    validUntil: '30 October 2026',
+    ctaHref: '/app/request?service=diagnostic_scan',
   },
   {
     id: 'promo-2',
-    tag: 'Batterie & Démarrage',
+    tag: 'Battery & Starting',
     code: 'BOOST25',
-    title: 'Pack Batterie & Installation Neuve',
-    discount: '25 % DE RABAIS',
-    desc: 'Survoltage d’urgence ou remplacement de batterie neuve livrée et testée directement dans votre allée.',
+    title: 'Express Battery Pack & Fitting',
+    discount: '25% OFF',
+    desc: 'Rapid jump start or new battery supplied, fitted and coded directly on your driveway.',
     image: '/images/offer_battery_mechanic.jpg',
-    validUntil: '15 Octobre 2026',
+    validUntil: '15 November 2026',
     ctaHref: '/app/request?service=battery_jump',
   },
   {
     id: 'promo-3',
-    tag: 'Freins & Sécurité',
-    code: 'BRAKES30',
-    title: 'Forfait Plaquettes & Disques',
-    discount: '30 $ DE RÉDUCTION',
-    desc: 'Remplacement de plaquettes et disques de freins certifiés par des mécaniciens Sceau Rouge.',
+    tag: 'Brakes & Safety',
+    code: 'BRAKES25',
+    title: 'Brake Pads & Discs Overhaul',
+    discount: '£25 OFF',
+    desc: 'Replacement ceramic brake pads and discs fitted by IMI-certified mobile technicians.',
     image: '/images/offer_brakes_mechanic.jpg',
-    validUntil: '31 Octobre 2026',
+    validUntil: '30 November 2026',
     ctaHref: '/app/request?service=brake_service',
   },
   {
     id: 'promo-4',
-    tag: 'Entretien Mobile',
-    code: 'CHECKUP69',
-    title: 'Forfait Vidange Synthétique & Check-Up',
-    discount: 'DÈS 69 $ TOUT COMPRIS',
-    desc: 'Vidange huile synthétique premium + remplacement filtre et révision générale sans déplacement.',
+    tag: 'Mobile Servicing',
+    code: 'SERVICE59',
+    title: 'Synthetic Oil Service & Multi-Point Check',
+    discount: 'FROM £59 ALL INCLUSIVE',
+    desc: 'Premium synthetic oil, OEM filter and comprehensive triage without garage trips.',
     image: '/images/service_provider_mechanics.jpg',
     validUntil: 'Permanent',
     ctaHref: '/app/request?service=oil_change',
@@ -69,15 +65,15 @@ export default function SpecialOffersPage() {
   const copyCode = (code: string) => {
     navigator.clipboard?.writeText(code);
     toast({
-      title: 'Code Promo Copié !',
-      message: `Le code promo "${code}" a été copié. Il sera automatiquement appliqué à votre commande.`,
+      title: 'Promo Code Copied!',
+      message: `Code "${code}" has been copied to clipboard. Apply it at checkout.`,
       type: 'success',
     });
   };
 
   return (
     <div className="flex flex-col gap-4 -mx-4 -mt-3 pb-24">
-      {/* En-tête Violet */}
+      {/* Header */}
       <div className="bg-gradient-to-b from-[#5610d8] via-[#5e17eb] to-[#6822f3] text-white rounded-b-[36px] p-5 pt-4 shadow-purple-cta flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <button
@@ -88,22 +84,21 @@ export default function SpecialOffersPage() {
           </button>
 
           <div className="text-center">
-            <h1 className="text-base font-black text-white tracking-tight">Offres Spéciales & Bons Plans</h1>
-            <p className="text-[11px] text-purple-200">Rabais exclusifs sur vos réparations mobiles</p>
+            <h1 className="text-base font-black text-white tracking-tight">Special Offers & Vouchers</h1>
+            <p className="text-[11px] text-purple-200">Exclusive savings on London mobile vehicle repairs</p>
           </div>
 
           <div className="w-10" />
         </div>
       </div>
 
-      {/* Liste des offres */}
+      {/* Offers list */}
       <div className="px-4 flex flex-col gap-4 -mt-1">
         {ALL_OFFERS.map((offer) => (
           <div
             key={offer.id}
             className="bg-white border border-slate-100 rounded-3xl p-4 shadow-card hover:shadow-card-hover transition-all flex flex-col gap-3.5 relative overflow-hidden"
           >
-            {/* Haut de la carte */}
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1">
                 <span className="text-[10px] font-black bg-[#f3ebff] text-[#5e17eb] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
@@ -123,7 +118,6 @@ export default function SpecialOffersPage() {
                 </p>
               </div>
 
-              {/* Photo détourée */}
               <div className="w-24 h-24 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-md bg-white">
                 <img
                   src={offer.image}
@@ -133,15 +127,14 @@ export default function SpecialOffersPage() {
               </div>
             </div>
 
-            {/* Code promo et bouton d'action */}
             <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
               <button
                 onClick={() => copyCode(offer.code)}
                 className="flex items-center gap-1.5 bg-[#f8f9fd] hover:bg-[#f3ebff] border border-dashed border-purple-300 text-[#5e17eb] px-3 py-1.5 rounded-xl text-xs font-mono font-black active:scale-95 transition-all"
-                title="Copier le code promo"
+                title="Copy promo code"
               >
                 <Tag className="w-3.5 h-3.5" />
-                <span>Code : {offer.code}</span>
+                <span>Code: {offer.code}</span>
                 <Copy className="w-3 h-3 text-slate-400 ml-1" />
               </button>
 
@@ -149,7 +142,7 @@ export default function SpecialOffersPage() {
                 href={offer.ctaHref}
                 className="bg-[#5e17eb] hover:bg-[#4c0ec4] text-white font-black text-xs px-5 py-2 rounded-full shadow-purple-cta active:scale-95 transition-all flex items-center gap-1.5"
               >
-                <span>Utiliser l&apos;offre</span>
+                <span>Use Offer</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>

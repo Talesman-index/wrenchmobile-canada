@@ -5,19 +5,31 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatCAD(amount: number): string {
-  return new Intl.NumberFormat('fr-CA', {
+export function formatGBP(amount: number): string {
+  return new Intl.NumberFormat('en-GB', {
     style: 'currency',
-    currency: 'CAD',
+    currency: 'GBP',
     minimumFractionDigits: 2,
   }).format(amount);
 }
 
+// Backwards-compatible alias so existing imports work immediately
+export const formatCAD = formatGBP;
+
 export function formatDistanceKm(km: number): string {
-  if (km < 1) {
-    return `${Math.round(km * 1000)} m`;
+  // In the UK, motorists use miles
+  const miles = km * 0.621371;
+  if (miles < 0.2) {
+    return 'Nearby (< 0.2 mi)';
   }
-  return `${km.toFixed(1)} km`;
+  return `${miles.toFixed(1)} miles`;
+}
+
+export function formatDistanceMiles(miles: number): string {
+  if (miles < 0.2) {
+    return 'Nearby (< 0.2 mi)';
+  }
+  return `${miles.toFixed(1)} miles`;
 }
 
 export function calculateDistanceKm(
@@ -26,7 +38,7 @@ export function calculateDistanceKm(
   lat2: number,
   lon2: number
 ): number {
-  const R = 6371; // Rayon de la terre en km
+  const R = 6371; // Earth radius in km
   const dLat = deg2rad(lat2 - lat1);
   const dLon = deg2rad(lon2 - lon1);
   const a =
@@ -46,29 +58,29 @@ function deg2rad(deg: number): number {
 export function getStatusBadge(status: string) {
   switch (status) {
     case 'searching':
-      return { label: 'Recherche d’un mécanicien', bg: 'bg-amber-100 text-amber-700 border-amber-300' };
+      return { label: 'Searching for mechanic', bg: 'bg-amber-100 text-amber-700 border-amber-300' };
     case 'accepted':
-      return { label: 'Mécanicien assigné', bg: 'bg-blue-100 text-blue-700 border-blue-300' };
+      return { label: 'Mechanic assigned', bg: 'bg-blue-100 text-blue-700 border-blue-300' };
     case 'mechanic_on_the_way':
-      return { label: 'Mécanicien en route', bg: 'bg-indigo-100 text-indigo-700 border-indigo-300 animate-pulse' };
+      return { label: 'Mechanic en route', bg: 'bg-indigo-100 text-indigo-700 border-indigo-300 animate-pulse' };
     case 'arrived':
-      return { label: 'Arrivé sur place', bg: 'bg-cyan-100 text-cyan-700 border-cyan-300' };
+      return { label: 'Arrived on site', bg: 'bg-cyan-100 text-cyan-700 border-cyan-300' };
     case 'in_progress':
-      return { label: 'Intervention en cours', bg: 'bg-emerald-100 text-emerald-700 border-emerald-300' };
+      return { label: 'Work in progress', bg: 'bg-emerald-100 text-emerald-700 border-emerald-300' };
     case 'awaiting_payment':
-      return { label: 'En attente de paiement', bg: 'bg-orange-100 text-orange-700 border-orange-300' };
+      return { label: 'Awaiting payment', bg: 'bg-orange-100 text-orange-700 border-orange-300' };
     case 'completed':
-      return { label: 'Terminé & Payé', bg: 'bg-emerald-100 text-emerald-800 border-emerald-300' };
+      return { label: 'Completed & Paid', bg: 'bg-emerald-100 text-emerald-800 border-emerald-300' };
     case 'cancelled':
-      return { label: 'Annulé', bg: 'bg-red-100 text-red-700 border-red-300' };
+      return { label: 'Cancelled', bg: 'bg-red-100 text-red-700 border-red-300' };
     case 'verified':
-      return { label: 'Technicien vérifié', bg: 'bg-emerald-100 text-emerald-700 border-emerald-300' };
+      return { label: 'IMI Certified Tech', bg: 'bg-emerald-100 text-emerald-700 border-emerald-300' };
     case 'pending':
-      return { label: 'En attente de validation', bg: 'bg-amber-100 text-amber-700 border-amber-300' };
+      return { label: 'Pending Review', bg: 'bg-amber-100 text-amber-700 border-amber-300' };
     case 'rejected':
-      return { label: 'Refusé', bg: 'bg-red-100 text-red-700 border-red-300' };
+      return { label: 'Declined', bg: 'bg-red-100 text-red-700 border-red-300' };
     case 'suspended':
-      return { label: 'Suspendu', bg: 'bg-slate-200 text-slate-700 border-slate-300' };
+      return { label: 'Suspended', bg: 'bg-slate-200 text-slate-700 border-slate-300' };
     default:
       return { label: status, bg: 'bg-slate-100 text-slate-700 border-slate-300' };
   }
